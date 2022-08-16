@@ -12,6 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LatechEventsApp"
-        tools:targetApi="31"></application>
+        tools:targetApi="31">
+        <activity
+            android:name=".MyEventsPage"
+            android:exported="false"
+            android:label="@string/title_activity_my_events_page"
+            android:theme="@style/Theme.LatechEventsApp.NoActionBar" />
+    </application>
 
 </manifest>

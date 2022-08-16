@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tech_blue"
+    tools:context=".create_events" >
+
+    <ImageButton
+        android:id="@+id/logo_my_events_button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/latech_logo_background"
+        android:contentDescription="@string/my_events_page_latech_logo"
+        android:src="@mipmap/latech_logo"
+        tools:ignore="SpeakableTextPresentCheck" />
+</FrameLayout>
