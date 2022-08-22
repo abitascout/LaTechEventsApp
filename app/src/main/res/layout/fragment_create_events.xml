@@ -14,4 +14,5 @@
         android:contentDescription="@string/my_events_page_latech_logo"
         android:src="@mipmap/latech_logo"
         tools:ignore="SpeakableTextPresentCheck" />
+
 </FrameLayout>
