@@ -7,6 +7,14 @@
     android:background="@color/tech_blue"
     tools:context=".MyEvents">
 
+    <TextView
+        android:id="@+id/myEventsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="100sp"
+        android:text="MyEventsPage"
+        android:textColor="@color/white" />
+
     <ImageButton
         android:id="@+id/logo_my_events_button"
         android:layout_width="wrap_content"
