@@ -1,9 +1,12 @@
 package com.example.latecheventsapp.data.model;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
 public class LoggedInUser {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private String userId;
     private String displayName;
@@ -20,4 +23,6 @@ public class LoggedInUser {
     public String getDisplayName() {
         return displayName;
     }
+
+
 }
