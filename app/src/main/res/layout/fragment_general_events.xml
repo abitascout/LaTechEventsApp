@@ -32,19 +32,21 @@
 
     <Button
         android:id="@+id/load_button"
-        android:layout_margin="140dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:layout_margin="40dp"
+        android:translationY="80dp"
         android:backgroundTint="@color/tech_Red"
         android:onClick="loadEvent"
         android:text="Load" />
 
     <TextView
-        android:id = "@+id/text_view_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        />
+        android:id="@+id/text_view_event"
+        android:layout_width="210dp"
+        android:layout_height="210dp"
+        android:layout_margin="14dp"
+        android:translationY="200dp"
+        android:textSize="20sp" />
 
 
 </FrameLayout>

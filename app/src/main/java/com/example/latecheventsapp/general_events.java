@@ -38,7 +38,7 @@ public class general_events extends Fragment {
 
     private TextView eventView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference eventRef = db.document("/Events/MOb43uHSEdK54WJqydqM");
+    private DocumentReference eventRef = db.collection("Events").document("MOb43uHSEdK54WJqydqM");
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -81,6 +81,7 @@ public class general_events extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_general_events, container, false);
+        TextView eventView = view.findViewById(R.id.text_view_event);
         Button load = (Button) view.findViewById(R.id.load_button);
         load.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,9 +92,9 @@ public class general_events extends Fragment {
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     if(documentSnapshot.exists())
                                     {
-
-                                        Map<String, Object> event = documentSnapshot.getData();
-                                        eventView.setText("Event Name: "+ event.get("Event_Name").toString() +"\n"+ "Event_Desc: "+ event.get("Event_Desc").toString());
+                                        String name = documentSnapshot.getString("Event_Name");
+                                        String desc = documentSnapshot.getString("Event_Desc");
+                                        eventView.setText("Event Name: "+ name+"\n"+ "Event_Desc: "+ desc);
                                     }
                                     else {
                                         Toast.makeText(getContext().getApplicationContext(), "No Event Listed 1", Toast.LENGTH_SHORT).show();
@@ -114,10 +115,10 @@ public class general_events extends Fragment {
         return view;
     }
 
-    @Override
+    /*@Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
         TextView textView = (TextView) getView().findViewById(R.id.text_view_event);
-    }
+    }*/
 
 }
