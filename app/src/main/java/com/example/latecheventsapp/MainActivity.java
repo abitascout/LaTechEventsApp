@@ -49,10 +49,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         textView = (TextView) findViewById(R.id.textView);
 
         // Get the inputs from the create events fragment
-        subjectInputText = (EditText) findViewById(R.id.inputEventSubjectText);
+        //subjectInputText = (EditText) findViewById(R.id.inputEventSubjectText);
 
+        // Allows the Title of the toolbar to be changed.
         mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mActionBarToolbar.setTitle("CHANGED");
+        mActionBarToolbar.setTitle("LATEvents");
         setSupportActionBar(mActionBarToolbar);
 
 
