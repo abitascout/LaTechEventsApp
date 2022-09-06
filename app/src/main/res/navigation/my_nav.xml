@@ -3,35 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_nav"
-    app:startDestination="@id/myEvents">
+    app:startDestination="@id/loginFragment">
 
-    <fragment
-        android:id="@+id/create_events"
-        android:name="com.example.latecheventsapp.create_events"
-        android:label="fragment_create_events"
-        tools:layout="@layout/fragment_create_events" />
-    <fragment
-        android:id="@+id/myEvents"
-        android:name="com.example.latecheventsapp.MyEvents"
-        android:label="fragment_my_events"
-        tools:layout="@layout/fragment_my_events" />
-    <fragment
-        android:id="@+id/general_events"
-        android:name="com.example.latecheventsapp.general_events"
-        android:label="fragment_general_events"
-        tools:layout="@layout/fragment_general_events" />
-    <fragment
-        android:id="@+id/preferences2"
-        android:name="com.example.latecheventsapp.preferences"
-        android:label="fragment_preferences"
-        tools:layout="@layout/fragment_preferences" />
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.latecheventsapp.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_myEvents"
-            app:destination="@id/myEvents" />
+            android:id="@+id/action_loginFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
     </fragment>
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.latecheventsapp.MainActivity"
+        android:label="MainActivity" />
 </navigation>

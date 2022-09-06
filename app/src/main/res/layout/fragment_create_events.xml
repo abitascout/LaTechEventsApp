@@ -88,6 +88,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputDescription"
             android:layout_width="380dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
