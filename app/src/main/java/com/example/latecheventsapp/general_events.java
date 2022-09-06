@@ -115,10 +115,4 @@ public class general_events extends Fragment {
         return view;
     }
 
-    /*@Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
-        TextView textView = (TextView) getView().findViewById(R.id.text_view_event);
-    }*/
-
 }
