@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link reviewFragment#newInstance} factory method to
@@ -53,6 +57,8 @@ public class reviewFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -61,4 +67,5 @@ public class reviewFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_review, container, false);
     }
+
 }

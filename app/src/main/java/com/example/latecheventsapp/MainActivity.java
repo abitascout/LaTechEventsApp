@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
@@ -61,36 +63,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
         mActionBarToolbar.setTitle("LATEvents");
         setSupportActionBar(mActionBarToolbar);
-
-
-        // Change Activity to review activity
-        Button mButtonReview = (Button) findViewById(R.id.buttonReview);
-
-        mButtonReview.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new reviewFragment()).commit();
-            }
-        });
-
-        /*Button mButtonEdit = (Button) findViewById(R.id.buttonReview);
-
-        mButtonEdit.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new create_events()).commit();
-            }
-        });
-        Button mButtonSubmit = (Button) findViewById(R.id.buttonReview);
-
-        mButtonSubmit.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyEvents()).commit();
-            }
-        }); */
-
-
-
     }
 
 
