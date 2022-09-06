@@ -10,9 +10,9 @@
 
     <TextView
         android:id="@+id/GeneralEvents"
-        android:layout_width="wrap_content"
+        android:layout_width="157dp"
         android:layout_height="wrap_content"
-        android:layout_margin="100sp"
+        android:layout_margin="157sp"
         android:text="GeneralEventsPage"
         android:textColor="@color/white" />
 

@@ -4,7 +4,6 @@
     <!-- Strings used for fragments for navigation -->
 
 
-
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
