@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Abita/AndroidStudioProjects/LatechEventsapp/app/src/main/res/layout/activity_main.xml" value="0.17481884057971014" />
+        <entry key="..\:/Users/Abita/AndroidStudioProjects/LatechEventsapp/app/src/main/res/layout/content_main.xml" value="0.2390625" />
+        <entry key="..\:/Users/Abita/AndroidStudioProjects/LatechEventsapp/app/src/main/res/layout/fragment_general_events.xml" value="0.1" />
         <entry key="..\:/Users/Abita/Desktop/LaTechApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/Abita/Desktop/LaTechApp/app/src/main/res/drawable/ic_create_events.xml" value="0.1855" />
         <entry key="..\:/Users/Abita/Desktop/LaTechApp/app/src/main/res/drawable/ic_general_events.xml" value="0.1855" />

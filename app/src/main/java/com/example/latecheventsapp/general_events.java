@@ -20,7 +20,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.Map;
 
@@ -39,7 +42,7 @@ public class general_events extends Fragment {
     private TextView eventView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference eventRef = db.collection("Events").document("MOb43uHSEdK54WJqydqM");
-
+    private ListenerRegistration eventListener;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -73,6 +76,28 @@ public class general_events extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        eventListener = eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (e !=null){
+                    Toast.makeText(getContext().getApplicationContext(), "Error while loading!", Toast.LENGTH_SHORT);
+                    return;
+                }
+
+                if(documentSnapshot.exists())
+                {
+                    String name = documentSnapshot.getString("Event_Name");
+                    String desc = documentSnapshot.getString("Event_Desc");
+                    eventView.setText("Event Name: "+ name+"\n"+ "Event_Desc: "+ desc);
+                }
+            }
+        });
     }
 
     @Nullable
