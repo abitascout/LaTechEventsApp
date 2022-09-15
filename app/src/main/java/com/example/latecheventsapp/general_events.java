@@ -84,7 +84,7 @@ public class general_events extends Fragment {
         super.onStart();
         eventListener = eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if (e !=null){
                     Toast.makeText(getContext().getApplicationContext(), "Error while loading!", Toast.LENGTH_SHORT);
                     return;
