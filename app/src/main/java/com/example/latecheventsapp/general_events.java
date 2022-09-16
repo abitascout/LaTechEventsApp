@@ -100,6 +100,13 @@ public class general_events extends Fragment {
         });
     }
 
+    /*@Override
+    public void onStop()
+    {
+        super.onStop();
+        eventListener.remove();
+    }*/
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
