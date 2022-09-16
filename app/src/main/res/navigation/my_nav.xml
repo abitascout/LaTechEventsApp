@@ -3,38 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_nav"
-    app:startDestination="@id/myEvents">
+    app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/create_events"
-        android:name="com.example.latecheventsapp.create_events"
-        android:label="fragment_create_events"
-        tools:layout="@layout/fragment_create_events" >
+        android:id="@+id/loginFragment"
+        android:name="com.example.latecheventsapp.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_create_events_to_general_events"
-            app:destination="@id/general_events" />
+            android:id="@+id/action_loginFragment_to_mainActivity"
+            app:destination="@id/mainActivity" />
     </fragment>
-    <fragment
-        android:id="@+id/myEvents"
-        android:name="com.example.latecheventsapp.MyEvents"
-        android:label="fragment_my_events"
-        tools:layout="@layout/fragment_my_events" >
-        <action
-            android:id="@+id/action_myEvents_to_create_events"
-            app:destination="@id/create_events" />
-    </fragment>
-    <fragment
-        android:id="@+id/general_events"
-        android:name="com.example.latecheventsapp.general_events"
-        android:label="fragment_general_events"
-        tools:layout="@layout/fragment_general_events" >
-        <action
-            android:id="@+id/action_general_events_to_preferences2"
-            app:destination="@id/preferences2" />
-    </fragment>
-    <fragment
-        android:id="@+id/preferences2"
-        android:name="com.example.latecheventsapp.preferences"
-        android:label="fragment_preferences"
-        tools:layout="@layout/fragment_preferences" />
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.latecheventsapp.MainActivity"
+        android:label="MainActivity" />
 </navigation>
