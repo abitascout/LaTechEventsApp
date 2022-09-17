@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.example.latecheventsapp.data.model.Event;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -38,11 +41,16 @@ public class general_events extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    // Fire base and viewing event references
     private TextView eventView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference eventRef = db.collection("Events").document("MOb43uHSEdK54WJqydqM");
     private ListenerRegistration eventListener;
+
+    //widgets
+    private FloatingActionButton Efab;
+    private RecyclerView Erecyle;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -78,34 +86,7 @@ public class general_events extends Fragment {
         }
     }
 
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-        eventListener = eventRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if (e !=null){
-                    Toast.makeText(getContext().getApplicationContext(), "Error while loading!", Toast.LENGTH_SHORT);
-                    return;
-                }
 
-                if(documentSnapshot.exists())
-                {
-                    String name = documentSnapshot.getString("Event_Name");
-                    String desc = documentSnapshot.getString("Event_Desc");
-                    eventView.setText("Event Name: "+ name+"\n"+ "Event_Desc: "+ desc);
-                }
-            }
-        });
-    }
-
-    /*@Override
-    public void onStop()
-    {
-        super.onStop();
-        eventListener.remove();
-    }*/
 
     @Nullable
     @Override

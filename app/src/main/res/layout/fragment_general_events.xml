@@ -10,15 +10,7 @@
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".general_events">
 
-    <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/GeneralEvents"
-        android:layout_width="172dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="100sp"
-        android:text="GeneralEventsPage"
-        android:textColor="@color/white" />
 
     <ImageButton
         android:id="@+id/logo_my_events_button2"
@@ -29,24 +21,60 @@
         android:src="@mipmap/latech_logo"
         tools:ignore="SpeakableTextPresentCheck" />
 
+    <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:id="@+id/load_button"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="40dp"
-        android:translationY="80dp"
-        android:backgroundTint="@color/tech_Red"
-        android:onClick="loadEvent"
-        android:text="Load" />
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="50dp"
+        >
 
-    <TextView
-        android:id="@+id/text_view_event"
-        android:layout_width="210dp"
-        android:layout_height="210dp"
-        android:layout_margin="14dp"
-        android:translationY="200dp"
-        android:textSize="20sp" />
+        <TextView
+            android:id="@+id/GeneralEvents"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:paddingLeft="90dp"
+            android:text="General Events Page"
+            android:textColor="@color/white"
+            android:textSize="12pt" />
+    </RelativeLayout>
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="600dp"
+    android:layout_gravity="bottom"
+    >
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="false">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
 
+                <Button
+                    android:id="@+id/load_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="40dp"
+                    android:backgroundTint="@color/tech_Red"
+                    android:onClick="loadEvent"
+                    android:text="Load"
+                    android:translationY="80dp" />
+
+                <TextView
+                    android:id="@+id/text_view_event"
+                    android:layout_width="210dp"
+                    android:layout_height="210dp"
+                    android:layout_margin="14dp"
+                    android:textSize="20sp"
+                    android:translationY="200dp" />
+
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
 </FrameLayout>

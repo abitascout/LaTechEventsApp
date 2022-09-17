@@ -10,7 +10,7 @@ public class Event {
     private String Event_Name;
     private String Event_Desc;
     private String Club_Name;
-    private @ServerTimestamp Date timestamp;
+    private Date timestamp;
     private String Location;
     private String eventId;
 
