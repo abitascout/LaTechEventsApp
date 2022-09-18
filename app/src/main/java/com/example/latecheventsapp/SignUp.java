@@ -1,5 +1,7 @@
 package com.example.latecheventsapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -70,8 +72,9 @@ public class SignUp extends Fragment {
                             df.set(userInfo);
 
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            ft.replace(R.id.fragment_container,new general_events());
+                            ft.replace(R.id.fragment_container,new Login());
                             ft.commit();
+                            ((Activity) getActivity()).overridePendingTransition(0,0);
                         }
                         else {
                             Toast.makeText(getContext(), "Error ! "+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();

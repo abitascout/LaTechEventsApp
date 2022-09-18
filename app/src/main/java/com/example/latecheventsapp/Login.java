@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -96,9 +97,9 @@ public class Login extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("TAG","onSuccess: "+ documentSnapshot.getData());
                 if(documentSnapshot.getString("privileges")=="B") {
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment_container,new create_club());
-                    ft.commit();
+                    Intent i = new Intent(getActivity(), MainActivity.class);
+                    startActivity(i);
+                    ((Activity) getActivity()).overridePendingTransition(0,0);
                 }
                 else {
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
