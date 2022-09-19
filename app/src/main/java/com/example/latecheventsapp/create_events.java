@@ -2,6 +2,7 @@ package com.example.latecheventsapp;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +30,12 @@ public class create_events extends Fragment {
 
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
+
+    private TimePickerDialog startTimePickerDialog;
+    private TimePickerDialog endTimePickerDialog;
+    private Button startTimeButton;
+    private Button endTimeButton;
+    int sHour, sMin, eHour, eMin;
 
     public create_events() {
         // Required empty public constructor
@@ -47,6 +58,7 @@ public class create_events extends Fragment {
 
     }
 
+    // Methods for chooseing date
     private String getTodaysDate() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -54,6 +66,38 @@ public class create_events extends Fragment {
         month = month + 1;
         int day = cal.get(Calendar.DAY_OF_MONTH);
         return makeDateString(day, month, year);
+    }
+
+    private void popStartTimePicker(){
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                sHour = hour;
+                sMin = min;
+                startTimeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", sHour, sMin));
+
+            }
+        };
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+        startTimePickerDialog = new TimePickerDialog(getActivity(), style, onTimeSetListener, sHour, sMin, false);
+
+    }
+
+    private void popEndTimePicker(){
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                eHour = hour;
+                eMin = min;
+
+                endTimeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", eHour, eMin));
+
+            }
+        };
+
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+        endTimePickerDialog = new TimePickerDialog(getActivity(), style, onTimeSetListener, eHour, eMin, false);
+
     }
 
     private void initDatePicker() {
@@ -77,7 +121,7 @@ public class create_events extends Fragment {
     }
 
     private String makeDateString(int day, int month, int year) {
-        return getMonthFormat(month) + " " + day + " " + year;
+        return getMonthFormat(month) + " " + day + ", " + year;
     }
 
     private String getMonthFormat(int month) {
@@ -105,11 +149,31 @@ public class create_events extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_events, container, false);
         // Inflate the layout for this fragment
-            // Date picker for Create Events
+
+        // Time picker
+        startTimeButton = view.findViewById(R.id.buttonStartTime);
+        endTimeButton = view.findViewById(R.id.buttonEndTime);
+        popStartTimePicker();
+        popEndTimePicker();
+
+        startTimeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                startTimePickerDialog.show();
+            }
+        });
+
+        endTimeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                endTimePickerDialog.show();
+            }
+        });
+
+        // Date picker for Create Events
         initDatePicker();
         dateButton = view.findViewById(R.id.datePickerButton);
         dateButton.setText(getTodaysDate());
-
 
         dateButton.setOnClickListener(new View.OnClickListener(){
             @Override

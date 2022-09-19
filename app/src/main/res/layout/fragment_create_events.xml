@@ -12,17 +12,6 @@
         android:background="@color/tech_blue"
         tools:context=".create_events">
 
-        <Button
-            android:id="@+id/buttonReview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/tech_Red"
-            android:text="Review"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputSubject"
             android:layout_width="380dp"
@@ -41,28 +30,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputTime"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputSubject">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Time" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLocation"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="350dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputTime">
+            app:layout_constraintTop_toBottomOf="@+id/textInputSubject">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -94,24 +68,104 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/datePickerButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.052"
+            app:layout_constraintHorizontal_bias="0.078"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputSubject"
             app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/datePickerButton"
-            android:layout_width="188dp"
-            android:layout_height="67dp"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:backgroundTint="@color/tech_Red"
             android:text="Jan 01 2022"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/textInputLocation"
-            app:layout_constraintEnd_toStartOf="@+id/textInputTime"
-            app:layout_constraintHorizontal_bias="0.347"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputSubject"
-            app:layout_constraintVertical_bias="0.666"
-            android:onClick="openDatePicker"/>
+            app:layout_constraintVertical_bias="0.145" />
+
+        <Button
+            android:id="@+id/buttonReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/tech_Red"
+            android:text="Review"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/buttonStartTime"
+            android:layout_width="175dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/tech_Red"
+            android:text="5:00pm"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.059"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/datePickerButton"
+            app:layout_constraintVertical_bias="0.256"
+            android:onClick="popStartTimePicker"
+/>
+
+        <Button
+            android:id="@+id/buttonEndTime"
+            android:layout_width="175dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/tech_Red"
+            android:text="6:00pm"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.932"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/datePickerButton"
+            app:layout_constraintVertical_bias="0.256"
+/>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Start Time:"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonStartTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.047"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/datePickerButton"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select End Time:"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonEndTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.843"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/datePickerButton"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Switch
+            android:id="@+id/switch2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No End Time?"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/textInputLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.942"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonEndTime"
+            app:layout_constraintVertical_bias="0.115" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

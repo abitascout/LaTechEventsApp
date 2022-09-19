@@ -74,15 +74,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
         mActionBarToolbar.setTitle("LATEvents");
         setSupportActionBar(mActionBarToolbar);
-
-
-        
-        
         
     }
-
-
-
 
     @Override // To switch between navigation screens.
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
