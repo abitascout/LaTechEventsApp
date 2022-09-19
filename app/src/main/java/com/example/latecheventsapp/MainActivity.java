@@ -1,5 +1,7 @@
 package com.example.latecheventsapp;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,6 +10,7 @@ import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -25,9 +28,17 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private int currentScreen;
+
+
+    private DatePickerDialog datePickerDialog;
+    private Button dateButton;
 
 
     TextView textView;
@@ -63,7 +74,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar);
         mActionBarToolbar.setTitle("LATEvents");
         setSupportActionBar(mActionBarToolbar);
+
+
+        
+        
+        
     }
+
 
 
 
@@ -71,18 +88,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_create_events:
+                currentScreen = 1;
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new create_events()).commit();
                 mActionBarToolbar.setTitle("Create Events");
+
                 break;
             case R.id.nav_general_events:
+                currentScreen = 2;
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new general_events()).commit();
                 mActionBarToolbar.setTitle("General Events");
                 break;
             case R.id.nav_myevents:
+                currentScreen = 3;
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyEvents()).commit();
                 mActionBarToolbar.setTitle("My Events");
                 break;
             case R.id.nav_preferences:
+                currentScreen = 4;
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new preferences()).commit();
                 mActionBarToolbar.setTitle("Preferences");
                 break;
