@@ -14,7 +14,7 @@ public class Event {
     private String Location;
     private String eventId;
 
-    public Event (String Event_Name, String Event_Desc, String Club_Name, Timestamp Start, String Location)
+    public Event (String Event_Name, String Event_Desc, String Club_Name, Timestamp Start, String Location, Timestamp End)
     {
         this.Event_Name = Event_Name;
         this.Event_Desc = Event_Desc;

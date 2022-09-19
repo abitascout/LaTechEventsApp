@@ -57,7 +57,6 @@ public class general_events extends Fragment implements
 
 
     //widgets
-    private FloatingActionButton Efab;
     private RecyclerView Erecyle;
     private SwipeRefreshLayout eventSwipe;
 
@@ -123,11 +122,16 @@ public class general_events extends Fragment implements
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_general_events, container, false);
+        Erecyle = view.findViewById(R.id.recyle);
+        eventSwipe = view.findViewById(R.id.refresh_layout);
         TextView eventView = view.findViewById(R.id.text_view_event);
         Button load = (Button) view.findViewById(R.id.load_button);
+        eventSwipe.setOnRefreshListener(this);
+
         load.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
