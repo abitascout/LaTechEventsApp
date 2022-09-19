@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,73 +8,36 @@
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
-    tools:context=".general_events">
+    tools:context=".general_events"
+    android:fillViewport="false">
 
 
 
-    <ImageButton
-        android:id="@+id/logo_my_events_button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/latech_logo_background"
-        android:contentDescription="@string/my_events_page_latech_logo"
-        android:src="@mipmap/latech_logo"
-        tools:ignore="SpeakableTextPresentCheck" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
 
-    <RelativeLayout
-        android:layout_width="360dp"
-        android:layout_height="50dp"
-        >
+        <Button
+            android:id="@+id/load_button"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="200dp"
+            android:backgroundTint="@color/tech_Red"
+            android:onClick="loadEvent"
+            android:text="Load" />
 
         <TextView
-            android:id="@+id/GeneralEvents"
-            android:layout_width="350dp"
-            android:layout_height="50dp"
-            android:paddingLeft="90dp"
-            android:text="General Events Page"
-            android:textColor="@color/white"
-            android:textSize="12pt" />
-    </RelativeLayout>
-
-    <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="600dp"
-    android:layout_gravity="bottom"
-    >
-
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/text_view_event"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="false">
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+            android:layout_height="210dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="440dp"
+            android:background="@color/tech_Red"
+            android:textSize="20sp" />
 
 
-                <Button
-                    android:id="@+id/load_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_margin="40dp"
-                    android:backgroundTint="@color/tech_Red"
-                    android:onClick="loadEvent"
-                    android:text="Load"
-                    android:translationY="80dp" />
-
-                <TextView
-                    android:id="@+id/text_view_event"
-                    android:layout_width="210dp"
-                    android:layout_height="210dp"
-                    android:layout_margin="14dp"
-                    android:textSize="20sp"
-                    android:translationY="200dp" />
-
-
-            </LinearLayout>
-        </ScrollView>
-    </RelativeLayout>
-</FrameLayout>
+    </LinearLayout>
+</ScrollView>

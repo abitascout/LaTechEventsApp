@@ -1,91 +1,123 @@
 package com.example.latecheventsapp;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import com.example.latecheventsapp.data.Eventchanger;
+import com.example.latecheventsapp.data.Igen;
 import com.example.latecheventsapp.data.model.Event;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link general_events#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class general_events extends Fragment {
+public class general_events extends Fragment implements
+    View.OnClickListener,
+    Igen,
+    SwipeRefreshLayout.OnRefreshListener
+{
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
+
     // Fire base and viewing event references
     private TextView eventView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference eventRef = db.collection("Events").document("MOb43uHSEdK54WJqydqM");
-    private ListenerRegistration eventListener;
+    // Event array list
+    private ArrayList<Event> eventArray = new ArrayList<>();
+    private DocumentSnapshot LastQueriedDocument;
+    private Eventchanger changeEvent;
+
 
     //widgets
     private FloatingActionButton Efab;
     private RecyclerView Erecyle;
+    private SwipeRefreshLayout eventSwipe;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public general_events() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment general_events.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static general_events newInstance(String param1, String param2) {
+
+
+    public static general_events newInstance() {
         general_events fragment = new general_events();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+
     }
 
+    private void getEvents()
+    {
+        CollectionReference eventsRef = db.collection("Events");
+        Query eventsQuery = null;
+        if(LastQueriedDocument != null)
+        {
+            eventsQuery
+                    .orderBy("Start", Query.Direction.ASCENDING)
+                    .startAfter(LastQueriedDocument);
+        }
+        else
+        {
+            eventsQuery
+                    .orderBy("Start", Query.Direction.ASCENDING);
+        }
+
+        eventsQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> Hold)
+                {
+                    if(Hold.isSuccessful())
+                    {
+                        for(QueryDocumentSnapshot document: Hold.getResult())
+                        {
+                            Event event = document.toObject(Event.class);
+                            eventArray.add(event);
+                        }
+                        if(Hold.getResult().size() !=0)
+                        {
+                            LastQueriedDocument = Hold.getResult().getDocuments().get(Hold.getResult().size() -1);
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(getContext().getApplicationContext(), "Query Failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        });
+    }
 
 
     @Nullable
@@ -128,4 +160,18 @@ public class general_events extends Fragment {
         return view;
     }
 
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    @Override
+    public void onRefresh() {
+
+    }
+
+    @Override
+    public void createEvent(String title, Timestamp Start, String desc, Timestamp End, String Location) {
+
+    }
 }
