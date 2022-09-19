@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,6 +84,7 @@ public class general_events extends Fragment {
         View view = inflater.inflate(R.layout.fragment_general_events, container, false);
         TextView eventView = view.findViewById(R.id.text_view_event);
         Button load = (Button) view.findViewById(R.id.load_button);
+        Button logout = view.findViewById(R.id.logout);
         load.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,6 +113,14 @@ public class general_events extends Fragment {
                 }
 
 
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container,new Login());
+                ft.commit();
+            }
         });
         return view;
     }
