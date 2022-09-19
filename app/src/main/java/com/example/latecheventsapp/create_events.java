@@ -20,6 +20,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,9 +73,19 @@ public class create_events extends Fragment {
         TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.HOUR_OF_DAY, hour);
+                c.set(Calendar.MINUTE, min);
+                c.setTimeZone(TimeZone.getDefault());
+
+                SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
+                String time = format.format(c.getTime());
+                startTimeButton.setText(time);
+
+
                 sHour = hour;
                 sMin = min;
-                startTimeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", sHour, sMin));
+                //startTimeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", sHour, sMin));
 
             }
         };
@@ -87,10 +98,20 @@ public class create_events extends Fragment {
         TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.HOUR_OF_DAY, hour);
+                c.set(Calendar.MINUTE, min);
+                c.setTimeZone(TimeZone.getDefault());
+
+                SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
+                String time = format.format(c.getTime());
+                endTimeButton.setText(time);
+
+
                 eHour = hour;
                 eMin = min;
 
-                endTimeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", eHour, eMin));
+              /*  endTimeButton.setText(String.format(Locale.getDefault(), "%02d:%02d aa", eHour, eMin)); */
 
             }
         };
