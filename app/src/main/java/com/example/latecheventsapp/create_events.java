@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,9 +35,17 @@ public class create_events extends Fragment {
 
     private TimePickerDialog startTimePickerDialog;
     private TimePickerDialog endTimePickerDialog;
+
     private Button startTimeButton;
     private Button endTimeButton;
+
+    private Button reviewPageButton;
+
     int sHour, sMin, eHour, eMin;
+
+    public String startTime;
+    public String endTime;
+    public String date;
 
     public create_events() {
         // Required empty public constructor
@@ -79,13 +88,12 @@ public class create_events extends Fragment {
                 c.setTimeZone(TimeZone.getDefault());
 
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
-                String time = format.format(c.getTime());
-                startTimeButton.setText(time);
+                startTime = format.format(c.getTime());
+                startTimeButton.setText(startTime);
 
 
                 sHour = hour;
                 sMin = min;
-                //startTimeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", sHour, sMin));
 
             }
         };
@@ -104,14 +112,12 @@ public class create_events extends Fragment {
                 c.setTimeZone(TimeZone.getDefault());
 
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
-                String time = format.format(c.getTime());
-                endTimeButton.setText(time);
+                endTime = format.format(c.getTime());
+                endTimeButton.setText(endTime);
 
 
                 eHour = hour;
                 eMin = min;
-
-              /*  endTimeButton.setText(String.format(Locale.getDefault(), "%02d:%02d aa", eHour, eMin)); */
 
             }
         };
@@ -126,7 +132,7 @@ public class create_events extends Fragment {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-                String date = makeDateString(day, month, year);
+                date = makeDateString(day, month, year);
                 dateButton.setText(date);
             }
         };
@@ -170,6 +176,18 @@ public class create_events extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_events, container, false);
         // Inflate the layout for this fragment
+
+        // Switch to review page
+        reviewPageButton = view.findViewById(R.id.buttonReview);
+        reviewPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new reviewFragment());
+                fragmentTransaction.commit();
+            }
+        });
 
         // Time picker
         startTimeButton = view.findViewById(R.id.buttonStartTime);
