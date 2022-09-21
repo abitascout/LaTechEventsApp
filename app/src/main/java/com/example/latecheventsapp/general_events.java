@@ -114,14 +114,7 @@ public class general_events extends Fragment {
 
 
         });
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container,new Login());
-                ft.commit();
-            }
-        });
+
         return view;
     }
 

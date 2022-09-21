@@ -2,6 +2,7 @@ package com.example.latecheventsapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -32,23 +33,25 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Login extends Fragment {
+public class Login extends AppCompatActivity {
     private EditText EmailTxt, PasswordTxt;
     private Button LoginBtn, SignUpBtn;
 
     private FirebaseAuth fAuth;
     private FirebaseFirestore fstore;
 
-    boolean valid = true;
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login,container,false);
 
-        EmailTxt = view.findViewById(R.id.username);
-        PasswordTxt = view.findViewById(R.id.password);
-        LoginBtn = view.findViewById(R.id.loginbutton);
-        SignUpBtn = view.findViewById(R.id.sign_up_page_nav_button);
+
+    boolean valid = true;
+    @Override
+    public void onCreate( Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_login);
+
+        EmailTxt = findViewById(R.id.username);
+        PasswordTxt = findViewById(R.id.password);
+        LoginBtn = findViewById(R.id.loginbutton);
+        SignUpBtn = findViewById(R.id.sign_up_page_nav_button);
 
         fAuth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
@@ -59,19 +62,19 @@ public class Login extends Fragment {
                 String E = EmailTxt.getText().toString();
                 String P = PasswordTxt.getText().toString();
                 if (TextUtils.isEmpty(E) && TextUtils.isEmpty(P)) {
-                    Toast.makeText(getContext(), "Please enter Email and Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
                 }
                 fAuth.signInWithEmailAndPassword(E,P).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                             FirebaseUser user = fAuth.getCurrentUser();
                             checkIfAdmin(user.getUid());
 
                         }
                         else {
-                            Toast.makeText(getContext(), "Error !", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Error !", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -82,13 +85,11 @@ public class Login extends Fragment {
         SignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container,new SignUp());
-                ft.commit();
+                Intent i = new Intent(Login.this, SignUp.class);
+                startActivity(i);
             }
         });
 
-        return view;
     }
     private void checkIfAdmin(String id) {
         DocumentReference df = fstore.collection("users").document(id);
@@ -97,14 +98,12 @@ public class Login extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("TAG","onSuccess: "+ documentSnapshot.getData());
                 if(documentSnapshot.getString("privileges")=="B") {
-                    Intent i = new Intent(getActivity(), MainActivity.class);
+                    Intent i = new Intent(Login.this, MainActivity.class);
                     startActivity(i);
-                    ((Activity) getActivity()).overridePendingTransition(0,0);
                 }
                 else {
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment_container,new general_events());
-                    ft.commit();
+                    Intent i = new Intent(Login.this, MainActivity.class);
+                    startActivity(i);
                 }
             }
         });
