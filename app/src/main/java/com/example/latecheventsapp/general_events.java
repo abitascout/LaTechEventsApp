@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -18,10 +18,7 @@ import com.example.latecheventsapp.data.Eventchanger;
 import com.example.latecheventsapp.data.Igen;
 import com.example.latecheventsapp.data.model.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -39,7 +36,6 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class general_events extends Fragment implements
-    View.OnClickListener,
     Igen,
     SwipeRefreshLayout.OnRefreshListener
 {
@@ -75,12 +71,13 @@ public class general_events extends Fragment implements
         super.onCreate(savedInstanceState);
 
 
+
     }
 
     private void getEvents()
     {
         CollectionReference eventsRef = db.collection("Events");
-        Query eventsQuery = null;
+        Query eventsQuery = eventsRef;
         if(LastQueriedDocument != null)
         {
             eventsQuery
@@ -124,54 +121,55 @@ public class general_events extends Fragment implements
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_general_events, container, false);
         Erecyle = view.findViewById(R.id.recyle);
         eventSwipe = view.findViewById(R.id.refresh_layout);
-        TextView eventView = view.findViewById(R.id.text_view_event);
-        Button load = (Button) view.findViewById(R.id.load_button);
         eventSwipe.setOnRefreshListener(this);
-
-        load.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    eventRef.get()
-                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    if(documentSnapshot.exists())
-                                    {
-                                        String name = documentSnapshot.getString("Event_Name");
-                                        String desc = documentSnapshot.getString("Event_Desc");
-                                        eventView.setText("Event Name: "+ name+"\n"+ "Event_Desc: "+ desc);
-                                    }
-                                    else {
-                                        Toast.makeText(getContext().getApplicationContext(), "No Event Listed 1", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getContext().getApplicationContext(), "No Event Listed 2", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
-
-
-        });
+        RecyleView();
+        getEvents();
         return view;
     }
 
-    @Override
+
+    private void RecyleView(){
+        if(changeEvent ==null)
+        {
+            changeEvent = new Eventchanger(getContext().getApplicationContext(), eventArray);
+        }
+        Erecyle.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        Erecyle.setAdapter(changeEvent);
+    }
+   /* @Override
     public void onClick(View view) {
+        eventRef.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists())
+                        {
+                            String name = documentSnapshot.getString("Event_Name");
+                            String desc = documentSnapshot.getString("Event_Desc");
+                            eventView.setText("Event Name: "+ name+"\n"+ "Event_Desc: "+ desc);
+                        }
+                        else {
+                            Toast.makeText(getContext().getApplicationContext(), "No Event Listed 1", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext().getApplicationContext(), "No Event Listed 2", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
+*/
 
-    @Override
     public void onRefresh() {
-
+        getEvents();
+        eventSwipe.setRefreshing(false);
     }
 
     @Override

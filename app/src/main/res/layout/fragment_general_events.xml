@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,45 +11,30 @@
     tools:context=".general_events"
     android:fillViewport="false">
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/refresh_layout"
-    >
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyle"
-        android:orientation="vertical"
-        ></androidx.recyclerview.widget.RecyclerView>
+        android:id="@+id/refresh_layout"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyle"
+            android:orientation="vertical"
+            ></androidx.recyclerview.widget.RecyclerView>
 
 
-    <LinearLayout
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
 
-        <Button
-            android:id="@+id/load_button"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="200dp"
-            android:backgroundTint="@color/tech_Red"
-            android:onClick="loadEvent"
-            android:text="Load" />
-
-        <TextView
-            android:id="@+id/text_view_event"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="440dp"
-            android:background="@color/tech_Red"
-            android:textSize="20sp" />
 
 
-    </LinearLayout>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</ScrollView>
+    </ScrollView>
+
+
+
+</RelativeLayout>
