@@ -15,13 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.latecheventsapp.data.Eventchanger;
-import com.example.latecheventsapp.data.Igen;
 import com.example.latecheventsapp.data.model.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -29,6 +26,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,8 +34,8 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class general_events extends Fragment implements
-    Igen,
     SwipeRefreshLayout.OnRefreshListener
+
 {
 
 
@@ -45,14 +43,16 @@ public class general_events extends Fragment implements
     // Fire base and viewing event references
     private TextView eventView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference eventRef = db.collection("Events").document("MOb43uHSEdK54WJqydqM");
+    private CollectionReference eventRef = db.collection("Events");
     // Event array list
     private ArrayList<Event> eventArray = new ArrayList<>();
+    private ArrayList<Map> MapArray = new ArrayList<>();
     private DocumentSnapshot LastQueriedDocument;
     private Eventchanger changeEvent;
 
 
     //widgets
+
     private RecyclerView Erecyle;
     private SwipeRefreshLayout eventSwipe;
 
@@ -69,23 +69,22 @@ public class general_events extends Fragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     private void getEvents()
     {
         CollectionReference eventsRef = db.collection("Events");
-        Query eventsQuery = eventsRef;
+        Query eventsQuery = null;
         if(LastQueriedDocument != null)
         {
+            eventsQuery = eventsRef;
             eventsQuery
                     .orderBy("Start", Query.Direction.ASCENDING)
                     .startAfter(LastQueriedDocument);
         }
         else
         {
+            eventsQuery = eventsRef;
             eventsQuery
                     .orderBy("Start", Query.Direction.ASCENDING);
         }
@@ -102,6 +101,7 @@ public class general_events extends Fragment implements
                             Event event = document.toObject(Event.class);
                             eventArray.add(event);
                         }
+
                         if(Hold.getResult().size() !=0)
                         {
                             LastQueriedDocument = Hold.getResult().getDocuments().get(Hold.getResult().size() -1);
@@ -122,58 +122,57 @@ public class general_events extends Fragment implements
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_general_events, container, false);
+
         Erecyle = view.findViewById(R.id.recyle);
-        eventSwipe = view.findViewById(R.id.refresh_layout);
-        eventSwipe.setOnRefreshListener(this);
-        RecyleView();
+        Erecyle.setLayoutManager(new LinearLayoutManager(getContext()));
         getEvents();
+        Eventchanger changer = new Eventchanger(getContext(),eventArray);
+        Erecyle.setAdapter(changer);
+
+        changer.notifyDataSetChanged();
         return view;
     }
 
-
-    private void RecyleView(){
-        if(changeEvent ==null)
-        {
-            changeEvent = new Eventchanger(getContext().getApplicationContext(), eventArray);
-        }
-        Erecyle.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
-        Erecyle.setAdapter(changeEvent);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstance)
+    {
+        super.onViewCreated(view, savedInstance);
+        ;
     }
-   /* @Override
-    public void onClick(View view) {
-        eventRef.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists())
-                        {
-                            String name = documentSnapshot.getString("Event_Name");
-                            String desc = documentSnapshot.getString("Event_Desc");
-                            eventView.setText("Event Name: "+ name+"\n"+ "Event_Desc: "+ desc);
-                        }
-                        else {
-                            Toast.makeText(getContext().getApplicationContext(), "No Event Listed 1", Toast.LENGTH_SHORT).show();
-                        }
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext().getApplicationContext(), "No Event Listed 2", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
-    }
-*/
+
+
 
     public void onRefresh() {
         getEvents();
         eventSwipe.setRefreshing(false);
     }
 
-    @Override
-    public void createEvent(String title, Timestamp Start, String desc, Timestamp End, String Location) {
+   /* @Override
+    public void createEvent(String title, Timestamp Start, String desc, Timestamp End, String Location, String Club_Name) {
+                FirebaseFirestore bd = FirebaseFirestore.getInstance();
 
-    }
+                DocumentReference newEventRef = db.collection("Event").document();
+                Event event = new Event();
+                event.setEvent_Name(title);
+                event.setEvent_Desc(desc);
+                event.setClub_Name(Club_Name);
+                event.setStart(Start);
+                event.setLocation(Location);
+                event.setEnd(End);
+
+                newEventRef.set(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            getEvents();
+                        }
+                        else{
+                            //makeSnackBarMessage("Failed. Check log.");
+                        }
+                    }
+                });
+
+    }*/
 }

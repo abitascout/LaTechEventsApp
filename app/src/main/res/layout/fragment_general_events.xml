@@ -21,20 +21,12 @@
             android:layout_height="match_parent"
             android:id="@+id/recyle"
             android:orientation="vertical"
+            tools:listitem="@layout/layout_event_list_item"
             ></androidx.recyclerview.widget.RecyclerView>
 
 
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-
-
-    </ScrollView>
-
 
 
 </RelativeLayout>

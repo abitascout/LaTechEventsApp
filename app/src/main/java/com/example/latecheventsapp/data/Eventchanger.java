@@ -55,11 +55,9 @@ public class Eventchanger extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return genEvents.size();
     }
 
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        igen = (Igen) genContext;
-    }
+
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
