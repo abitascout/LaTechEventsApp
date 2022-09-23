@@ -38,10 +38,10 @@ public class Event  {
     public String getClub_Name() {return Club_Name;}
     public void setClub_Name(String Club_Name) {this.Club_Name = Club_Name;}
 
-    public Timestamp Start() {return Start;}
+    public Timestamp getStart() {return Start;}
     public void setStart(Timestamp Start) {this.Start = Start;}
 
-    public Timestamp End() {return  End;}
+    public Timestamp getEnd() {return  End;}
     public void setEnd(Timestamp End) {this.End = End;}
 
     public String getLocation() {return Location;}

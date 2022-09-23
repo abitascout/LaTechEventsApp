@@ -4,26 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.latecheventsapp.data.Eventchanger;
+import com.example.latecheventsapp.data.EventAdapter;
 import com.example.latecheventsapp.data.model.Event;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -41,14 +34,14 @@ public class general_events extends Fragment implements
 
 
     // Fire base and viewing event references
-    private TextView eventView;
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference eventRef = db.collection("Events");
+    private EventAdapter adapter;
     // Event array list
     private ArrayList<Event> eventArray = new ArrayList<>();
     private ArrayList<Map> MapArray = new ArrayList<>();
-    private DocumentSnapshot LastQueriedDocument;
-    private Eventchanger changeEvent;
+
 
 
     //widgets
@@ -71,49 +64,6 @@ public class general_events extends Fragment implements
         super.onCreate(savedInstanceState);
     }
 
-    private void getEvents()
-    {
-        CollectionReference eventsRef = db.collection("Events");
-        Query eventsQuery = null;
-        if(LastQueriedDocument != null)
-        {
-            eventsQuery = eventsRef;
-            eventsQuery
-                    .orderBy("Start", Query.Direction.ASCENDING)
-                    .startAfter(LastQueriedDocument);
-        }
-        else
-        {
-            eventsQuery = eventsRef;
-            eventsQuery
-                    .orderBy("Start", Query.Direction.ASCENDING);
-        }
-
-        eventsQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> Hold)
-                {
-                    if(Hold.isSuccessful())
-                    {
-                        for(QueryDocumentSnapshot document: Hold.getResult())
-                        {
-                            Event event = document.toObject(Event.class);
-                            eventArray.add(event);
-                        }
-
-                        if(Hold.getResult().size() !=0)
-                        {
-                            LastQueriedDocument = Hold.getResult().getDocuments().get(Hold.getResult().size() -1);
-                        }
-                    }
-                    else
-                    {
-                        Toast.makeText(getContext().getApplicationContext(), "Query Failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        });
-    }
 
 
     @Nullable
@@ -123,29 +73,38 @@ public class general_events extends Fragment implements
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_general_events, container, false);
 
-        Erecyle = view.findViewById(R.id.recyle);
-        Erecyle.setLayoutManager(new LinearLayoutManager(getContext()));
-        getEvents();
-        Eventchanger changer = new Eventchanger(getContext(),eventArray);
-        Erecyle.setAdapter(changer);
-
-        changer.notifyDataSetChanged();
+        setupCycleView();
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstance)
-    {
-        super.onViewCreated(view, savedInstance);
-        ;
+
+    private void setupCycleView() {
+        Query query = eventRef.orderBy("Start, Ascending");
+
+        FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
+                .setQuery(query, Event.class)
+                .build();
+        adapter = new EventAdapter(options);
+        RecyclerView recyclerView = (Erecyle).findViewById(R.id.recycle);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
 
-
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
 
     public void onRefresh() {
-        getEvents();
+        setupCycleView();
         eventSwipe.setRefreshing(false);
     }
 

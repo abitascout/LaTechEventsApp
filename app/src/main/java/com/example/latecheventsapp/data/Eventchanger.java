@@ -45,7 +45,7 @@ public class Eventchanger extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (holder instanceof ViewHolder) {
             ((ViewHolder) holder).title.setText(genEvents.get(position).getEvent_Name());
             SimpleDateFormat spf = new SimpleDateFormat(" MMM dd, yyyy \n hh:mm");
-            String date = spf.format(genEvents.get(position).Start());
+            String date = spf.format(genEvents.get(position).getStart());
             ((ViewHolder)holder).timestamp.setText(date);
         }
     }
