@@ -1,4 +1,4 @@
-package com.example.latecheventsapp.data.model;
+package com.example.latecheventsapp;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.IgnoreExtraProperties;

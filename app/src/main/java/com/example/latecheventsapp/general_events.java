@@ -11,15 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.latecheventsapp.data.EventAdapter;
-import com.example.latecheventsapp.data.model.Event;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,15 +33,9 @@ public class general_events extends Fragment implements
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference eventRef = db.collection("Events");
     private EventAdapter adapter;
-    // Event array list
-    private ArrayList<Event> eventArray = new ArrayList<>();
-    private ArrayList<Map> MapArray = new ArrayList<>();
-
-
 
     //widgets
-
-    private RecyclerView Erecyle;
+    private RecyclerView recyclerView;
     private SwipeRefreshLayout eventSwipe;
 
 
@@ -72,22 +61,29 @@ public class general_events extends Fragment implements
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_general_events, container, false);
-
-        setupCycleView();
-        return view;
-    }
-
-
-    private void setupCycleView() {
-        Query query = eventRef.orderBy("Start, Ascending");
+        recyclerView =view.findViewById(R.id.recycle);
+        Query query = eventRef.orderBy("Event_Name", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
                 .setQuery(query, Event.class)
                 .build();
         adapter = new EventAdapter(options);
-        RecyclerView recyclerView = (Erecyle).findViewById(R.id.recycle);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext(), RecyclerView.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
+        return view;
+    }
+
+
+    private void setupCycleView(View view) {
+        Query query = eventRef.orderBy("Event_Name", Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
+                .setQuery(query, Event.class)
+                .build();
+        adapter = new EventAdapter(options);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext(), RecyclerView.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
     }
 
@@ -104,7 +100,7 @@ public class general_events extends Fragment implements
     }
 
     public void onRefresh() {
-        setupCycleView();
+
         eventSwipe.setRefreshing(false);
     }
 

@@ -1,4 +1,4 @@
-package com.example.latecheventsapp.data;
+package com.example.latecheventsapp;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.latecheventsapp.R;
-import com.example.latecheventsapp.data.model.Event;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
@@ -32,7 +30,7 @@ public class EventAdapter extends FirestoreRecyclerAdapter<Event, EventAdapter.E
      *
      * @param options
      */
-    public EventAdapter(@NonNull FirestoreRecyclerOptions options) {
+    public EventAdapter(@NonNull FirestoreRecyclerOptions<Event> options) {
         super(options);
     }
 
@@ -46,7 +44,7 @@ public class EventAdapter extends FirestoreRecyclerAdapter<Event, EventAdapter.E
 
     }
 
-    class EventHolder extends RecyclerView.ViewHolder {
+    public class EventHolder extends RecyclerView.ViewHolder {
         TextView eventViewName;
         TextView eventViewDate;
         TextView eventViewLocation;

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.latecheventsapp.R;
-import com.example.latecheventsapp.data.model.Event;
+import com.example.latecheventsapp.Event;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
