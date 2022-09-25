@@ -33,7 +33,7 @@
             android:id="@+id/textInputLocation"
             android:layout_width="380dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="350dp"
+            android:layout_marginTop="225dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputSubject">
@@ -78,6 +78,7 @@
             android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/tech_Red"
             android:text="Jan 01 2022"
             android:textSize="16sp"
@@ -101,21 +102,22 @@
             android:id="@+id/buttonStartTime"
             android:layout_width="175dp"
             android:layout_height="60dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/tech_Red"
+            android:onClick="popStartTimePicker"
             android:text="5:00pm"
             app:layout_constraintBottom_toTopOf="@+id/textInputLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.059"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/datePickerButton"
-            app:layout_constraintVertical_bias="0.256"
-            android:onClick="popStartTimePicker"
-/>
+            app:layout_constraintVertical_bias="0.256" />
 
         <Button
             android:id="@+id/buttonEndTime"
             android:layout_width="175dp"
             android:layout_height="60dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/tech_Red"
             android:text="6:00pm"
             app:layout_constraintBottom_toTopOf="@+id/textInputLocation"
@@ -123,8 +125,7 @@
             app:layout_constraintHorizontal_bias="0.932"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/datePickerButton"
-            app:layout_constraintVertical_bias="0.256"
-/>
+            app:layout_constraintVertical_bias="0.256" />
 
         <TextView
             android:id="@+id/textView4"
