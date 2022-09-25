@@ -168,5 +168,74 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonEndTime"
             app:layout_constraintVertical_bias="0.115" />
 
+        <Button
+            android:id="@+id/buttonTags"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/tech_Red"
+            android:text="Tags"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputDescription"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/buttonClubs"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/tech_Red"
+            android:text="Clubs"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollViewTags"
+            app:layout_constraintVertical_bias="1.0" />
+
+
+        <ScrollView
+            android:id="@+id/scrollViewTags"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/buttonClubs"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonTags"
+            app:layout_constraintVertical_bias="0.0">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewTags"
+                android:layout_width="360dp"
+                android:layout_height="67dp"
+                android:layout_marginTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/scrollViewClubs"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonClubs"
+            app:layout_constraintVertical_bias="0.0"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewClubs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+        </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -3,22 +3,32 @@ package com.example.latecheventsapp;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ScrollView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.example.latecheventsapp.data.TagAdapter;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -28,11 +38,15 @@ import java.util.TimeZone;
  * Use the {@link create_events#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class create_events extends Fragment {
+public class create_events extends Fragment implements TagListener{
 
+    // Date Picker Variables
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
 
+    public String date;
+
+    // Time Picker Variables
     private TimePickerDialog startTimePickerDialog;
     private TimePickerDialog endTimePickerDialog;
 
@@ -45,7 +59,22 @@ public class create_events extends Fragment {
 
     public String startTime;
     public String endTime;
-    public String date;
+
+
+    private Context context;
+
+    // Tag Accordion Variables
+    private ScrollView tagScrollView;
+    private RecyclerView tagRecyclerView;
+    private Button tagButton;
+    private boolean tagIsVisible = false;
+    TagAdapter tagAdapter;
+
+    // Club Accordion Variables
+    private ScrollView clubScrollView;
+    private Button clubButton;
+    private boolean clubIsVisible = false;
+
 
     public create_events() {
         // Required empty public constructor
@@ -91,15 +120,12 @@ public class create_events extends Fragment {
                 startTime = format.format(c.getTime());
                 startTimeButton.setText(startTime);
 
-
                 sHour = hour;
                 sMin = min;
-
             }
         };
         int style = AlertDialog.THEME_HOLO_LIGHT;
         startTimePickerDialog = new TimePickerDialog(getActivity(), style, onTimeSetListener, sHour, sMin, false);
-
     }
 
     private void popEndTimePicker(){
@@ -115,16 +141,13 @@ public class create_events extends Fragment {
                 endTime = format.format(c.getTime());
                 endTimeButton.setText(endTime);
 
-
                 eHour = hour;
                 eMin = min;
-
             }
         };
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
         endTimePickerDialog = new TimePickerDialog(getActivity(), style, onTimeSetListener, eHour, eMin, false);
-
     }
 
     private void initDatePicker() {
@@ -177,6 +200,7 @@ public class create_events extends Fragment {
         View view = inflater.inflate(R.layout.fragment_create_events, container, false);
         // Inflate the layout for this fragment
 
+        context = getContext();
         // Switch to review page
         reviewPageButton = view.findViewById(R.id.buttonReview);
         reviewPageButton.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +245,50 @@ public class create_events extends Fragment {
             }
         });
 
+
+        //Tag Accordion
+        tagScrollView = view.findViewById(R.id.scrollViewTags);
+        tagRecyclerView = view.findViewById((R.id.recyclerViewTags));
+        tagButton = view.findViewById(R.id.buttonTags);
+        setRecyclerView();
+        tagButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("bool", "Tag: " + tagIsVisible);
+                if(tagIsVisible){
+                    tagScrollView.setVisibility(View.GONE);
+
+
+                }
+                else{
+                    tagScrollView.setVisibility(View.VISIBLE);
+                }
+                tagIsVisible = !tagIsVisible;
+
+            }
+        });
+
         return view;
+
+    }
+
+    private ArrayList<String> getTagData(){
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("Food");
+        arrayList.add("Music");
+        arrayList.add("Tutoring");
+        arrayList.add("GeekLife");
+        arrayList.add("Party");
+
+
+        return arrayList;
+    }
+
+    private void setRecyclerView() {
+        tagRecyclerView.setHasFixedSize(true);
+        tagRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2, LinearLayoutManager.VERTICAL, false));
+        tagAdapter = new TagAdapter(requireContext(), getTagData(), this);
+        tagRecyclerView.setAdapter(tagAdapter);
 
     }
 
@@ -231,4 +298,8 @@ public class create_events extends Fragment {
 
     }
 
+    @Override
+    public void onTagChange(ArrayList<String> arrayList) {
+        Toast.makeText(requireContext(), arrayList.toString(), Toast.LENGTH_SHORT).show();
+    }
 }
