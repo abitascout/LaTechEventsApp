@@ -72,6 +72,7 @@ public class create_events extends Fragment implements TagListener{
 
     // Club Accordion Variables
     private ScrollView clubScrollView;
+    private RecyclerView clubRecyclerView;
     private Button clubButton;
     private boolean clubIsVisible = false;
 
@@ -250,11 +251,10 @@ public class create_events extends Fragment implements TagListener{
         tagScrollView = view.findViewById(R.id.scrollViewTags);
         tagRecyclerView = view.findViewById((R.id.recyclerViewTags));
         tagButton = view.findViewById(R.id.buttonTags);
-        setRecyclerView();
+        setTagRecyclerView();
         tagButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("bool", "Tag: " + tagIsVisible);
                 if(tagIsVisible){
                     tagScrollView.setVisibility(View.GONE);
 
@@ -264,6 +264,26 @@ public class create_events extends Fragment implements TagListener{
                     tagScrollView.setVisibility(View.VISIBLE);
                 }
                 tagIsVisible = !tagIsVisible;
+
+            }
+        });
+        //Club Accordion
+        clubScrollView = view.findViewById(R.id.scrollViewClubs);
+        clubRecyclerView = view.findViewById((R.id.recyclerViewClubs));
+        clubButton = view.findViewById(R.id.buttonClubs);
+        setClubRecyclerView();
+        clubButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(clubIsVisible){
+                    clubScrollView.setVisibility(View.GONE);
+
+
+                }
+                else{
+                    clubScrollView.setVisibility(View.VISIBLE);
+                }
+                clubIsVisible = !clubIsVisible;
 
             }
         });
@@ -279,16 +299,31 @@ public class create_events extends Fragment implements TagListener{
         arrayList.add("Tutoring");
         arrayList.add("GeekLife");
         arrayList.add("Party");
-
-
         return arrayList;
     }
 
-    private void setRecyclerView() {
+    private ArrayList<String> getClubData(){
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("A");
+        arrayList.add("B");
+        arrayList.add("C");
+        arrayList.add("D");
+        arrayList.add("E");
+        return arrayList;
+    }
+
+    private void setTagRecyclerView() {
         tagRecyclerView.setHasFixedSize(true);
         tagRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2, LinearLayoutManager.VERTICAL, false));
         tagAdapter = new TagAdapter(requireContext(), getTagData(), this);
         tagRecyclerView.setAdapter(tagAdapter);
+
+    }
+    private void setClubRecyclerView() {
+        clubRecyclerView.setHasFixedSize(true);
+        clubRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2, LinearLayoutManager.VERTICAL, false));
+        tagAdapter = new TagAdapter(requireContext(), getClubData(), this);
+        clubRecyclerView.setAdapter(tagAdapter);
 
     }
 
