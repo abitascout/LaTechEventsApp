@@ -1,6 +1,5 @@
 package com.example.latecheventsapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.os.Bundle;
@@ -56,10 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_preferences:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new preferences()).commit();
-                break;
-            case R.id.logout:
-                Intent i = new Intent(this, Login.class);
-                startActivity(i);
                 break;
         }
         return true;

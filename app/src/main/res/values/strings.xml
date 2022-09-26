@@ -4,7 +4,6 @@
     <!-- Strings used for fragments for navigation -->
 
 
-
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -120,4 +119,5 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="title_activity_review_created_event">ReviewCreatedEventActivity</string>
 </resources>
