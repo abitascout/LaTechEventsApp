@@ -74,12 +74,11 @@
         android:id="@+id/sign_up_page_nav_button"
         android:layout_width="161dp"
         android:layout_height="51dp"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="76dp"
         android:backgroundTint="@color/tech_Red"
         android:text="@string/sign_up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
