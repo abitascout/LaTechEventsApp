@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class SignUp extends AppCompatActivity {
     private EditText EmailTxt, PasswordTxt1, PasswordTxt2;
-    private Button SignUpBtn;
+    private Button SignUpBtn, BackBtn;
 
     private FirebaseAuth fAuth;
     private FirebaseFirestore fstore;
@@ -45,6 +45,7 @@ public class SignUp extends AppCompatActivity {
         PasswordTxt1 = findViewById(R.id.password1);
         PasswordTxt2 = findViewById(R.id.password2);
         SignUpBtn = findViewById(R.id.sign_up_page_nav_button);
+        BackBtn = findViewById(R.id.back);
 
         fAuth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
@@ -83,6 +84,13 @@ public class SignUp extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+        BackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SignUp.this, Login.class);
+                startActivity(i);
             }
         });
     }
