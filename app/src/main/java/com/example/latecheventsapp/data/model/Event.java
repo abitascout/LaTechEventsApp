@@ -1,4 +1,4 @@
-package com.example.latecheventsapp;
+package com.example.latecheventsapp.data.model;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.IgnoreExtraProperties;
@@ -26,6 +26,9 @@ public class Event  {
     }
 
     public Event() {}
+    // empty constructor needed
+
+
 
 
 

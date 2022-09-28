@@ -8,31 +8,34 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.latecheventsapp.data.model.Event;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.text.SimpleDateFormat;
 
+@IgnoreExtraProperties
 public class EventAdapter extends FirestoreRecyclerAdapter<Event, EventAdapter.EventHolder> {
+
+
+
+    public EventAdapter(@NonNull FirestoreRecyclerOptions<Event> options) {
+        super(options);
+    }
 
 
     @Override
     protected void onBindViewHolder(@NonNull EventHolder holder, int position, @NonNull Event model) {
         holder.eventViewName.setText(model.getEvent_Name());
         holder.eventViewLocation.setText(model.getLocation());
-        SimpleDateFormat spf = new SimpleDateFormat(" MMM dd, yyyy \n hh:mm");
-        String date = spf.format(model.getStart());
-        holder.eventViewDate.setText(date);
+        SimpleDateFormat spf = new SimpleDateFormat(" EEE, d MMM yyyy HH:mm aaa");
+        String start = spf.format((model.getStart()).toString());
+        String end = spf.format((model.getEnd()).toString());
+        holder.eventViewStart.setText(start);
+        holder.eventViewEnd.setText(end);
     }
-    /**
-     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-     * FirestoreRecyclerOptions} for configuration options.
-     *
-     * @param options
-     */
-    public EventAdapter(@NonNull FirestoreRecyclerOptions<Event> options) {
-        super(options);
-    }
+
 
 
 
@@ -46,12 +49,14 @@ public class EventAdapter extends FirestoreRecyclerAdapter<Event, EventAdapter.E
 
     public class EventHolder extends RecyclerView.ViewHolder {
         TextView eventViewName;
-        TextView eventViewDate;
+        TextView eventViewStart;
+        TextView eventViewEnd;
         TextView eventViewLocation;
         public EventHolder(@NonNull View itemView) {
             super(itemView);
             eventViewName = itemView.findViewById(R.id.Event_Name);
-            eventViewDate = itemView.findViewById(R.id.event_date);
+            eventViewStart = itemView.findViewById(R.id.event_start_date);
+            eventViewEnd = itemView.findViewById(R.id.event_end_date);
             eventViewLocation = itemView.findViewById(R.id.Event_Location);
 
         }

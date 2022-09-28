@@ -1,6 +1,8 @@
 package com.example.latecheventsapp;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +11,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.example.latecheventsapp.data.model.Event;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link general_events#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class general_events extends Fragment implements
-    SwipeRefreshLayout.OnRefreshListener
+public class general_events extends Fragment
 
 {
 
@@ -32,11 +39,12 @@ public class general_events extends Fragment implements
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference eventRef = db.collection("Events");
-    private EventAdapter adapter;
+    private GenAdapter adapter;
+    private ArrayList<Event> eventArrayList;
+    private  ProgressDialog progressDialog;
 
     //widgets
     private RecyclerView recyclerView;
-    private SwipeRefreshLayout eventSwipe;
 
 
 
@@ -61,47 +69,99 @@ public class general_events extends Fragment implements
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_general_events, container, false);
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Fetching Events ...");
+        progressDialog.show();
+
+        eventArrayList = new ArrayList<Event>();
+        adapter = new GenAdapter(getContext(), eventArrayList);
+
         recyclerView =view.findViewById(R.id.recycle);
-        Query query = eventRef.orderBy("Event_Name", Query.Direction.ASCENDING);
-
-        FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
-                .setQuery(query, Event.class)
-                .build();
-        adapter = new EventAdapter(options);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext(), RecyclerView.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(adapter);
+
+
+
+        EventChangeListener();
+
         return view;
     }
 
+    private void EventChangeListener()
+    {
+        eventRef.orderBy("Event_Name", Query.Direction.ASCENDING)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            if (error != null){
 
-    private void setupCycleView(View view) {
-        Query query = eventRef.orderBy("Event_Name", Query.Direction.ASCENDING);
+                                if(progressDialog.isShowing())
+                                {
+                                    progressDialog.dismiss();
+                                }
+                                Log.e("firestore error",error.getMessage());
+                                return;
+                            }
+                            else{
+                                for (DocumentChange dc: value.getDocumentChanges())
+                                {
 
-        FirestoreRecyclerOptions<Event> options = new FirestoreRecyclerOptions.Builder<Event>()
-                .setQuery(query, Event.class)
-                .build();
-        adapter = new EventAdapter(options);
+                                    if(dc.getType() == DocumentChange.Type.ADDED)
+                                    {
+                                        eventArrayList.add(dc.getDocument().toObject(Event.class));
+                                    }
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext(), RecyclerView.HORIZONTAL, false));
-        recyclerView.setAdapter(adapter);
+                                    adapter.notifyDataSetChanged();
+                                    if(progressDialog.isShowing())
+                                    {
+                                        progressDialog.dismiss();
+                                    }
+                                }
+
+
+                            }
+                    }
+                });
     }
+
+
+
+    /*eventRef
+                .orderBy("Event_Name", Query.Direction.ASCENDING)
+                .orderBy("Start", Query.Direction.ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful())
+                            {
+                                for(QueryDocumentSnapshot documentSnapshot: task.getResult())
+                                {
+
+                                }
+                            }
+                    }
+                });*/
+
+
+
 
     @Override
     public void onStart() {
         super.onStart();
-        adapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapter.stopListening();
+
     }
 
     public void onRefresh() {
-
-        eventSwipe.setRefreshing(false);
+        onStop();
+        onStart();
     }
 
    /* @Override
