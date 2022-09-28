@@ -1,10 +1,9 @@
 package com.example.latecheventsapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,6 +36,7 @@ import java.util.Map;
 public class Login extends AppCompatActivity {
     private EditText EmailTxt, PasswordTxt;
     private Button LoginBtn, SignUpBtn;
+    private ProgressBar LoadingPB;
 
     private FirebaseAuth fAuth;
     private FirebaseFirestore fstore;
@@ -52,6 +53,7 @@ public class Login extends AppCompatActivity {
         PasswordTxt = findViewById(R.id.password);
         LoginBtn = findViewById(R.id.loginbutton);
         SignUpBtn = findViewById(R.id.sign_up_page_nav_button);
+        LoadingPB = findViewById(R.id.loading);
 
         fAuth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
@@ -64,6 +66,7 @@ public class Login extends AppCompatActivity {
                 if (TextUtils.isEmpty(E) && TextUtils.isEmpty(P)) {
                     Toast.makeText(Login.this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
                 }
+                LoadingPB.setVisibility(View.VISIBLE);
                 fAuth.signInWithEmailAndPassword(E,P).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -75,6 +78,7 @@ public class Login extends AppCompatActivity {
                         }
                         else {
                             Toast.makeText(Login.this, "Error !", Toast.LENGTH_SHORT).show();
+                            LoadingPB.setVisibility(View.GONE);
                         }
                     }
                 });

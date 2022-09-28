@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/tech_blue"
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingTop="@dimen/fragment_vertical_margin"
@@ -11,45 +10,15 @@
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".general_events">
 
-    <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/GeneralEvents"
-        android:layout_width="172dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="100sp"
-        android:text="GeneralEventsPage"
-        android:textColor="@color/white" />
-
-    <ImageButton
-        android:id="@+id/logo_my_events_button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/latech_logo_background"
-        android:contentDescription="@string/my_events_page_latech_logo"
-        android:src="@mipmap/latech_logo"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-
-    <Button
-        android:id="@+id/load_button"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="40dp"
-        android:translationY="80dp"
-        android:backgroundTint="@color/tech_Red"
-        android:onClick="loadEvent"
-        android:text="Load" />
-
-    <TextView
-        android:id="@+id/text_view_event"
-        android:layout_width="210dp"
-        android:layout_height="210dp"
-        android:layout_margin="14dp"
-        android:translationY="200dp"
-        android:textSize="20sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycle"
+            android:orientation="vertical"
+            />
 
 
 
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

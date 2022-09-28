@@ -1,5 +1,6 @@
 package com.example.latecheventsapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -55,6 +57,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_preferences:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new preferences()).commit();
+                break;
+            case R.id.logout:
+                Intent i = new Intent(MainActivity.this, Login.class);
+                FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseAuth.getInstance().signOut();
+                startActivity(i);
                 break;
         }
         return true;
