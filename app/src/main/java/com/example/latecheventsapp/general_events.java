@@ -2,7 +2,6 @@ package com.example.latecheventsapp;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.latecheventsapp.data.model.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -49,6 +46,7 @@ public class general_events extends Fragment
 
     //widgets
     private RecyclerView recyclerView;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
 
@@ -96,7 +94,7 @@ public class general_events extends Fragment
 
     private void testChangeListener()
     {
-        eventRef.orderBy("Event_Name", Query.Direction.ASCENDING)
+        eventRef.orderBy("Start", Query.Direction.ASCENDING).orderBy("Event_Name", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -117,41 +115,6 @@ public class general_events extends Fragment
                     }
                 });
     }
-    private void EventChangeListener()
-    {
-        eventRef.orderBy("Event_Name", Query.Direction.ASCENDING)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            if (error != null){
-
-                                if(progressDialog.isShowing())
-                                {
-                                    progressDialog.dismiss();
-                                }
-                                Log.e("firestore error",error.getMessage());
-                                return;
-                            }
-                            else{
-                                for (DocumentChange dc: value.getDocumentChanges()) {
-
-                                    if (dc.getType() == DocumentChange.Type.ADDED) {
-                                        eventArrayList.add(dc.getDocument().toObject(Event.class));
-                                    }
-
-                                }
-                                adapter.notifyDataSetChanged();
-                                if(progressDialog.isShowing())
-                                {
-                                    progressDialog.dismiss();
-                                }
-                            }
-
-                    }
-                });
-    }
-
-
 
 
 
@@ -168,12 +131,21 @@ public class general_events extends Fragment
 
     }
 
-    public void onRefresh() {
-        onStop();
-        onStart();
-    }
+    /*
 
-   /* @Override
+    //Todo: work on refreshing the page next
+
+    @Override
+    public void onRefresh() {
+        testChangeListener();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }*/
+
+   /*
+
+   //Todo: use this for create events maybe?????
+
+   @Override
     public void createEvent(String title, Timestamp Start, String desc, Timestamp End, String Location, String Club_Name) {
                 FirebaseFirestore bd = FirebaseFirestore.getInstance();
 
