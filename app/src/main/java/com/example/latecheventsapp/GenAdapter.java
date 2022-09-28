@@ -10,9 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.latecheventsapp.data.model.Event;
+import com.google.firebase.Timestamp;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class GenAdapter extends RecyclerView.Adapter<GenAdapter.MyViewHolder> {
 
@@ -33,15 +35,17 @@ public class GenAdapter extends RecyclerView.Adapter<GenAdapter.MyViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GenAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Event event = eventArrayList.get(position);
         holder.eventViewName.setText(event.getEvent_Name());
         holder.eventViewLocation.setText(event.getLocation());
         SimpleDateFormat spf = new SimpleDateFormat(" EEE, d MMM yyyy HH:mm aaa");
-        String start = spf.format((event.getStart()).toString());
-        String end = spf.format((event.getEnd()).toString());
+        Timestamp start_temp = event.getStart();
+        Date start_date =start_temp.toDate();
+        Date end_date = event.getEnd().toDate();
+        String start = spf.format(start_date);
+        String end = spf.format(end_date);
         holder.eventViewStart.setText(start);
-        holder.eventViewEnd.setText(end);
     }
 
     @Override
@@ -53,14 +57,12 @@ public class GenAdapter extends RecyclerView.Adapter<GenAdapter.MyViewHolder> {
 
         TextView eventViewName;
         TextView eventViewStart;
-        TextView eventViewEnd;
         TextView eventViewLocation;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             eventViewName = itemView.findViewById(R.id.Event_Name);
             eventViewStart = itemView.findViewById(R.id.event_start_date);
-            eventViewEnd = itemView.findViewById(R.id.event_end_date);
             eventViewLocation = itemView.findViewById(R.id.Event_Location);
         }
     }

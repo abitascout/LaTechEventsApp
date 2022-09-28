@@ -56,7 +56,6 @@ public class EventAdapter extends FirestoreRecyclerAdapter<Event, EventAdapter.E
             super(itemView);
             eventViewName = itemView.findViewById(R.id.Event_Name);
             eventViewStart = itemView.findViewById(R.id.event_start_date);
-            eventViewEnd = itemView.findViewById(R.id.event_end_date);
             eventViewLocation = itemView.findViewById(R.id.Event_Location);
 
         }

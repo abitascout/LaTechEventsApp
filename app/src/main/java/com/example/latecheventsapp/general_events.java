@@ -7,18 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.latecheventsapp.data.model.Event;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -77,18 +81,42 @@ public class general_events extends Fragment
 
         eventArrayList = new ArrayList<Event>();
         adapter = new GenAdapter(getContext(), eventArrayList);
-
+        testChangeListener();
         recyclerView =view.findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(adapter);
 
 
 
-        EventChangeListener();
+        /*EventChangeListener();*/
 
         return view;
     }
 
+
+    private void testChangeListener()
+    {
+        eventRef.orderBy("Event_Name", Query.Direction.ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful())
+                            {
+                                for (QueryDocumentSnapshot documentSnapshot: task.getResult())
+                                {
+                                    eventArrayList.add(documentSnapshot.toObject(Event.class));
+                                }
+                                adapter.notifyDataSetChanged();
+                                if(progressDialog.isShowing())
+                                {
+                                    progressDialog.dismiss();
+                                }
+
+                            }
+                    }
+                });
+    }
     private void EventChangeListener()
     {
         eventRef.orderBy("Event_Name", Query.Direction.ASCENDING)
@@ -105,45 +133,26 @@ public class general_events extends Fragment
                                 return;
                             }
                             else{
-                                for (DocumentChange dc: value.getDocumentChanges())
-                                {
+                                for (DocumentChange dc: value.getDocumentChanges()) {
 
-                                    if(dc.getType() == DocumentChange.Type.ADDED)
-                                    {
+                                    if (dc.getType() == DocumentChange.Type.ADDED) {
                                         eventArrayList.add(dc.getDocument().toObject(Event.class));
                                     }
 
-                                    adapter.notifyDataSetChanged();
-                                    if(progressDialog.isShowing())
-                                    {
-                                        progressDialog.dismiss();
-                                    }
                                 }
-
-
+                                adapter.notifyDataSetChanged();
+                                if(progressDialog.isShowing())
+                                {
+                                    progressDialog.dismiss();
+                                }
                             }
+
                     }
                 });
     }
 
 
 
-    /*eventRef
-                .orderBy("Event_Name", Query.Direction.ASCENDING)
-                .orderBy("Start", Query.Direction.ASCENDING)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if(task.isSuccessful())
-                            {
-                                for(QueryDocumentSnapshot documentSnapshot: task.getResult())
-                                {
-
-                                }
-                            }
-                    }
-                });*/
 
 
 
