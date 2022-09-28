@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.latecheventsapp.data.model.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,7 +45,7 @@ public class general_events extends Fragment
 
     //widgets
     private RecyclerView recyclerView;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+
 
 
 
