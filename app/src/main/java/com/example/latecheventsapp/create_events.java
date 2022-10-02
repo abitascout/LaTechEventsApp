@@ -370,7 +370,12 @@ public class create_events extends Fragment implements TagListener{
         if((subjectEditText.getText().length() != 0) &&
                 (locationEditText.getText().length() != 0) &&
                 (descriptionEditText.getText().length() != 0)){
-            return true;
+            if((subjectEditText.getText().length() <= 25) && (subjectEditText.getText().length() <= 25)){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         else{
             return false;

@@ -27,7 +27,7 @@
                 android:id="@+id/TextInputEditTextSubject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Subject" />
+                android:hint="Subject (25 max character limit)" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -43,7 +43,7 @@
                 android:id="@+id/TextInputEditTextLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Location" />
+                android:hint="Location (25 max character limit)" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -209,7 +209,8 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonTags"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewTags"
@@ -224,20 +225,20 @@
             android:id="@+id/scrollViewClubs"
             android:layout_width="360dp"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttonClubs"
-            app:layout_constraintVertical_bias="0.0"
-            android:visibility="gone">
+            app:layout_constraintVertical_bias="0.0">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewClubs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
