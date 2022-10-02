@@ -353,12 +353,16 @@ public class create_events extends Fragment implements TagListener{
         if(startTime24 == null){
             Toast.makeText(getContext(), "Please pick a Start time", Toast.LENGTH_SHORT).show();
         }
-        if (endTime24 == null){
-            Toast.makeText(getContext(), "Please pick an End time", Toast.LENGTH_SHORT).show();
+        CharSequence base = "NO END";
+        if(endTimeButton.getText() != base){
+            if (endTime24 == null && endTimeButton.getText() != base){
+                Toast.makeText(getContext(), "Please pick an End time", Toast.LENGTH_SHORT).show();
+            }
+            else if(startTime24.after(endTime24)){
+                Toast.makeText(getContext(), "End time before start time", Toast.LENGTH_SHORT).show();
+            }
         }
-        else if(startTime24.after(endTime24)){
-            Toast.makeText(getContext(), "End time before start time", Toast.LENGTH_SHORT).show();
-        }
+
 
         // display location errors
         if((locationEditText.getText().length() == 0)){
