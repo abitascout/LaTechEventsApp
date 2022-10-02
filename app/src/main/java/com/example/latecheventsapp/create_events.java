@@ -19,12 +19,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ScrollView;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.latecheventsapp.data.TagAdapter;
+import com.google.android.material.snackbar.Snackbar;
+
+import org.w3c.dom.Text;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -60,6 +66,10 @@ public class create_events extends Fragment implements TagListener{
     public String startTime;
     public String endTime;
 
+    private boolean noEndTime = false;
+    private Switch endTimeSwitch;
+    private TextView endTimeTextView;
+
 
     private Context context;
 
@@ -76,11 +86,13 @@ public class create_events extends Fragment implements TagListener{
     private Button clubButton;
     private boolean clubIsVisible = false;
 
+    // Display Msg
+    Snackbar mySnackbar;
+
 
     public create_events() {
         // Required empty public constructor
     }
-
 
     // TODO: Rename and change types and number of parameters
     public static create_events newInstance() {
@@ -93,9 +105,6 @@ public class create_events extends Fragment implements TagListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     // Methods for chooseing date
@@ -194,7 +203,6 @@ public class create_events extends Fragment implements TagListener{
         return "Error: Couldn't find month";
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -228,12 +236,35 @@ public class create_events extends Fragment implements TagListener{
             }
         });
 
-        endTimeButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                endTimePickerDialog.show();
+
+
+        // Check if End Time switch clicked.
+        endTimeSwitch = view.findViewById(R.id.switchEndTime);
+        endTimeTextView = view.findViewById(R.id.textViewEndTime);
+        endTimeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    endTimeTextView.setVisibility(View.VISIBLE);
+                    endTimeButton.setVisibility(View.VISIBLE);
+                    Log.d("check", "in if");
+                    endTimeButton.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View view){
+                            endTimePickerDialog.show();
+                        }
+                    });
+                } else {
+                    Log.d("check", "before if");
+                    endTimeTextView.setVisibility(View.GONE);
+                    endTimeButton.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "No End Time Selected", Toast.LENGTH_SHORT).show();
+                    endTimeButton.setText("NO END");
+                }
             }
         });
+
+
+
 
         // Date picker for Create Events
         initDatePicker();
@@ -246,7 +277,6 @@ public class create_events extends Fragment implements TagListener{
                 datePickerDialog.show();
             }
         });
-
 
         //Tag Accordion
         tagScrollView = view.findViewById(R.id.scrollViewTags);
@@ -268,6 +298,7 @@ public class create_events extends Fragment implements TagListener{
 
             }
         });
+
         //Club Accordion
         clubScrollView = view.findViewById(R.id.scrollViewClubs);
         clubRecyclerView = view.findViewById((R.id.recyclerViewClubs));
@@ -293,6 +324,7 @@ public class create_events extends Fragment implements TagListener{
 
     }
 
+    //TODO: Connect this function to the database to get the preset tags.
     private ArrayList<String> getTagData(){
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("Food");
@@ -303,6 +335,7 @@ public class create_events extends Fragment implements TagListener{
         return arrayList;
     }
 
+    //TODO: Connect this function to the database to get the preset clubs.
     private ArrayList<String> getClubData(){
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("A");
@@ -311,6 +344,17 @@ public class create_events extends Fragment implements TagListener{
         arrayList.add("D");
         arrayList.add("E");
         return arrayList;
+    }
+
+    private void checkTime(){
+        CharSequence base = "NO END";
+        if (endTimeButton.getText() ==base) {
+            //TODO: RETURN TRUE for no end time?
+        }
+        CharSequence allEndTime = endTimeButton.getText();
+        CharSequence allStartTime = startTimeButton.getText();
+
+
     }
 
     private void setTagRecyclerView() {
@@ -331,11 +375,11 @@ public class create_events extends Fragment implements TagListener{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
+    // TODO: May delete this later, but dependencies.
     @Override
     public void onTagChange(ArrayList<String> arrayList) {
-        Toast.makeText(requireContext(), arrayList.toString(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(requireContext(), arrayList.toString(), Toast.LENGTH_SHORT).show();
     }
 }

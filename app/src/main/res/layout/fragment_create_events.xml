@@ -142,7 +142,7 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textViewEndTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select End Time:"
@@ -156,7 +156,7 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/switchEndTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="No End Time?"
