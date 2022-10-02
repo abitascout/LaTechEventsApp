@@ -30,13 +30,9 @@ import android.widget.Toast;
 import com.example.latecheventsapp.data.TagAdapter;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.w3c.dom.Text;
-
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -236,7 +232,12 @@ public class create_events extends Fragment implements TagListener{
             }
         });
 
-
+        endTimeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                endTimePickerDialog.show();
+            }
+        });
 
         // Check if End Time switch clicked.
         endTimeSwitch = view.findViewById(R.id.switchEndTime);
@@ -246,15 +247,9 @@ public class create_events extends Fragment implements TagListener{
                 if (!isChecked) {
                     endTimeTextView.setVisibility(View.VISIBLE);
                     endTimeButton.setVisibility(View.VISIBLE);
-                    Log.d("check", "in if");
-                    endTimeButton.setOnClickListener(new View.OnClickListener(){
-                        @Override
-                        public void onClick(View view){
-                            endTimePickerDialog.show();
-                        }
-                    });
+                    endTimeButton.setText("6:00PM");
+
                 } else {
-                    Log.d("check", "before if");
                     endTimeTextView.setVisibility(View.GONE);
                     endTimeButton.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "No End Time Selected", Toast.LENGTH_SHORT).show();
@@ -262,6 +257,9 @@ public class create_events extends Fragment implements TagListener{
                 }
             }
         });
+
+        //Checks that The time is appropriate
+        checkTime();
 
 
 
@@ -353,6 +351,9 @@ public class create_events extends Fragment implements TagListener{
         }
         CharSequence allEndTime = endTimeButton.getText();
         CharSequence allStartTime = startTimeButton.getText();
+       // Toast.makeText(getContext(), "StartTimeSet:", Toast.LENGTH_SHORT).show();
+        String[] test = allStartTime.toString().split(":");
+        Toast.makeText(getContext(), test[1], Toast.LENGTH_SHORT).show();
 
 
     }
