@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -29,10 +29,12 @@ import android.widget.Toast;
 
 import com.example.latecheventsapp.data.TagAdapter;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -61,6 +63,8 @@ public class create_events extends Fragment implements TagListener{
 
     public String startTime;
     public String endTime;
+    public Date startTime24;
+    public Date endTime24;
 
     private boolean noEndTime = false;
     private Switch endTimeSwitch;
@@ -82,8 +86,17 @@ public class create_events extends Fragment implements TagListener{
     private Button clubButton;
     private boolean clubIsVisible = false;
 
+    // Check Input Text Variables
+    TextInputEditText subjectEditText;
+    TextInputEditText locationEditText;
+    TextInputEditText descriptionEditText;
+
     // Display Msg
     Snackbar mySnackbar;
+
+    // String array for holding all information for Review page
+    static public String[] eventInfo;
+
 
 
     public create_events() {
@@ -121,7 +134,7 @@ public class create_events extends Fragment implements TagListener{
                 c.set(Calendar.HOUR_OF_DAY, hour);
                 c.set(Calendar.MINUTE, min);
                 c.setTimeZone(TimeZone.getDefault());
-
+                startTime24 = c.getTime();
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
                 startTime = format.format(c.getTime());
                 startTimeButton.setText(startTime);
@@ -142,7 +155,7 @@ public class create_events extends Fragment implements TagListener{
                 c.set(Calendar.HOUR_OF_DAY, hour);
                 c.set(Calendar.MINUTE, min);
                 c.setTimeZone(TimeZone.getDefault());
-
+                endTime24 = c.getTime();
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
                 endTime = format.format(c.getTime());
                 endTimeButton.setText(endTime);
@@ -206,16 +219,28 @@ public class create_events extends Fragment implements TagListener{
         View view = inflater.inflate(R.layout.fragment_create_events, container, false);
         // Inflate the layout for this fragment
 
+        //Input Text refrences
+        subjectEditText = view.findViewById(R.id.TextInputEditTextSubject);
+        locationEditText = view.findViewById(R.id.TextInputEditTextLocation);
+        descriptionEditText = view.findViewById(R.id.TextInputEditTextDescription);
+
+
         context = getContext();
+
         // Switch to review page
         reviewPageButton = view.findViewById(R.id.buttonReview);
         reviewPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new reviewFragment());
-                fragmentTransaction.commit();
+                if(checkInformation()){
+                    FragmentTransaction fragmentTransaction = getActivity()
+                            .getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, new reviewFragment());
+                    fragmentTransaction.commit();
+                }
+                else{
+                    Toast.makeText(getContext(), "Please check your information", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -247,7 +272,7 @@ public class create_events extends Fragment implements TagListener{
                 if (!isChecked) {
                     endTimeTextView.setVisibility(View.VISIBLE);
                     endTimeButton.setVisibility(View.VISIBLE);
-                    endTimeButton.setText("6:00PM");
+                    endTimeButton.setText("_:__PM");
 
                 } else {
                     endTimeTextView.setVisibility(View.GONE);
@@ -259,9 +284,7 @@ public class create_events extends Fragment implements TagListener{
         });
 
         //Checks that The time is appropriate
-        checkTime();
-
-
+        boolean timeisOkay = checkTime();
 
 
         // Date picker for Create Events
@@ -286,14 +309,11 @@ public class create_events extends Fragment implements TagListener{
             public void onClick(View view) {
                 if(tagIsVisible){
                     tagScrollView.setVisibility(View.GONE);
-
-
                 }
                 else{
                     tagScrollView.setVisibility(View.VISIBLE);
                 }
                 tagIsVisible = !tagIsVisible;
-
             }
         });
 
@@ -307,19 +327,21 @@ public class create_events extends Fragment implements TagListener{
             public void onClick(View view) {
                 if(clubIsVisible){
                     clubScrollView.setVisibility(View.GONE);
-
-
                 }
                 else{
                     clubScrollView.setVisibility(View.VISIBLE);
                 }
                 clubIsVisible = !clubIsVisible;
-
             }
         });
-
         return view;
+    }
 
+    private boolean checkInformation(){
+        if(checkTime() && checkTextInputs()){
+            return true;
+        }
+        else{ return false; }
     }
 
     //TODO: Connect this function to the database to get the preset tags.
@@ -344,18 +366,26 @@ public class create_events extends Fragment implements TagListener{
         return arrayList;
     }
 
-    private void checkTime(){
-        CharSequence base = "NO END";
-        if (endTimeButton.getText() ==base) {
-            //TODO: RETURN TRUE for no end time?
+    private boolean checkTextInputs(){
+        if((subjectEditText.getText().length() != 0) &&
+                (locationEditText.getText().length() != 0) &&
+                (descriptionEditText.getText().length() != 0)){
+            return true;
         }
-        CharSequence allEndTime = endTimeButton.getText();
-        CharSequence allStartTime = startTimeButton.getText();
-       // Toast.makeText(getContext(), "StartTimeSet:", Toast.LENGTH_SHORT).show();
-        String[] test = allStartTime.toString().split(":");
-        Toast.makeText(getContext(), test[1], Toast.LENGTH_SHORT).show();
+        else{
+            return false;
+        }
+    }
 
-
+    private boolean checkTime(){
+        // Checks if the switch has been selected.
+        CharSequence base = "NO END";
+        if (endTimeButton.getText() ==base && startTime24 != null) { return true; }
+        if(startTime24 != null && endTime24 != null){
+            if(startTime24.before(endTime24)){ return true; }
+            else{ return false;}
+        }
+        else{ return false; }
     }
 
     private void setTagRecyclerView() {

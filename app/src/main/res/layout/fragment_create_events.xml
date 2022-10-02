@@ -24,6 +24,7 @@
             app:layout_constraintTop_toBottomOf="@+id/buttonReview">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/TextInputEditTextSubject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Subject" />
@@ -39,6 +40,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textInputSubject">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/TextInputEditTextLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Location" />
@@ -54,6 +56,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textInputLocation">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/TextInputEditTextDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Description" />
@@ -105,7 +108,7 @@
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/tech_Red"
             android:onClick="popStartTimePicker"
-            android:text="5:00pm"
+            android:text="_:__pm"
             app:layout_constraintBottom_toTopOf="@+id/textInputLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.059"
@@ -119,7 +122,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/tech_Red"
-            android:text="6:00pm"
+            android:text="_:__pm"
             app:layout_constraintBottom_toTopOf="@+id/textInputLocation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.932"
