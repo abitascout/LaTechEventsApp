@@ -70,7 +70,7 @@ public class Login extends AppCompatActivity {
                 fAuth.signInWithEmailAndPassword(E,P).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() ) {
                             Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                             FirebaseUser user = fAuth.getCurrentUser();
                             checkIfAdmin(user.getUid());

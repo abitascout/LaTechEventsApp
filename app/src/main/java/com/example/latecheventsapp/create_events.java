@@ -239,7 +239,7 @@ public class create_events extends Fragment implements TagListener{
                     fragmentTransaction.commit();
                 }
                 else{
-                    Toast.makeText(getContext(), "Please check your information", Toast.LENGTH_SHORT).show();
+                    displayErrorMsgs();
                 }
             }
         });
@@ -282,10 +282,6 @@ public class create_events extends Fragment implements TagListener{
                 }
             }
         });
-
-        //Checks that The time is appropriate
-        boolean timeisOkay = checkTime();
-
 
         // Date picker for Create Events
         initDatePicker();
@@ -344,6 +340,41 @@ public class create_events extends Fragment implements TagListener{
         else{ return false; }
     }
 
+    private void displayErrorMsgs(){
+        // display subject errors
+        if((subjectEditText.getText().length() == 0)){
+            Toast.makeText(getContext(), "Subject Line not Filled out", Toast.LENGTH_SHORT).show();
+        }
+        else if((subjectEditText.getText().length() >= 25)){
+            Toast.makeText(getContext(), "Subject Line to long", Toast.LENGTH_SHORT).show();
+        }
+
+        // display time errors
+        if(startTime24 == null){
+            Toast.makeText(getContext(), "Please pick a Start time", Toast.LENGTH_SHORT).show();
+        }
+        if (endTime24 == null){
+            Toast.makeText(getContext(), "Please pick an End time", Toast.LENGTH_SHORT).show();
+        }
+        else if(startTime24.after(endTime24)){
+            Toast.makeText(getContext(), "End time before start time", Toast.LENGTH_SHORT).show();
+        }
+
+        // display location errors
+        if((locationEditText.getText().length() == 0)){
+            Toast.makeText(getContext(), "Location Line not Filled out", Toast.LENGTH_SHORT).show();
+        }
+        else if((locationEditText.getText().length() >= 25)){
+            Toast.makeText(getContext(), "Location Line to long", Toast.LENGTH_SHORT).show();
+        }
+
+        // display description errors
+        if((descriptionEditText.getText().length() == 0)){
+            Toast.makeText(getContext(), "Description Line not Filled out", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     //TODO: Connect this function to the database to get the preset tags.
     private ArrayList<String> getTagData(){
         ArrayList<String> arrayList = new ArrayList<>();
@@ -388,9 +419,9 @@ public class create_events extends Fragment implements TagListener{
         if (endTimeButton.getText() ==base && startTime24 != null) { return true; }
         if(startTime24 != null && endTime24 != null){
             if(startTime24.before(endTime24)){ return true; }
-            else{ return false;}
+            else{return false;}
         }
-        else{ return false; }
+        else{return false;}
     }
 
     private void setTagRecyclerView() {
