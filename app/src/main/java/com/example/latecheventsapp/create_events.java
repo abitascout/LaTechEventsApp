@@ -42,6 +42,9 @@ import java.util.TimeZone;
 
 public class create_events extends Fragment implements TagListener{
 
+    private int MAX_CHAR_LIMIT_LOC = 18;
+    private int MAX_CHAR_LIMIT_SUB = 25;
+
     // Date Picker Variables
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
@@ -336,10 +339,6 @@ public class create_events extends Fragment implements TagListener{
             }
         });
 
-
-
-
-
         return view;
     }
 
@@ -355,6 +354,9 @@ public class create_events extends Fragment implements TagListener{
         CharSequence base = "NO END";
         if(endTimeButton != base){
             bundle.putString("endTime", endTime);
+        }
+        else{
+            bundle.putString("endTime", "");
         }
 
         //TODO: Implement tags and clubs saving.
@@ -373,7 +375,7 @@ public class create_events extends Fragment implements TagListener{
         if((subjectEditText.getText().length() == 0)){
             Toast.makeText(getContext(), "Subject Line not Filled out", Toast.LENGTH_SHORT).show();
         }
-        else if((subjectEditText.getText().length() >= 25)){
+        else if((subjectEditText.getText().length() >= MAX_CHAR_LIMIT_SUB)){
             Toast.makeText(getContext(), "Subject Line to long", Toast.LENGTH_SHORT).show();
         }
 
@@ -396,7 +398,7 @@ public class create_events extends Fragment implements TagListener{
         if((locationEditText.getText().length() == 0)){
             Toast.makeText(getContext(), "Location Line not Filled out", Toast.LENGTH_SHORT).show();
         }
-        else if((locationEditText.getText().length() >= 25)){
+        else if((locationEditText.getText().length() >= MAX_CHAR_LIMIT_LOC)){
             Toast.makeText(getContext(), "Location Line to long", Toast.LENGTH_SHORT).show();
         }
 
@@ -433,16 +435,12 @@ public class create_events extends Fragment implements TagListener{
         if((subjectEditText.getText().length() != 0) &&
                 (locationEditText.getText().length() != 0) &&
                 (descriptionEditText.getText().length() != 0)){
-            if((subjectEditText.getText().length() <= 25) && (subjectEditText.getText().length() <= 25)){
+            if((subjectEditText.getText().length() <= MAX_CHAR_LIMIT_SUB) && (locationEditText.getText().length() <= MAX_CHAR_LIMIT_LOC)){
                 return true;
             }
-            else{
-                return false;
-            }
+            else{ return false; }
         }
-        else{
-            return false;
-        }
+        else{ return false; }
     }
 
     private boolean checkTime(){
@@ -479,6 +477,6 @@ public class create_events extends Fragment implements TagListener{
     // TODO: May delete this later, but dependencies.
     @Override
     public void onTagChange(ArrayList<String> arrayList) {
-        //Toast.makeText(requireContext(), arrayList.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), arrayList.toString(), Toast.LENGTH_SHORT).show();
     }
 }

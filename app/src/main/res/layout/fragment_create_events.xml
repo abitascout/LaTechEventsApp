@@ -43,7 +43,7 @@
                 android:id="@+id/TextInputEditTextLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Location (25 max character limit)" />
+                android:hint="Location (18 max character limit)" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

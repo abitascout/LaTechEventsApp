@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.fragment.app.FragmentTransaction;
 
 
 public class reviewFragment extends Fragment {
@@ -29,7 +29,10 @@ public class reviewFragment extends Fragment {
     TextView descriptionTV;
     TextView dateTV;
     TextView startTimeTV;
-    TextView endTimeTV;
+
+    Button editButton;
+
+    Button submitButton;
 
     public reviewFragment() {
         // Required empty public constructor
@@ -54,9 +57,31 @@ public class reviewFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_review, container, false);
 
+        editButton = view.findViewById(R.id.buttonEdit);
+        submitButton = view.findViewById(R.id.buttonSubmit);
 
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*// Save data to send to review fragment
+                saveInformation();
 
+                Fragment rFragment = new reviewFragment();
+                rFragment.setArguments(bundle);
 
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, rFragment);
+                fragmentTransaction.commit(); */
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
 
         return view;
@@ -71,8 +96,7 @@ public class reviewFragment extends Fragment {
         locationTV = view.findViewById(R.id.textViewLocationReview);
         descriptionTV = view.findViewById(R.id.textViewDescriptionReview);
         dateTV = view.findViewById(R.id.textViewDateReview);
-        startTimeTV = view.findViewById(R.id.textViewStartTimeReview);
-        endTimeTV = view.findViewById(R.id.textViewEndTimeReview);
+        startTimeTV = view.findViewById(R.id.textViewTimeReview);
 
         // Get info
         Bundle bundle = this.getArguments();
@@ -90,7 +114,6 @@ public class reviewFragment extends Fragment {
         locationTV.setText(location);
         descriptionTV.setText(description);
         dateTV.setText(date);
-        startTimeTV.setText(startTime);
-        endTimeTV.setText(endTime);
+        startTimeTV.setText(startTime + " - " + endTime);
     }
 }
