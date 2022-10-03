@@ -1,5 +1,7 @@
 package com.example.latecheventsapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -25,22 +28,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignUp extends Fragment {
+public class SignUp extends AppCompatActivity {
     private EditText EmailTxt, PasswordTxt1, PasswordTxt2;
-    private Button SignUpBtn;
+    private Button SignUpBtn, BackBtn;
 
     private FirebaseAuth fAuth;
     private FirebaseFirestore fstore;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_signin,container,false);
 
-        EmailTxt = view.findViewById(R.id.username);
-        PasswordTxt1 = view.findViewById(R.id.password1);
-        PasswordTxt2 = view.findViewById(R.id.password2);
-        SignUpBtn = view.findViewById(R.id.sign_up_page_nav_button);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_signin);
+
+        EmailTxt = findViewById(R.id.username);
+        PasswordTxt1 = findViewById(R.id.password1);
+        PasswordTxt2 = findViewById(R.id.password2);
+        SignUpBtn = findViewById(R.id.sign_up_page_nav_button);
+        BackBtn = findViewById(R.id.back);
 
         fAuth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
@@ -53,14 +58,14 @@ public class SignUp extends Fragment {
                 String P2 = PasswordTxt2.getText().toString();
 
                 if (TextUtils.isEmpty(E) && TextUtils.isEmpty(P1) && TextUtils.isEmpty(P2)) {
-                    Toast.makeText(getContext(), "Please enter Email and Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUp.this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
                 }
                 fAuth.createUserWithEmailAndPassword(E,P2).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             FirebaseUser user = fAuth.getCurrentUser();
-                            Toast.makeText(getContext(), "User Created.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUp.this, "User Created.", Toast.LENGTH_SHORT).show();
                             DocumentReference df = fstore.collection("users").document(user.getUid());
                             Map<String,Object> userInfo = new HashMap<>();
                             userInfo.put("Email",EmailTxt.getText().toString());
@@ -69,18 +74,24 @@ public class SignUp extends Fragment {
 
                             df.set(userInfo);
 
-                            FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            ft.replace(R.id.fragment_container,new general_events());
-                            ft.commit();
+                            Intent i = new Intent(SignUp.this, Login.class);
+                            startActivity(i);
+
                         }
                         else {
-                            Toast.makeText(getContext(), "Error ! "+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUp.this, "Error ! "+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
             }
         });
-        return view;
+        BackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SignUp.this, Login.class);
+                startActivity(i);
+            }
+        });
     }
 }

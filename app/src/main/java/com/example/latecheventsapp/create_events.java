@@ -1,50 +1,91 @@
 package com.example.latecheventsapp;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.ScrollView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.example.latecheventsapp.data.TagAdapter;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link create_events#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class create_events extends Fragment {
+public class create_events extends Fragment implements TagListener{
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    // Date Picker Variables
+    private DatePickerDialog datePickerDialog;
+    private Button dateButton;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public String date;
+
+    // Time Picker Variables
+    private TimePickerDialog startTimePickerDialog;
+    private TimePickerDialog endTimePickerDialog;
+
+    private Button startTimeButton;
+    private Button endTimeButton;
+
+    private Button reviewPageButton;
+
+    int sHour, sMin, eHour, eMin;
+
+    public String startTime;
+    public String endTime;
+
+
+    private Context context;
+
+    // Tag Accordion Variables
+    private ScrollView tagScrollView;
+    private RecyclerView tagRecyclerView;
+    private Button tagButton;
+    private boolean tagIsVisible = false;
+    TagAdapter tagAdapter;
+
+    // Club Accordion Variables
+    private ScrollView clubScrollView;
+    private RecyclerView clubRecyclerView;
+    private Button clubButton;
+    private boolean clubIsVisible = false;
+
 
     public create_events() {
         // Required empty public constructor
     }
 
 
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment create_events.
-     */
     // TODO: Rename and change types and number of parameters
-    public static create_events newInstance(String param1, String param2) {
+    public static create_events newInstance() {
         create_events fragment = new create_events();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,17 +93,248 @@ public class create_events extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+
+
     }
+
+    // Methods for chooseing date
+    private String getTodaysDate() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        month = month + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return makeDateString(day, month, year);
+    }
+
+    private void popStartTimePicker(){
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.HOUR_OF_DAY, hour);
+                c.set(Calendar.MINUTE, min);
+                c.setTimeZone(TimeZone.getDefault());
+
+                SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
+                startTime = format.format(c.getTime());
+                startTimeButton.setText(startTime);
+
+                sHour = hour;
+                sMin = min;
+            }
+        };
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+        startTimePickerDialog = new TimePickerDialog(getActivity(), style, onTimeSetListener, sHour, sMin, false);
+    }
+
+    private void popEndTimePicker(){
+        TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.HOUR_OF_DAY, hour);
+                c.set(Calendar.MINUTE, min);
+                c.setTimeZone(TimeZone.getDefault());
+
+                SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
+                endTime = format.format(c.getTime());
+                endTimeButton.setText(endTime);
+
+                eHour = hour;
+                eMin = min;
+            }
+        };
+
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+        endTimePickerDialog = new TimePickerDialog(getActivity(), style, onTimeSetListener, eHour, eMin, false);
+    }
+
+    private void initDatePicker() {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                date = makeDateString(day, month, year);
+                dateButton.setText(date);
+            }
+        };
+
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+
+        datePickerDialog = new DatePickerDialog(getActivity(), style, dateSetListener, year, month, day);
+    }
+
+    private String makeDateString(int day, int month, int year) {
+        return getMonthFormat(month) + " " + day + ", " + year;
+    }
+
+    private String getMonthFormat(int month) {
+        if(month == 1){ return "Jan";}
+        if(month == 2){ return "Feb";}
+        if(month == 3){ return "Mar";}
+        if(month == 4){ return "Apr";}
+        if(month == 5){ return "May";}
+        if(month == 6){ return "Jun";}
+        if(month == 7){ return "Jul";}
+        if(month == 8){ return "Aug";}
+        if(month == 9){ return "Sep";}
+        if(month == 10){ return "Oct";}
+        if(month == 11){ return "Nov";}
+        if(month == 12){ return "Dec";}
+
+        // default, should never happen
+        return "Error: Couldn't find month";
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_create_events, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_events, container, false);
+
+        context = getContext();
+        // Switch to review page
+        reviewPageButton = view.findViewById(R.id.buttonReview);
+        reviewPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new reviewFragment());
+                fragmentTransaction.commit();
+            }
+        });
+
+        // Time picker
+        startTimeButton = view.findViewById(R.id.buttonStartTime);
+        endTimeButton = view.findViewById(R.id.buttonEndTime);
+        popStartTimePicker();
+        popEndTimePicker();
+
+        startTimeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                startTimePickerDialog.show();
+            }
+        });
+
+        endTimeButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                endTimePickerDialog.show();
+            }
+        });
+
+        // Date picker for Create Events
+        initDatePicker();
+        dateButton = view.findViewById(R.id.datePickerButton);
+        dateButton.setText(getTodaysDate());
+
+        dateButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                datePickerDialog.show();
+            }
+        });
+
+
+        //Tag Accordion
+        tagScrollView = view.findViewById(R.id.scrollViewTags);
+        tagRecyclerView = view.findViewById((R.id.recyclerViewTags));
+        tagButton = view.findViewById(R.id.buttonTags);
+        setTagRecyclerView();
+        tagButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(tagIsVisible){
+                    tagScrollView.setVisibility(View.GONE);
+
+
+                }
+                else{
+                    tagScrollView.setVisibility(View.VISIBLE);
+                }
+                tagIsVisible = !tagIsVisible;
+
+            }
+        });
+        //Club Accordion
+        clubScrollView = view.findViewById(R.id.scrollViewClubs);
+        clubRecyclerView = view.findViewById((R.id.recyclerViewClubs));
+        clubButton = view.findViewById(R.id.buttonClubs);
+        setClubRecyclerView();
+        clubButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(clubIsVisible){
+                    clubScrollView.setVisibility(View.GONE);
+
+
+                }
+                else{
+                    clubScrollView.setVisibility(View.VISIBLE);
+                }
+                clubIsVisible = !clubIsVisible;
+
+            }
+        });
+
+        return view;
+
+    }
+
+    private ArrayList<String> getTagData(){
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("Food");
+        arrayList.add("Music");
+        arrayList.add("Tutoring");
+        arrayList.add("GeekLife");
+        arrayList.add("Party");
+        return arrayList;
+    }
+
+    private ArrayList<String> getClubData(){
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("A");
+        arrayList.add("B");
+        arrayList.add("C");
+        arrayList.add("D");
+        arrayList.add("E");
+        return arrayList;
+    }
+
+    private void setTagRecyclerView() {
+        tagRecyclerView.setHasFixedSize(true);
+        tagRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2, LinearLayoutManager.VERTICAL, false));
+        tagAdapter = new TagAdapter(requireContext(), getTagData(), this);
+        tagRecyclerView.setAdapter(tagAdapter);
+
+    }
+    private void setClubRecyclerView() {
+        clubRecyclerView.setHasFixedSize(true);
+        clubRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2, LinearLayoutManager.VERTICAL, false));
+        tagAdapter = new TagAdapter(requireContext(), getClubData(), this);
+        clubRecyclerView.setAdapter(tagAdapter);
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
+    public void onTagChange(ArrayList<String> arrayList) {
+        Toast.makeText(requireContext(), arrayList.toString(), Toast.LENGTH_SHORT).show();
     }
 }
