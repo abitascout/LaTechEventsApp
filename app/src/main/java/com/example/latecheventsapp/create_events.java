@@ -1,5 +1,8 @@
 package com.example.latecheventsapp;
 
+import static androidx.core.os.BundleKt.bundleOf;
+import static androidx.fragment.app.FragmentKt.setFragmentResult;
+
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -37,11 +40,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link create_events#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class create_events extends Fragment implements TagListener{
 
     // Date Picker Variables
@@ -63,8 +61,8 @@ public class create_events extends Fragment implements TagListener{
 
     public String startTime;
     public String endTime;
-    public Date startTime24;
-    public Date endTime24;
+    private Date startTime24;
+    private Date endTime24;
 
     private boolean noEndTime = false;
     private Switch endTimeSwitch;
@@ -96,6 +94,8 @@ public class create_events extends Fragment implements TagListener{
 
     // String array for holding all information for Review page
     static public String[] eventInfo;
+    Bundle bundle = new Bundle();
+
 
 
 
@@ -116,7 +116,7 @@ public class create_events extends Fragment implements TagListener{
         super.onCreate(savedInstanceState);
     }
 
-    // Methods for chooseing date
+    // Methods for choseing date
     private String getTodaysDate() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -224,7 +224,6 @@ public class create_events extends Fragment implements TagListener{
         locationEditText = view.findViewById(R.id.TextInputEditTextLocation);
         descriptionEditText = view.findViewById(R.id.TextInputEditTextDescription);
 
-
         context = getContext();
 
         // Switch to review page
@@ -233,9 +232,15 @@ public class create_events extends Fragment implements TagListener{
             @Override
             public void onClick(View view) {
                 if(checkInformation()){
+                    // Save data to send to review fragment
+                    saveInformation();
+
+                    Fragment rFragment = new reviewFragment();
+                    rFragment.setArguments(bundle);
+
                     FragmentTransaction fragmentTransaction = getActivity()
                             .getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_container, new reviewFragment());
+                    fragmentTransaction.replace(R.id.fragment_container, rFragment);
                     fragmentTransaction.commit();
                 }
                 else{
@@ -330,7 +335,30 @@ public class create_events extends Fragment implements TagListener{
                 clubIsVisible = !clubIsVisible;
             }
         });
+
+
+
+
+
         return view;
+    }
+
+
+    private void saveInformation(){
+        bundle.putString("subject", subjectEditText.getText().toString());
+        bundle.putString("location", locationEditText.getText().toString());
+        bundle.putString("description", descriptionEditText.getText().toString());
+
+        bundle.putString("date", dateButton.getText().toString());
+
+        bundle.putString("startTime", startTime);
+        CharSequence base = "NO END";
+        if(endTimeButton != base){
+            bundle.putString("endTime", endTime);
+        }
+
+        //TODO: Implement tags and clubs saving.
+
     }
 
     private boolean checkInformation(){
