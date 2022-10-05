@@ -38,7 +38,7 @@ public class reviewFragment extends Fragment {
 
     Button submitButton;
 
-    Bundle bundle = new Bundle();
+    Bundle rbundle = new Bundle();
 
     public reviewFragment() {
         // Required empty public constructor
@@ -70,10 +70,10 @@ public class reviewFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Save data to send to review fragment
-                //saveInformation();
+                saveInformation();
 
-                Fragment rFragment = new reviewFragment();
-                rFragment.setArguments(bundle);
+                Fragment rFragment = new create_events();
+                rFragment.setArguments(rbundle);
 
                 FragmentTransaction fragmentTransaction = getActivity()
                         .getSupportFragmentManager().beginTransaction();
@@ -109,6 +109,8 @@ public class reviewFragment extends Fragment {
 
         // Get info
         Bundle bundle = this.getArguments();
+        //setBundleInfo();
+
         if(bundle != null){
             subject = bundle.getString("subject", "");
             location = bundle.getString("location", "");
@@ -118,17 +120,37 @@ public class reviewFragment extends Fragment {
             endTime = bundle.getString("endTime", "");
             tags = bundle.getString("tags", "");
             clubs = bundle.getString("clubs", "");
-        }
-        stripTagsAndClubs();
 
-        // set Textviews
-        subjectTV.setText(subject);
-        locationTV.setText(location);
-        descriptionTV.setText(description);
-        dateTV.setText(date);
-        startTimeTV.setText(startTime + " - " + endTime);
-        tagsTV.setText(tags);
-        clubsTV.setText(clubs);
+            stripTagsAndClubs();
+
+            // set Textviews
+            subjectTV.setText(subject);
+            locationTV.setText(location);
+            descriptionTV.setText(description);
+            dateTV.setText(date);
+            startTimeTV.setText(startTime + " - " + endTime);
+            tagsTV.setText(tags);
+            clubsTV.setText(clubs);
+        }
+    }
+
+    private void saveInformation(){
+        rbundle.putString("subject", subject);
+        rbundle.putString("location", location);
+        rbundle.putString("description", description);
+
+        rbundle.putString("date", date);
+
+        rbundle.putString("startTime", startTime);
+        if(endTime != ""){
+            rbundle.putString("endTime", endTime);
+        }
+        else{
+            rbundle.putString("endTime", "_:__PM");
+        }
+
+        rbundle.putString("tags", tags);
+        rbundle.putString("clubs", clubs);
     }
 
     private void stripTagsAndClubs(){
@@ -136,9 +158,15 @@ public class reviewFragment extends Fragment {
             tags = tags.replace("[","");
             tags = tags.replace("]","");
         }
+        else{
+            tags = "No Tags";
+        }
         if(clubs != ""){
             clubs = clubs.replace("[","");
             clubs = clubs.replace("]","");
+        }
+        else{
+            clubs = "No Clubs";
         }
     }
 }

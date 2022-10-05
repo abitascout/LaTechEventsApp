@@ -34,6 +34,8 @@ import com.example.latecheventsapp.data.TagAdapter;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,7 +73,6 @@ public class create_events extends Fragment implements TagListener{
     private Switch endTimeSwitch;
     private TextView endTimeTextView;
 
-
     private Context context;
 
     // Tag Accordion Variables
@@ -100,9 +101,6 @@ public class create_events extends Fragment implements TagListener{
     // String array for holding all information for Review page
     static public String[] eventInfo;
     Bundle bundle = new Bundle();
-
-
-
 
     public create_events() {
         // Required empty public constructor
@@ -229,10 +227,64 @@ public class create_events extends Fragment implements TagListener{
         locationEditText = view.findViewById(R.id.TextInputEditTextLocation);
         descriptionEditText = view.findViewById(R.id.TextInputEditTextDescription);
 
+        // Review references
+        reviewPageButton = view.findViewById(R.id.buttonReview);
+
+        // Time select references
+        startTimeButton = view.findViewById(R.id.buttonStartTime);
+        endTimeButton = view.findViewById(R.id.buttonEndTime);
+        endTimeSwitch = view.findViewById(R.id.switchEndTime);
+        endTimeTextView = view.findViewById(R.id.textViewEndTime);
+
+        // Date references
+        dateButton = view.findViewById(R.id.datePickerButton);
+
+        // Tag references
+        tagScrollView = view.findViewById(R.id.scrollViewTags);
+        tagRecyclerView = view.findViewById((R.id.recyclerViewTags));
+        tagButton = view.findViewById(R.id.buttonTags);
+
+        // Club references
+        clubScrollView = view.findViewById(R.id.scrollViewClubs);
+        clubRecyclerView = view.findViewById((R.id.recyclerViewClubs));
+        clubButton = view.findViewById(R.id.buttonClubs);
+
+        Bundle rbundle = this.getArguments();
+
+        if(rbundle != null){
+            subjectEditText.setText(rbundle.getString("subject", ""));
+            locationEditText.setText(rbundle.getString("location", ""));
+            descriptionEditText.setText(rbundle.getString("description", ""));
+            dateButton.setText(rbundle.getString("date", ""));
+
+            startTime = rbundle.getString("startTime", "_:__PM");
+            endTime = rbundle.getString("endTime", "_:__PM");
+
+            ParsePosition pos = new ParsePosition(0);
+
+            try {
+                startTime24 = new SimpleDateFormat("h:mm:a").parse(startTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            try {
+                endTime24 = new SimpleDateFormat("h:mm:a").parse(endTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            startTimeButton.setText(startTime);
+            endTimeButton.setText(endTime);
+
+
+            //tags = bundle.getString("tags", "");
+            //clubs = bundle.getString("clubs", "");
+            //TODO: carry over tags and clubs from review page.
+        }
+
         context = getContext();
 
         // Switch to review page
-        reviewPageButton = view.findViewById(R.id.buttonReview);
         reviewPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -255,18 +307,14 @@ public class create_events extends Fragment implements TagListener{
         });
 
         // Time picker
-        startTimeButton = view.findViewById(R.id.buttonStartTime);
-        endTimeButton = view.findViewById(R.id.buttonEndTime);
         popStartTimePicker();
         popEndTimePicker();
-
         startTimeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 startTimePickerDialog.show();
             }
         });
-
         endTimeButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -275,8 +323,6 @@ public class create_events extends Fragment implements TagListener{
         });
 
         // Check if End Time switch clicked.
-        endTimeSwitch = view.findViewById(R.id.switchEndTime);
-        endTimeTextView = view.findViewById(R.id.textViewEndTime);
         endTimeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!isChecked) {
@@ -295,9 +341,7 @@ public class create_events extends Fragment implements TagListener{
 
         // Date picker for Create Events
         initDatePicker();
-        dateButton = view.findViewById(R.id.datePickerButton);
         dateButton.setText(getTodaysDate());
-
         dateButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -306,9 +350,7 @@ public class create_events extends Fragment implements TagListener{
         });
 
         //Tag Accordion
-        tagScrollView = view.findViewById(R.id.scrollViewTags);
-        tagRecyclerView = view.findViewById((R.id.recyclerViewTags));
-        tagButton = view.findViewById(R.id.buttonTags);
+
         setTagRecyclerView();
         tagButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -326,9 +368,6 @@ public class create_events extends Fragment implements TagListener{
         });
 
         //Club Accordion
-        clubScrollView = view.findViewById(R.id.scrollViewClubs);
-        clubRecyclerView = view.findViewById((R.id.recyclerViewClubs));
-        clubButton = view.findViewById(R.id.buttonClubs);
         setClubRecyclerView();
         clubButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -344,6 +383,8 @@ public class create_events extends Fragment implements TagListener{
                 clubIsVisible = !clubIsVisible;
             }
         });
+
+
 
         return view;
     }
@@ -490,8 +531,5 @@ public class create_events extends Fragment implements TagListener{
         else if (tagIsVisible){
             bundle.putString("tags",arrayList.toString());
         }
-
-
-        Toast.makeText(requireContext(), arrayList.toString(), Toast.LENGTH_SHORT).show();
     }
 }
