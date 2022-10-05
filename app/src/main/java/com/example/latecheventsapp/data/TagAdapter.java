@@ -44,13 +44,19 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull TagAdapter.ViewHolder holder, int position) {
         if(arrayList != null && arrayList.size() > 0){
             holder.checkBox.setText(arrayList.get(position));
-            if(holder.checkBox.isChecked()){
-                arrayList0.add(arrayList.get(position));
-            }
-            else{
-                arrayList0.remove(arrayList.get(position));
-            }
-            tagListener.onTagChange(arrayList0);
+            holder.checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(holder.checkBox.isChecked()){
+                        arrayList0.add(arrayList.get(position));
+                    }
+                    else{
+                        arrayList0.remove(arrayList.get(position));
+                    }
+                    tagListener.onTagChange(arrayList0);
+                }
+            });
+
         }
 
     }

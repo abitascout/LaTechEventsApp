@@ -2,50 +2,51 @@ package com.example.latecheventsapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.fragment.app.FragmentTransaction;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link reviewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class reviewFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    String subject;
+    String location;
+    String description;
+    String date;
+    String startTime;
+    String endTime;
+    String tags;
+    String clubs;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    TextView subjectTV;
+    TextView locationTV;
+    TextView descriptionTV;
+    TextView dateTV;
+    TextView startTimeTV;
+    TextView tagsTV;
+    TextView clubsTV;
+
+    Button editButton;
+
+    Button submitButton;
+
+    Bundle rbundle = new Bundle();
 
     public reviewFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment reviewFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static reviewFragment newInstance(String param1, String param2) {
+    public static reviewFragment newInstance() {
         reviewFragment fragment = new reviewFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,11 +54,6 @@ public class reviewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
 
     }
 
@@ -65,7 +61,112 @@ public class reviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_review, container, false);
+        View view = inflater.inflate(R.layout.fragment_review, container, false);
+
+        editButton = view.findViewById(R.id.buttonEdit);
+        submitButton = view.findViewById(R.id.buttonSubmit);
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Save data to send to review fragment
+                saveInformation();
+
+                Fragment rFragment = new create_events();
+                rFragment.setArguments(rbundle);
+
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, rFragment);
+                fragmentTransaction.commit();
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: SEND EVENT TO DATABASE
+
+            }
+        });
+
+
+        return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //Get textViews
+        subjectTV = view.findViewById(R.id.textViewSubjectMoreInfo);
+        locationTV = view.findViewById(R.id.textViewLocationMoreInfo);
+        descriptionTV = view.findViewById(R.id.textViewDescriptionMoreInfo);
+        dateTV = view.findViewById(R.id.textViewDateMoreInfo);
+        startTimeTV = view.findViewById(R.id.textViewTimeMoreInfo);
+        tagsTV = view.findViewById(R.id.textViewTagsMoreInfo);
+        clubsTV = view.findViewById(R.id.textViewClubsMoreInfo);
+
+        // Get info
+        Bundle bundle = this.getArguments();
+        //setBundleInfo();
+
+        if(bundle != null){
+            subject = bundle.getString("subject", "");
+            location = bundle.getString("location", "");
+            description = bundle.getString("description", "");
+            date = bundle.getString("date", "");
+            startTime = bundle.getString("startTime", "");
+            endTime = bundle.getString("endTime", "");
+            tags = bundle.getString("tags", "");
+            clubs = bundle.getString("clubs", "");
+
+            stripTagsAndClubs();
+
+            // set Textviews
+            subjectTV.setText(subject);
+            locationTV.setText(location);
+            descriptionTV.setText(description);
+            dateTV.setText(date);
+            startTimeTV.setText(startTime + " - " + endTime);
+            tagsTV.setText(tags);
+            clubsTV.setText(clubs);
+        }
+    }
+
+    private void saveInformation(){
+        rbundle.putString("subject", subject);
+        rbundle.putString("location", location);
+        rbundle.putString("description", description);
+
+        rbundle.putString("date", date);
+
+        rbundle.putString("startTime", startTime);
+        if(endTime != ""){
+            rbundle.putString("endTime", endTime);
+        }
+        else{
+            rbundle.putString("endTime", "_:__PM");
+        }
+
+        rbundle.putString("tags", tags);
+        rbundle.putString("clubs", clubs);
+    }
+
+    private void stripTagsAndClubs(){
+        if(tags != ""){
+            tags = tags.replace("[","");
+            tags = tags.replace("]","");
+        }
+        else{
+            tags = "No Tags";
+        }
+        if(clubs != ""){
+            clubs = clubs.replace("[","");
+            clubs = clubs.replace("]","");
+        }
+        else{
+            clubs = "No Clubs";
+        }
+    }
 }
