@@ -252,6 +252,7 @@ public class create_events extends Fragment implements TagListener{
         Bundle rbundle = this.getArguments();
 
         if(rbundle != null){
+            Toast.makeText(getContext(), "Please reselect Tags & Clubs", Toast.LENGTH_SHORT).show();
             subjectEditText.setText(rbundle.getString("subject", ""));
             locationEditText.setText(rbundle.getString("location", ""));
             descriptionEditText.setText(rbundle.getString("description", ""));
@@ -335,6 +336,8 @@ public class create_events extends Fragment implements TagListener{
                     endTimeButton.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "No End Time Selected", Toast.LENGTH_SHORT).show();
                     endTimeButton.setText("NO END");
+                    endTime = "";
+                    endTime24 = null;
                 }
             }
         });
