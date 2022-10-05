@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textViewLocationReview"
+                android:id="@+id/textViewLocationMoreInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -37,7 +37,7 @@
                 app:layout_constraintVertical_bias="0.109" />
 
             <TextView
-                android:id="@+id/textViewTimeReview"
+                android:id="@+id/textViewTimeMoreInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -51,7 +51,7 @@
                 app:layout_constraintVertical_bias="0.108" />
 
             <TextView
-                android:id="@+id/textViewSubjectReview"
+                android:id="@+id/textViewSubjectMoreInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -65,7 +65,7 @@
                 app:layout_constraintVertical_bias="0.027" />
 
             <TextView
-                android:id="@+id/textViewDateReview"
+                android:id="@+id/textViewDateMoreInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -91,38 +91,10 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.843">
 
-                <TextView
-                    android:id="@+id/textViewClubsReview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="bread"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.062"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.034" />
-
-                <TextView
-                    android:id="@+id/textViewTagsReview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.067"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.106" />
-
                 <ScrollView
                     android:id="@+id/scrollView2"
-                    android:layout_width="323dp"
-                    android:layout_height="388dp"
+                    android:layout_width="342dp"
+                    android:layout_height="471dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +107,25 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textViewDescriptionReview"
+                            android:id="@+id/textViewClubsMoreInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="5dp"
+                            android:text="bread"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/textViewTagsMoreInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            android:text="TextView"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/textViewDescriptionMoreInfo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"

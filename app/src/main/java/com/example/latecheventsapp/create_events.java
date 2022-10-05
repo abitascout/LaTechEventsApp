@@ -80,12 +80,14 @@ public class create_events extends Fragment implements TagListener{
     private Button tagButton;
     private boolean tagIsVisible = false;
     TagAdapter tagAdapter;
+    private ArrayList<String> selectedTags;
 
     // Club Accordion Variables
     private ScrollView clubScrollView;
     private RecyclerView clubRecyclerView;
     private Button clubButton;
     private boolean clubIsVisible = false;
+    private ArrayList<String> selectedClubs;
 
     // Check Input Text Variables
     TextInputEditText subjectEditText;
@@ -316,6 +318,8 @@ public class create_events extends Fragment implements TagListener{
                 }
                 else{
                     tagScrollView.setVisibility(View.VISIBLE);
+                    clubScrollView.setVisibility(View.GONE);
+                    clubIsVisible = false;
                 }
                 tagIsVisible = !tagIsVisible;
             }
@@ -334,6 +338,8 @@ public class create_events extends Fragment implements TagListener{
                 }
                 else{
                     clubScrollView.setVisibility(View.VISIBLE);
+                    tagScrollView.setVisibility(View.GONE);
+                    tagIsVisible = false;
                 }
                 clubIsVisible = !clubIsVisible;
             }
@@ -358,6 +364,7 @@ public class create_events extends Fragment implements TagListener{
         else{
             bundle.putString("endTime", "");
         }
+
 
         //TODO: Implement tags and clubs saving.
 
@@ -474,9 +481,17 @@ public class create_events extends Fragment implements TagListener{
         super.onViewCreated(view, savedInstanceState);
     }
 
-    // TODO: May delete this later, but dependencies.
     @Override
     public void onTagChange(ArrayList<String> arrayList) {
+        if(clubIsVisible){
+            bundle.putString("clubs",arrayList.toString());
+
+        }
+        else if (tagIsVisible){
+            bundle.putString("tags",arrayList.toString());
+        }
+
+
         Toast.makeText(requireContext(), arrayList.toString(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -23,16 +23,22 @@ public class reviewFragment extends Fragment {
     String date;
     String startTime;
     String endTime;
+    String tags;
+    String clubs;
 
     TextView subjectTV;
     TextView locationTV;
     TextView descriptionTV;
     TextView dateTV;
     TextView startTimeTV;
+    TextView tagsTV;
+    TextView clubsTV;
 
     Button editButton;
 
     Button submitButton;
+
+    Bundle bundle = new Bundle();
 
     public reviewFragment() {
         // Required empty public constructor
@@ -63,8 +69,8 @@ public class reviewFragment extends Fragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*// Save data to send to review fragment
-                saveInformation();
+                // Save data to send to review fragment
+                //saveInformation();
 
                 Fragment rFragment = new reviewFragment();
                 rFragment.setArguments(bundle);
@@ -72,13 +78,14 @@ public class reviewFragment extends Fragment {
                 FragmentTransaction fragmentTransaction = getActivity()
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, rFragment);
-                fragmentTransaction.commit(); */
+                fragmentTransaction.commit();
             }
         });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO: SEND EVENT TO DATABASE
 
             }
         });
@@ -92,11 +99,13 @@ public class reviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //Get textViews
-        subjectTV = view.findViewById(R.id.textViewSubjectReview);
-        locationTV = view.findViewById(R.id.textViewLocationReview);
-        descriptionTV = view.findViewById(R.id.textViewDescriptionReview);
-        dateTV = view.findViewById(R.id.textViewDateReview);
-        startTimeTV = view.findViewById(R.id.textViewTimeReview);
+        subjectTV = view.findViewById(R.id.textViewSubjectMoreInfo);
+        locationTV = view.findViewById(R.id.textViewLocationMoreInfo);
+        descriptionTV = view.findViewById(R.id.textViewDescriptionMoreInfo);
+        dateTV = view.findViewById(R.id.textViewDateMoreInfo);
+        startTimeTV = view.findViewById(R.id.textViewTimeMoreInfo);
+        tagsTV = view.findViewById(R.id.textViewTagsMoreInfo);
+        clubsTV = view.findViewById(R.id.textViewClubsMoreInfo);
 
         // Get info
         Bundle bundle = this.getArguments();
@@ -107,7 +116,10 @@ public class reviewFragment extends Fragment {
             date = bundle.getString("date", "");
             startTime = bundle.getString("startTime", "");
             endTime = bundle.getString("endTime", "");
+            tags = bundle.getString("tags", "");
+            clubs = bundle.getString("clubs", "");
         }
+        stripTagsAndClubs();
 
         // set Textviews
         subjectTV.setText(subject);
@@ -115,5 +127,18 @@ public class reviewFragment extends Fragment {
         descriptionTV.setText(description);
         dateTV.setText(date);
         startTimeTV.setText(startTime + " - " + endTime);
+        tagsTV.setText(tags);
+        clubsTV.setText(clubs);
+    }
+
+    private void stripTagsAndClubs(){
+        if(tags != ""){
+            tags = tags.replace("[","");
+            tags = tags.replace("]","");
+        }
+        if(clubs != ""){
+            clubs = clubs.replace("[","");
+            clubs = clubs.replace("]","");
+        }
     }
 }
