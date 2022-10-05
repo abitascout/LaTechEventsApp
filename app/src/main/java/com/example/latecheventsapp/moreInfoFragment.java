@@ -2,6 +2,7 @@ package com.example.latecheventsapp;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -32,6 +33,12 @@ public class moreInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_more_info, container, false);
+        View view = inflater.inflate(R.layout.fragment_more_info, container, false);
+
+        // Change Toolbar title.
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("More Information");
+
+        return view;
     }
 }

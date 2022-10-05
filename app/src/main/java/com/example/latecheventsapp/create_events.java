@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -117,6 +118,7 @@ public class create_events extends Fragment implements TagListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     // Methods for choseing date
@@ -221,6 +223,11 @@ public class create_events extends Fragment implements TagListener{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_events, container, false);
         // Inflate the layout for this fragment
+
+        // Change Page Title
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("Create Event");
+
 
         //Input Text refrences
         subjectEditText = view.findViewById(R.id.TextInputEditTextSubject);
