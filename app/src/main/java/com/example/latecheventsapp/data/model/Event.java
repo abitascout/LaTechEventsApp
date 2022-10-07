@@ -6,6 +6,7 @@ import com.google.firebase.firestore.IgnoreExtraProperties;
 @IgnoreExtraProperties
 
 public class Event  {
+    private String Tag;
     private String Event_Name;
     private String Event_Desc;
     private String Club_Name;
@@ -13,7 +14,7 @@ public class Event  {
     private Timestamp End;
     private String Location;
 
-    public Event (String Event_Name, String Event_Desc, String Club_Name, Timestamp Start, String Location, Timestamp End)
+    public Event (String Event_Name, String Event_Desc, String Club_Name, Timestamp Start, String Location, Timestamp End, String Tag)
     {
         this.Event_Name = Event_Name;
         this.Event_Desc = Event_Desc;
@@ -21,14 +22,13 @@ public class Event  {
         this.Start = Start;
         this.End = End;
         this.Location = Location;
+        this.Tag = Tag;
 
 
     }
 
     public Event() {}
     // empty constructor needed
-
-
 
 
 
@@ -49,6 +49,15 @@ public class Event  {
 
     public String getLocation() {return Location;}
     public void setLocation(String Location) {this.Location = Location;}
+
+    public String getTag() {
+        return Tag;
+    }
+
+    public void setTag(String tag) {
+        Tag = tag;
+    }
+
 
 
 

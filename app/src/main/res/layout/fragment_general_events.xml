@@ -11,28 +11,99 @@
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".general_events"
     android:id="@+id/general">
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swiper"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="685dp"
-            android:orientation="vertical" />
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-        <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/search"
-                    android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/genLinear">
+        <SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:queryHint="Search Events"
+            app:layout_anchor="@+id/swiper"
+            android:background="@color/white"
+            app:layout_anchorGravity="top|center" />
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:layout_margin="16dp"
-                    android:contentDescription="@string/search_Button"
-                    android:src="@drawable/ic_search"
-                    android:visibility="visible"
-                    app:backgroundTint="@color/latech_logo_background" />-->
+                    android:orientation="horizontal">
 
 
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="All"
+                            android:id="@+id/All_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="AllFilterTapped"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Part"
+                            android:id="@+id/Party_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="PartyFilter"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Food"
+                            android:id="@+id/Food_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="FoodFilter"
+                            />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Greek"
+                            android:id="@+id/Greek_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="GreekFilter"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Tutor"
+                            android:id="@+id/Tutor_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="TutorFilter"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Clubs"
+                            android:id="@+id/Club_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="ClubFilter"
+                            />
+                </LinearLayout>
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swiper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="40dp"
+                            android:orientation="vertical" />
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

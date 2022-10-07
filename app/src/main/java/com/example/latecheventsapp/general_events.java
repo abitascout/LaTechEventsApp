@@ -7,10 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,10 +40,10 @@ import java.util.Comparator;
  * Use the {@link general_events#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class general_events extends Fragment implements SwipeRefreshLayout.OnRefreshListener
+public class general_events extends Fragment implements SwipeRefreshLayout.OnRefreshListener, GenAdapter.GenEventListener
 
 {
-
+    private static final String TAG = "General Events";
 
 
     // Fire base and viewing event references
@@ -50,14 +52,21 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     private CollectionReference eventRef = db.collection("Events");
     private GenAdapter adapter;
     private ArrayList<Event> eventArrayList;
+    private ArrayList<Event> filteredEvents = new ArrayList<Event>();
     private  ProgressDialog progressDialog;
+    private String selectedFilter = "all";
 
     //widgets
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private CoordinatorLayout coordinatorLayout;
+    private LinearLayout LinearLayout;
 
-
+    private Button allButton;
+    private Button PartyButton;
+    private Button GreekButton;
+    private Button FoodButton;
+    private Button TutorButton;
+    private Button ClubButton;
 
 
 
@@ -85,6 +94,10 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
 
         view = create_handler(view);
         view = Swiping(view);
+        view = genSearch(view);
+
+
+
 
         return view;
     }
@@ -93,7 +106,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     private View Swiping(View view)
     {
         swipeRefreshLayout = view.findViewById(R.id.swiper);
-        coordinatorLayout = view.findViewById(R.id.general);
+        LinearLayout = view.findViewById(R.id.genLinear);
 
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -124,10 +137,10 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                                     eventArrayList.add(temp);
                                     break;
                                 case REMOVED:
-                                    Event tempEvent = eventCheck(temp);
+                                    Event tempEvent = eventCheck(temp, eventArrayList);
                                     if(tempEvent != null)
-                                        eventArrayList.remove(oldIndex);
-                                    break;
+                                        eventArrayList.remove(tempEvent);
+
 
                             }
                             eventArrayList.sort(Comparator.comparing(e -> e.getStart()));
@@ -137,14 +150,16 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                 });
 
                 adapter.notifyDataSetChanged();
+                recyclerView.setAdapter(adapter);
                 swipeRefreshLayout.setRefreshing(false);
+
             }
 
         });
         return view;
     }
 
-    private Event eventCheck(Event event)
+    private Event eventCheck(Event event, ArrayList<Event> eventArrayList)
     {
         for (int i = 0; i< eventArrayList.size(); i++)
         {
@@ -179,7 +194,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         progressDialog.show();
 
         eventArrayList = new ArrayList<Event>();
-        adapter = new GenAdapter(getContext(), eventArrayList);
+        adapter = new GenAdapter(getContext(), eventArrayList, this::onEventClick);
         testChangeListener();
         recyclerView =view.findViewById(R.id.recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -215,6 +230,97 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
 
 
 
+private void setupOnclickListener()
+{
+
+}
+
+
+
+
+
+    private View genSearch(View view)
+    {
+        SearchView searchView  =  view.findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filteredEvents.clear();
+                for(Event event: eventArrayList)
+                {
+                    if (event.getEvent_Name().toLowerCase().contains(s.toLowerCase()))
+                    {
+                        filteredEvents.add(event);
+                    }
+                }
+                GenAdapter searchAdapter = new GenAdapter(getContext(),  filteredEvents, general_events.this::onEventClick);
+                recyclerView.setAdapter(searchAdapter);
+                return false;
+            }
+        });
+        return view;
+
+    }
+
+    private void FilterList(String status){
+        selectedFilter = status;
+        ArrayList<Event> Fevents = new ArrayList<Event>();
+        for(Event event: eventArrayList)
+        {
+            if(!status.equals("Clubs"))
+            {
+                if(event.getTag().toLowerCase().contains(status))
+                {
+                    Fevents.add(event);
+                }
+            }
+            else
+            {
+                if(event.getClub_Name().toLowerCase().contains(status))
+                {
+                    Fevents.add(event);
+                }
+            }
+        }
+        GenAdapter filterAdapter = new GenAdapter(getContext(),  Fevents, this::onEventClick);
+        recyclerView.setAdapter(filterAdapter);
+    }
+
+    public void AllFilterTapped(View view) {
+        selectedFilter = "all";
+        GenAdapter filterAdapter = new GenAdapter(getContext(), eventArrayList, this::onEventClick);
+        recyclerView.setAdapter(filterAdapter);
+    }
+
+    public void PartyFilter(View view) {
+        FilterList("Party");
+    }
+
+    public void FoodFilter(View view) {
+        FilterList("Food");
+    }
+
+    public void GreekFilter(View view) {
+        FilterList("Greek");
+    }
+
+    public void TutorFilter(View view) {
+        FilterList("Tutor");
+    }
+
+    public void ClubFilter(View view) {
+        FilterList("Club");
+    }
+
+
+
+
+
 
 
     @Override
@@ -238,9 +344,14 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public void onEventClick(int position) {
+        Log.d(TAG, "onEventClick: clicked ");
+
+    }
 
 
-   //Todo: use this for create events maybe?????
+    //Todo: use this for create events maybe?????
 /*
    @Override
     public void createEvent(String title, Timestamp Start, String desc, Timestamp End, String Location, String Club_Name) {

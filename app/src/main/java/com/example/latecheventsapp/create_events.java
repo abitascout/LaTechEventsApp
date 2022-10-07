@@ -1,13 +1,21 @@
 package com.example.latecheventsapp;
 
-import static androidx.core.os.BundleKt.bundleOf;
-import static androidx.fragment.app.FragmentKt.setFragmentResult;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.ScrollView;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,19 +24,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ScrollView;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.latecheventsapp.data.TagAdapter;
 import com.google.android.material.snackbar.Snackbar;
@@ -466,7 +461,7 @@ public class create_events extends Fragment implements TagListener{
         arrayList.add("Food");
         arrayList.add("Music");
         arrayList.add("Tutoring");
-        arrayList.add("GeekLife");
+        arrayList.add("GreekLife");
         arrayList.add("Party");
         return arrayList;
     }
