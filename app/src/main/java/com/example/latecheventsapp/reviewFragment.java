@@ -6,17 +6,31 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.latecheventsapp.data.Igen;
+import com.example.latecheventsapp.data.model.Event;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class reviewFragment extends Fragment {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+
+public class reviewFragment extends Fragment implements Igen {
 
     String subject;
     String location;
@@ -26,6 +40,8 @@ public class reviewFragment extends Fragment {
     String endTime;
     String tags;
     String clubs;
+    String eAllTime;
+    String sAllTime;
 
     TextView subjectTV;
     TextView locationTV;
@@ -40,6 +56,14 @@ public class reviewFragment extends Fragment {
     Button submitButton;
 
     Bundle rbundle = new Bundle();
+
+    Timestamp stimestamp;
+
+    Timestamp etimestamp;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference eventRef = db.collection("Events").document();
+
 
     public reviewFragment() {
         // Required empty public constructor
@@ -81,10 +105,10 @@ public class reviewFragment extends Fragment {
                 Fragment rFragment = new create_events();
                 rFragment.setArguments(rbundle);
 
-                FragmentTransaction fragmentTransaction = getActivity()
+                /*FragmentTransaction fragmentTransaction = getActivity()
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, rFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit(); */
             }
         });
 
@@ -93,10 +117,26 @@ public class reviewFragment extends Fragment {
             public void onClick(View view) {
                 //TODO: SEND EVENT TO DATABASE
 
+                try {
+                     stimestamp = new Timestamp(new Date(sAllTime));
+                } catch(Exception e) { //this generic but you can control another types of exception
+                    // look the origin of excption
+                }
+
+                try {
+                    etimestamp = new Timestamp(new Date(eAllTime));
+                } catch(Exception e) { //this generic but you can control another types of exception
+                    // look the origin of excption
+                }
+                createEvent(subject, stimestamp, description, etimestamp, location, clubs, tags);
+
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new general_events());
+                fragmentTransaction.commit();
+
             }
         });
-
-
         return view;
     }
 
@@ -126,6 +166,8 @@ public class reviewFragment extends Fragment {
             endTime = bundle.getString("endTime", "");
             tags = bundle.getString("tags", "");
             clubs = bundle.getString("clubs", "");
+            eAllTime = bundle.getString("eAllTime", "");
+            sAllTime = bundle.getString("sAllTime", "");
 
             stripTagsAndClubs();
 
@@ -174,5 +216,33 @@ public class reviewFragment extends Fragment {
         else{
             clubs = "No Clubs";
         }
+    }
+
+    @Override
+    public void createEvent(String title, Timestamp Start, String desc, Timestamp End, String Location, String Club_Name, String Tag) {
+        Event event = new Event();
+        event.setEvent_Name(title);
+        event.setEvent_Desc(desc);
+        event.setClub_Name(Club_Name);
+        event.setStart(Start);
+        event.setLocation(Location);
+        event.setEnd(End);
+        event.setTag(Tag);
+
+        eventRef.set(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Done submitting to database;
+                    FragmentTransaction fragmentTransaction = getActivity()
+                            .getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, new general_events());
+                    fragmentTransaction.commit();
+                    Log.d("database", "Finished submiting reviewed event to database");
+                } else {
+                    //makeSnackBarMessage("Failed. Check log.");
+                }
+            }
+        });
     }
 }
