@@ -3,6 +3,7 @@ package com.example.latecheventsapp;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -62,6 +63,11 @@ public class reviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_review, container, false);
+
+        // Change Toolbar title.
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("More Information");
+
 
         editButton = view.findViewById(R.id.buttonEdit);
         submitButton = view.findViewById(R.id.buttonSubmit);

@@ -461,7 +461,7 @@ public class create_events extends Fragment implements TagListener{
         arrayList.add("Food");
         arrayList.add("Music");
         arrayList.add("Tutoring");
-        arrayList.add("GreekLife");
+        arrayList.add("GeekLife");
         arrayList.add("Party");
         return arrayList;
     }
