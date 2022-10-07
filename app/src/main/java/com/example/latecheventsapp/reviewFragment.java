@@ -20,10 +20,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.latecheventsapp.data.Igen;
 import com.example.latecheventsapp.data.model.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,7 +66,7 @@ public class reviewFragment extends Fragment implements Igen {
     Timestamp etimestamp;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference eventRef = db.collection("Events").document();
+    private CollectionReference eventRef = db.collection("Events");
 
 
     public reviewFragment() {
@@ -130,10 +134,10 @@ public class reviewFragment extends Fragment implements Igen {
                 }
                 createEvent(subject, stimestamp, description, etimestamp, location, clubs, tags);
 
-                FragmentTransaction fragmentTransaction = getActivity()
+                /*FragmentTransaction fragmentTransaction = getActivity()
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, new general_events());
-                fragmentTransaction.commit();
+                fragmentTransaction.commit(); */
 
             }
         });
@@ -229,19 +233,21 @@ public class reviewFragment extends Fragment implements Igen {
         event.setEnd(End);
         event.setTag(Tag);
 
-        eventRef.set(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        eventRef.add(event).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    // Done submitting to database;
-                    FragmentTransaction fragmentTransaction = getActivity()
-                            .getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_container, new general_events());
-                    fragmentTransaction.commit();
-                    Log.d("database", "Finished submiting reviewed event to database");
-                } else {
-                    //makeSnackBarMessage("Failed. Check log.");
-                }
+            public void onSuccess(DocumentReference documentReference) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new general_events());
+                fragmentTransaction.commit();
+                Log.d("database", "Finished submiting reviewed event to database");
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }

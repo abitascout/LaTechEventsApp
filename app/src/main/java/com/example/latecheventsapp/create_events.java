@@ -82,23 +82,17 @@ public class create_events extends Fragment implements TagListener{
     private Button tagButton;
     private boolean tagIsVisible = false;
     TagAdapter tagAdapter;
-    private ArrayList<String> selectedTags;
 
     // Club Accordion Variables
     private ScrollView clubScrollView;
     private RecyclerView clubRecyclerView;
     private Button clubButton;
     private boolean clubIsVisible = false;
-    private ArrayList<String> selectedClubs;
 
     // Check Input Text Variables
     TextInputEditText subjectEditText;
     TextInputEditText locationEditText;
     TextInputEditText descriptionEditText;
-
-    private Date eAllTime;
-    private Date sAllTime;
-    private String tDate;
 
     private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
     private CollectionReference tagCollection = mDatabase.collection("Tag");
@@ -108,9 +102,6 @@ public class create_events extends Fragment implements TagListener{
     int month;
     int day;
 
-
-    // Display Msg
-    Snackbar mySnackbar;
 
     // String array for holding all information for Review page
     static public String[] eventInfo;
@@ -280,8 +271,6 @@ public class create_events extends Fragment implements TagListener{
         clubScrollView = view.findViewById(R.id.scrollViewClubs);
         clubRecyclerView = view.findViewById((R.id.recyclerViewClubs));
         clubButton = view.findViewById(R.id.buttonClubs);
-
-        //mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Bundle rbundle = this.getArguments();
 
