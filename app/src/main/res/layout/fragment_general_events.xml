@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,17 +9,101 @@
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
-    tools:context=".general_events">
-
-
-        <androidx.recyclerview.widget.RecyclerView
+    tools:context=".general_events"
+    android:id="@+id/general">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/recycle"
             android:orientation="vertical"
-            />
+            android:id="@+id/genLinear">
+        <SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:queryHint="Search Events"
+            app:layout_anchor="@+id/swiper"
+            android:background="@color/white"
+            app:layout_anchorGravity="top|center" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
 
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="All"
+                            android:id="@+id/All_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="AllFilterTapped"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Part"
+                            android:id="@+id/Party_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="PartyFilter"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Food"
+                            android:id="@+id/Food_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="FoodFilter"
+                            />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Greek"
+                            android:id="@+id/Greek_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="GreekFilter"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Tutor"
+                            android:id="@+id/Tutor_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="TutorFilter"
+                            />
+                        <Button
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="Clubs"
+                            android:id="@+id/Club_button"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="ClubFilter"
+                            />
+                </LinearLayout>
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swiper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="40dp"
+                            android:orientation="vertical" />
 
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

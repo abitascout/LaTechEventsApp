@@ -24,8 +24,9 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="search_Button">Search</string>
 
-    <string name="my_evetns">My Evetns</string> <!-- FIX THIS -->
+    <string name="my_events">My Events</string>
     <string name="general_events">General Events</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

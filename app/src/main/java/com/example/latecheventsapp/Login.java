@@ -72,6 +72,7 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             checkEmailVerification();
+
                         }
                         else {
                             Toast.makeText(Login.this, "Error !", Toast.LENGTH_SHORT).show();
