@@ -1,11 +1,18 @@
 package com.example.latecheventsapp.data.model;
 
+import static java.lang.String.*;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 
-public class Event  {
+public class Event implements Parcelable {
     private String Tag;
     private String Event_Name;
     private String Event_Desc;
@@ -13,6 +20,18 @@ public class Event  {
     private Timestamp Start;
     private Timestamp End;
     private String Location;
+
+
+    public static  final Parcelable.Creator CREATOR = new Parcelable.Creator()
+    {
+        public Event createFromParcel(Parcel in)
+        {
+            return new Event(in);
+        }
+        public Event[] newArray(int size){
+            return  new Event[size];
+        }
+    };
 
     public Event (String Event_Name, String Event_Desc, String Club_Name, Timestamp Start, String Location, Timestamp End, String Tag)
     {
@@ -59,8 +78,31 @@ public class Event  {
     }
 
 
+    public Event (Parcel in){
+        this.Event_Name = in.readString();
+        this.Event_Desc = in.readString();
+        this.Location = in.readString();
+        this.Club_Name = in.readString();
+        this.Start = (Timestamp) in.readValue(getClass().getClassLoader());
+        this.End = (Timestamp) in.readValue(getClass().getClassLoader());
 
+    }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(this.Event_Name);
+        dest.writeString(this.Event_Desc);
+        dest.writeString(this.Club_Name);
+        dest.writeString(this.Location);
+        dest.writeString(valueOf(this.Start));
+        dest.writeString(valueOf(this.End));
+
+    }
 }
 
 
