@@ -19,19 +19,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.latecheventsapp.data.Igen;
 import com.example.latecheventsapp.data.model.Event;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 
 public class reviewFragment extends Fragment implements Igen {
@@ -83,7 +78,6 @@ public class reviewFragment extends Fragment implements Igen {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -94,7 +88,7 @@ public class reviewFragment extends Fragment implements Igen {
 
         // Change Toolbar title.
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("More Information");
+        toolbar.setTitle("Review");
 
 
         editButton = view.findViewById(R.id.buttonEdit);
@@ -109,10 +103,10 @@ public class reviewFragment extends Fragment implements Igen {
                 Fragment rFragment = new create_events();
                 rFragment.setArguments(rbundle);
 
-                /*FragmentTransaction fragmentTransaction = getActivity()
+                FragmentTransaction fragmentTransaction = getActivity()
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, rFragment);
-                fragmentTransaction.commit(); */
+                fragmentTransaction.commit();
             }
         });
 
@@ -133,12 +127,6 @@ public class reviewFragment extends Fragment implements Igen {
                     // look the origin of excption
                 }
                 createEvent(subject, stimestamp, description, etimestamp, location, clubs, tags);
-
-                /*FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new general_events());
-                fragmentTransaction.commit(); */
-
             }
         });
         return view;
@@ -149,13 +137,13 @@ public class reviewFragment extends Fragment implements Igen {
         super.onViewCreated(view, savedInstanceState);
 
         //Get textViews
-        subjectTV = view.findViewById(R.id.textViewSubjectMoreInfo);
-        locationTV = view.findViewById(R.id.textViewLocationMoreInfo);
-        descriptionTV = view.findViewById(R.id.textViewDescriptionMoreInfo);
-        dateTV = view.findViewById(R.id.textViewDateMoreInfo);
-        startTimeTV = view.findViewById(R.id.textViewTimeMoreInfo);
-        tagsTV = view.findViewById(R.id.textViewTagsMoreInfo);
-        clubsTV = view.findViewById(R.id.textViewClubsMoreInfo);
+        subjectTV = view.findViewById(R.id.textViewSubjectReview);
+        locationTV = view.findViewById(R.id.textViewLocationReview);
+        descriptionTV = view.findViewById(R.id.textViewDescriptionReview);
+        dateTV = view.findViewById(R.id.textViewDateReview);
+        startTimeTV = view.findViewById(R.id.textViewTimeReview);
+        tagsTV = view.findViewById(R.id.textViewTagsReview);
+        clubsTV = view.findViewById(R.id.textViewClubsReview);
 
         // Get info
         Bundle bundle = this.getArguments();
@@ -180,7 +168,12 @@ public class reviewFragment extends Fragment implements Igen {
             locationTV.setText(location);
             descriptionTV.setText(description);
             dateTV.setText(date);
-            startTimeTV.setText(startTime + " - " + endTime);
+            if(endTime != ""){
+                startTimeTV.setText(startTime + " - " + endTime);
+            }
+            else{
+                startTimeTV.setText(startTime);
+            }
             tagsTV.setText(tags);
             clubsTV.setText(clubs);
         }
@@ -233,7 +226,6 @@ public class reviewFragment extends Fragment implements Igen {
         event.setEnd(End);
         event.setTag(Tag);
 
-
         eventRef.add(event).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
@@ -241,13 +233,11 @@ public class reviewFragment extends Fragment implements Igen {
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, new general_events());
                 fragmentTransaction.commit();
-                Log.d("database", "Finished submiting reviewed event to database");
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "You do not have permission.", Toast.LENGTH_SHORT).show();
             }
         });
     }
