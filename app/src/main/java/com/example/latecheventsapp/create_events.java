@@ -26,8 +26,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.latecheventsapp.data.TagAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.ParseException;
 import java.text.ParsePosition;
@@ -76,22 +82,26 @@ public class create_events extends Fragment implements TagListener{
     private Button tagButton;
     private boolean tagIsVisible = false;
     TagAdapter tagAdapter;
-    private ArrayList<String> selectedTags;
 
     // Club Accordion Variables
     private ScrollView clubScrollView;
     private RecyclerView clubRecyclerView;
     private Button clubButton;
     private boolean clubIsVisible = false;
-    private ArrayList<String> selectedClubs;
 
     // Check Input Text Variables
     TextInputEditText subjectEditText;
     TextInputEditText locationEditText;
     TextInputEditText descriptionEditText;
 
-    // Display Msg
-    Snackbar mySnackbar;
+    private FirebaseFirestore mDatabase = FirebaseFirestore.getInstance();
+    private CollectionReference tagCollection = mDatabase.collection("Tag");
+    private CollectionReference clubCollection = mDatabase.collection("clubs");
+
+    int day_of_week;
+    int month;
+    int day;
+
 
     // String array for holding all information for Review page
     static public String[] eventInfo;
@@ -131,8 +141,14 @@ public class create_events extends Fragment implements TagListener{
                 Calendar c = Calendar.getInstance();
                 c.set(Calendar.HOUR_OF_DAY, hour);
                 c.set(Calendar.MINUTE, min);
+                c.set(Calendar.MONTH, month);
+                c.set(Calendar.DAY_OF_WEEK, day_of_week);
+                c.set(Calendar.DAY_OF_MONTH, day);
                 c.setTimeZone(TimeZone.getDefault());
+
+                SimpleDateFormat aformat = new SimpleDateFormat("h:mm:a");
                 startTime24 = c.getTime();
+
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
                 startTime = format.format(c.getTime());
                 startTimeButton.setText(startTime);
@@ -152,8 +168,19 @@ public class create_events extends Fragment implements TagListener{
                 Calendar c = Calendar.getInstance();
                 c.set(Calendar.HOUR_OF_DAY, hour);
                 c.set(Calendar.MINUTE, min);
+                c.set(Calendar.MONTH, month);
+                c.set(Calendar.DAY_OF_WEEK, day_of_week);
+                c.set(Calendar.DAY_OF_MONTH, day);
+
+
                 c.setTimeZone(TimeZone.getDefault());
+
+
                 endTime24 = c.getTime();
+
+
+                Toast.makeText(getContext(), endTime24.toString(), Toast.LENGTH_SHORT).show();
+
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
                 endTime = format.format(c.getTime());
                 endTimeButton.setText(endTime);
@@ -179,8 +206,9 @@ public class create_events extends Fragment implements TagListener{
 
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
+        month = cal.get(Calendar.MONTH);
+        day = cal.get(Calendar.DAY_OF_MONTH);
+        day_of_week = cal.get(Calendar.DAY_OF_WEEK);
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
@@ -258,13 +286,17 @@ public class create_events extends Fragment implements TagListener{
 
             ParsePosition pos = new ParsePosition(0);
 
+
+
             try {
-                startTime24 = new SimpleDateFormat("h:mm:a").parse(startTime);
+                startTime24 = new SimpleDateFormat("HH:mm:a").parse(startTime);
+                Toast.makeText(getContext(), "ST: " + startTime24.toString(), Toast.LENGTH_SHORT).show();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             try {
                 endTime24 = new SimpleDateFormat("h:mm:a").parse(endTime);
+                Toast.makeText(getContext(), endTime24.toString(), Toast.LENGTH_SHORT).show();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -382,8 +414,6 @@ public class create_events extends Fragment implements TagListener{
             }
         });
 
-
-
         return view;
     }
 
@@ -396,8 +426,10 @@ public class create_events extends Fragment implements TagListener{
         bundle.putString("date", dateButton.getText().toString());
 
         bundle.putString("startTime", startTime);
+        bundle.putString("sAllTime", startTime24.toString());
         CharSequence base = "NO END";
         if(endTimeButton != base){
+            bundle.putString("eAllTime", endTime24.toString());
             bundle.putString("endTime", endTime);
         }
         else{
@@ -458,22 +490,36 @@ public class create_events extends Fragment implements TagListener{
     //TODO: Connect this function to the database to get the preset tags.
     private ArrayList<String> getTagData(){
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("Food");
-        arrayList.add("Music");
-        arrayList.add("Tutoring");
-        arrayList.add("GeekLife");
-        arrayList.add("Party");
+        tagCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()){
+                    for(QueryDocumentSnapshot tags: queryDocumentSnapshots){
+                        arrayList.add(tags.getString("Tag_Name"));
+                    }
+                }
+
+            }
+        });
+
         return arrayList;
     }
 
     //TODO: Connect this function to the database to get the preset clubs.
     private ArrayList<String> getClubData(){
         ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("A");
-        arrayList.add("B");
-        arrayList.add("C");
-        arrayList.add("D");
-        arrayList.add("E");
+        clubCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()){
+                    for(QueryDocumentSnapshot tags: queryDocumentSnapshots){
+                        arrayList.add(tags.getString("Club_Name"));
+                    }
+                }
+
+            }
+        });
+
         return arrayList;
     }
 

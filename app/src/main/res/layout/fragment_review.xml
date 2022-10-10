@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textViewLocationMoreInfo"
+                android:id="@+id/textViewLocationReview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -37,7 +37,7 @@
                 app:layout_constraintVertical_bias="0.109" />
 
             <TextView
-                android:id="@+id/textViewTimeMoreInfo"
+                android:id="@+id/textViewTimeReview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -51,7 +51,7 @@
                 app:layout_constraintVertical_bias="0.108" />
 
             <TextView
-                android:id="@+id/textViewSubjectMoreInfo"
+                android:id="@+id/textViewSubjectReview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -65,7 +65,7 @@
                 app:layout_constraintVertical_bias="0.027" />
 
             <TextView
-                android:id="@+id/textViewDateMoreInfo"
+                android:id="@+id/textViewDateReview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -107,7 +107,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textViewClubsMoreInfo"
+                            android:id="@+id/textViewClubsReview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingBottom="5dp"
@@ -116,7 +116,7 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/textViewTagsMoreInfo"
+                            android:id="@+id/textViewTagsReview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingBottom="10dp"
@@ -125,7 +125,7 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/textViewDescriptionMoreInfo"
+                            android:id="@+id/textViewDescriptionReview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"

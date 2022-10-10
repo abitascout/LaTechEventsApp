@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,9 +32,9 @@ import java.util.Map;
 public class SignUp extends AppCompatActivity {
     private EditText EmailTxt, PasswordTxt1, PasswordTxt2;
     private Button SignUpBtn, BackBtn;
-
     private FirebaseAuth fAuth;
     private FirebaseFirestore fstore;
+    private ProgressBar LoadingPB;
 
 
     @Override
@@ -46,6 +47,7 @@ public class SignUp extends AppCompatActivity {
         PasswordTxt2 = findViewById(R.id.password2);
         SignUpBtn = findViewById(R.id.sign_up_page_nav_button);
         BackBtn = findViewById(R.id.back);
+        LoadingPB = findViewById(R.id.loading);
 
         fAuth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
@@ -60,6 +62,7 @@ public class SignUp extends AppCompatActivity {
                 if (TextUtils.isEmpty(E) && TextUtils.isEmpty(P1) && TextUtils.isEmpty(P2)) {
                     Toast.makeText(SignUp.this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
                 }
+                LoadingPB.setVisibility(View.VISIBLE);
                 fAuth.createUserWithEmailAndPassword(E,P2).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -70,9 +73,10 @@ public class SignUp extends AppCompatActivity {
                             Map<String,Object> userInfo = new HashMap<>();
                             userInfo.put("Email",EmailTxt.getText().toString());
                             userInfo.put("Password",PasswordTxt2.getText().toString());
-                            userInfo.put("privilege","A");
-
+                            userInfo.put("privilege","B");
                             df.set(userInfo);
+
+                            user.sendEmailVerification();
 
                             Intent i = new Intent(SignUp.this, Login.class);
                             startActivity(i);

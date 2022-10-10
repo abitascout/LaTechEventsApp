@@ -70,10 +70,8 @@ public class Login extends AppCompatActivity {
                 fAuth.signInWithEmailAndPassword(E,P).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful() ) {
-                            Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = fAuth.getCurrentUser();
-                            checkIfAdmin(user.getUid());
+                        if (task.isSuccessful()) {
+                            checkEmailVerification();
 
                         }
                         else {
@@ -95,6 +93,14 @@ public class Login extends AppCompatActivity {
         });
 
     }
+
+    private void checkEmailVerification() {
+        FirebaseUser user = fAuth.getInstance().getCurrentUser();
+        if (user.isEmailVerified()) {
+            checkIfAdmin(user.getUid());
+        }
+    }
+
     private void checkIfAdmin(String id) {
         DocumentReference df = fstore.collection("users").document(id);
         df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -102,10 +108,12 @@ public class Login extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("TAG","onSuccess: "+ documentSnapshot.getData());
                 if(documentSnapshot.getString("privileges")=="B") {
+                    Toast.makeText(Login.this, "Normal Log in Successful", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(Login.this, MainActivity.class);
                     startActivity(i);
                 }
                 else {
+                    Toast.makeText(Login.this, "Admin Log in Successful", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(Login.this, MainActivity.class);
                     startActivity(i);
                 }
