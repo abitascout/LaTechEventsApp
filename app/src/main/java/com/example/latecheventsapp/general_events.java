@@ -231,7 +231,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
 
     // populates the eventArrayList with the initial data
     private void testChangeListener() {
-        eventRef.orderBy("Start", Query.Direction.ASCENDING).orderBy("Event_Name", Query.Direction.ASCENDING)
+        eventRef.orderBy("start", Query.Direction.ASCENDING).orderBy("event_Name", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -367,7 +367,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         Fragment fragment = new moreInfoFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, new moreInfoFragment()).commit();
+        fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
 
     }
 
