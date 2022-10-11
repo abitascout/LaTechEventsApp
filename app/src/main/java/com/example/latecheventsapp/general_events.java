@@ -2,7 +2,6 @@ package com.example.latecheventsapp;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +13,8 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -81,9 +82,10 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         View view = inflater.inflate(R.layout.fragment_general_events, container, false);
 
 
-        view = create_handler(view);
+
         view = Swiping(view);
         view = genSearch(view);
+
 
         view.findViewById(R.id.All_button)
                 .setOnClickListener(new View.OnClickListener() {
@@ -121,14 +123,15 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                         TutorFilter(v);
                     }
                 });
-        view.findViewById(R.id.Club_button)
+       /* view.findViewById(R.id.Club_button)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ClubFilter(v);
                     }
-                });
+                });*/
 
+        view = create_handler(view);
 
         return view;
     }
@@ -292,8 +295,12 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                 }
             } else {
                 if (event.getClub_Name().toLowerCase().contains(selectedFilter.toLowerCase())) {
-                    Fevents.add(event);
+                    if(event.getEvent_Name().toLowerCase().contains(currnetSearch.toLowerCase()))
+                    {
+                        Fevents.add(event);
+                    }
                 }
+
             }
         }
         GenAdapter filterAdapter = new GenAdapter(getContext(), Fevents, this::onEventClick);
@@ -353,10 +360,14 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onEventClick(int position) {
         Log.d(TAG, "onEventClick: clicked ");
-
-        Intent intent = new Intent(getContext(), moreInfoFragment.class);
-        intent.putExtra("event", eventArrayList.get(position));
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        Event tempevent = eventArrayList.get(position);
+        bundle.putParcelable("event",tempevent);
+        getParentFragmentManager().setFragmentResult("dataFromGen", bundle);
+        Fragment fragment = new moreInfoFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, new moreInfoFragment()).commit();
 
     }
 

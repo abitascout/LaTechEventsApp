@@ -78,14 +78,14 @@ public class Event implements Parcelable {
     }
 
 
-    public Event (Parcel in){
-        this.Event_Name = in.readString();
-        this.Event_Desc = in.readString();
-        this.Location = in.readString();
+    private Event (Parcel in){
         this.Club_Name = in.readString();
-        this.Start = (Timestamp) in.readValue(getClass().getClassLoader());
         this.End = (Timestamp) in.readValue(getClass().getClassLoader());
-
+        this.Event_Desc = in.readString();
+        this.Event_Name = in.readString();
+        this.Location = in.readString();
+        this.Start = (Timestamp) in.readValue(getClass().getClassLoader());
+        this.Tag = in.readString();
     }
 
     @Override
@@ -95,12 +95,14 @@ public class Event implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(this.Event_Name);
-        dest.writeString(this.Event_Desc);
         dest.writeString(this.Club_Name);
+        dest.writeString(valueOf(this.End));
+        dest.writeString(this.Event_Desc);
+        dest.writeString(this.Event_Name);
         dest.writeString(this.Location);
         dest.writeString(valueOf(this.Start));
-        dest.writeString(valueOf(this.End));
+        dest.writeString(this.Tag);
+
 
     }
 }

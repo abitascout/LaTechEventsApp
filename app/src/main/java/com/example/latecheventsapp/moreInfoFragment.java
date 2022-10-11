@@ -1,31 +1,31 @@
 package com.example.latecheventsapp;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
+
+import com.example.latecheventsapp.data.model.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
 public class moreInfoFragment extends Fragment {
+
+
     String subject;
     String location;
     String description;
@@ -39,7 +39,7 @@ public class moreInfoFragment extends Fragment {
     TextView subjectTV;
     TextView locationTV;
     TextView descriptionTV;
-    TextView dateTV;
+    TextView endTimeTV;
     TextView startTimeTV;
     TextView tagsTV;
     TextView clubsTV;
@@ -62,6 +62,8 @@ public class moreInfoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -74,34 +76,61 @@ public class moreInfoFragment extends Fragment {
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("More Information");
 
+        getParentFragmentManager().setFragmentResultListener("dataFromGen", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                Event tempevent = result.getParcelable("event");
+                subject = tempevent.getEvent_Name();
+                location = tempevent.getLocation();
+                description = tempevent.getEvent_Desc();
+                SimpleDateFormat spf = new SimpleDateFormat(" EEE, d MMM hh:mm aaa");
+                Timestamp start_temp = tempevent.getStart();
+                Date start_date =start_temp.toDate();
+                Date end_date = tempevent.getEnd().toDate();
+                String start = spf.format(start_date);
+                String end = spf.format(end_date);
+                startTime = start;
+                endTime = end;
+                tags = tempevent.getTag();
+                clubs = tempevent.getClub_Name();
+
+
+                subjectTV.setText(subject);
+                locationTV.setText(location);
+                descriptionTV.setText(description);
+                startTimeTV.setText(startTime); //TODO: pull date data from start or end time from docref.
+                endTimeTV.setText(endTime); //TODO: Concat start and end time.
+
+                tagsTV.setText(tags);
+                clubsTV.setText(clubs);
+            }
+        });
+
+
+
 
 
         //Get text ref
         subjectTV = view.findViewById(R.id.textViewSubjectMoreInfo);
         locationTV = view.findViewById(R.id.textViewLocationMoreInfo);
         descriptionTV = view.findViewById(R.id.textViewDescriptionMoreInfo);
-        dateTV = view.findViewById(R.id.textViewDateMoreInfo);
-        startTimeTV = view.findViewById(R.id.textViewTimeMoreInfo);
+        startTimeTV = view.findViewById(R.id.textViewStartMoreInfo);
+        endTimeTV = view.findViewById(R.id.textViewEndMoreInfo);
         tagsTV = view.findViewById(R.id.textViewTagsMoreInfo);
         clubsTV = view.findViewById(R.id.textViewClubsMoreInfo);
+/*
 
         Bundle rbundle = this.getArguments();
 
         if(rbundle != null){
-            docPath = rbundle.getString("docPath", "");
+            docPath = rbundle.getParcelable("event");
         }
 
         //Get event information
         getEventInfo();
+*/
 
-        subjectTV.setText(subject);
-        locationTV.setText(location);
-        descriptionTV.setText(description);
-        dateTV.setText(date); //TODO: pull date data from start or end time from docref.
-        startTimeTV.setText(startTime); //TODO: Concat start and end time.
 
-        tagsTV.setText(tags);
-        clubsTV.setText(clubs);
 
 
 
