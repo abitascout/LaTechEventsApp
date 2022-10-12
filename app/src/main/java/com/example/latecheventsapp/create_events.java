@@ -111,7 +111,6 @@ public class create_events extends Fragment implements TagListener{
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static create_events newInstance() {
         create_events fragment = new create_events();
         Bundle args = new Bundle();
@@ -172,14 +171,9 @@ public class create_events extends Fragment implements TagListener{
                 c.set(Calendar.DAY_OF_WEEK, day_of_week);
                 c.set(Calendar.DAY_OF_MONTH, day);
 
-
                 c.setTimeZone(TimeZone.getDefault());
 
-
                 endTime24 = c.getTime();
-
-
-                Toast.makeText(getContext(), endTime24.toString(), Toast.LENGTH_SHORT).show();
 
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
                 endTime = format.format(c.getTime());

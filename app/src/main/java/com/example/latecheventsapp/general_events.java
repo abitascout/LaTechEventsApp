@@ -82,6 +82,9 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_general_events, container, false);
 
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("General Events");
+
         view = Swiping(view);
         view = genSearch(view);
 
