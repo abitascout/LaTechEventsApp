@@ -260,10 +260,10 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
 
             @Override
             public boolean onQueryTextChange(String s) {
-                currnetSearch = s;
+                currnetSearch = s.stripLeading();
                 filteredEvents.clear();
                 for (Event event : eventArrayList) {
-                    if (event.getEvent_Name().toLowerCase().contains(s.toLowerCase())) {
+                    if (event.getEvent_Name().toLowerCase().contains(currnetSearch.toLowerCase())) {
                         if (selectedFilter.equals("all"))
                             filteredEvents.add(event);
                         else {
