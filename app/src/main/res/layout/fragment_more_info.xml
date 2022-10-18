@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".moreInfoFragment">
+    tools:context=".moreInfoFragment"
+    android:background="@color/tech_blue">
 
     <!-- TODO: Update blank fragment layout -->
 
