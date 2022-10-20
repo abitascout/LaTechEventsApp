@@ -9,18 +9,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.latecheventsapp.data.model.Event;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class moreInfoFragment extends Fragment {
@@ -83,12 +82,16 @@ public class moreInfoFragment extends Fragment {
                 subject = tempevent.getEvent_Name();
                 location = tempevent.getLocation();
                 description = tempevent.getEvent_Desc();
-                SimpleDateFormat spf = new SimpleDateFormat(" EEE, d MMM hh:mm aaa");
+                SimpleDateFormat spfDate = new SimpleDateFormat("EEE, MMM d");
+                SimpleDateFormat spf = new SimpleDateFormat("hh:mm aaa");
                 Timestamp start_temp = tempevent.getStart();
+                Date start_day = start_temp.toDate();
                 Date start_date =start_temp.toDate();
                 Date end_date = tempevent.getEnd().toDate();
+                String day = spfDate.format(start_day);
                 String start = spf.format(start_date);
                 String end = spf.format(end_date);
+                date =day;
                 startTime = start;
                 endTime = end;
                 tags = tempevent.getTag();
@@ -98,8 +101,9 @@ public class moreInfoFragment extends Fragment {
                 subjectTV.setText(subject);
                 locationTV.setText(location);
                 descriptionTV.setText(description);
-                startTimeTV.setText(startTime); //TODO: pull date data from start or end time from docref.
-                endTimeTV.setText(endTime); //TODO: Concat start and end time.
+                startTimeTV.setText(date);
+                String tim = String.format(" %1$s - %2$s",startTime,endTime);
+                endTimeTV.setText(tim);
 
                 tagsTV.setText(tags);
                 clubsTV.setText(clubs);
@@ -108,7 +112,7 @@ public class moreInfoFragment extends Fragment {
 
 
 
-
+         FloatingActionButton back = view.findViewById(R.id.buttonGen);
 
         //Get text ref
         subjectTV = view.findViewById(R.id.textViewSubjectMoreInfo);
@@ -118,19 +122,17 @@ public class moreInfoFragment extends Fragment {
         endTimeTV = view.findViewById(R.id.textViewEndMoreInfo);
         tagsTV = view.findViewById(R.id.textViewTagsMoreInfo);
         clubsTV = view.findViewById(R.id.textViewClubsMoreInfo);
-/*
 
-        Bundle rbundle = this.getArguments();
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = new general_events();
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
 
-        if(rbundle != null){
-            docPath = rbundle.getParcelable("event");
-        }
-
-        //Get event information
-        getEventInfo();
-*/
-
-
+            }
+        });
 
 
 
@@ -138,7 +140,7 @@ public class moreInfoFragment extends Fragment {
         return view;
     }
 
-    private void getEventInfo(){
+   /* private void getEventInfo(){
         mDatabase.collection("Events").document(docPath).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -162,7 +164,7 @@ public class moreInfoFragment extends Fragment {
                 }
             }
         });
-            /*public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            *//*public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
@@ -185,9 +187,9 @@ public class moreInfoFragment extends Fragment {
                     }
                 }
             }
-        }); */
+        }); *//*
         ArrayList<String> arrayList = new ArrayList<>();
-        /*eventCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        *//*eventCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if(!queryDocumentSnapshots.isEmpty()){
@@ -198,6 +200,6 @@ public class moreInfoFragment extends Fragment {
                 }
 
             }
-        }); */
-    }
+        }); *//*
+    }*/
 }

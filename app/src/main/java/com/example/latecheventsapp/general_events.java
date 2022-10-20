@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -74,6 +76,23 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         super.onCreate(savedInstanceState);
     }
 
+    private void unSelectAllFilters(Button bt1, Button bt2, Button bt3, Button bt4, Button bt5){
+        lookUnSelected(bt1);
+        lookUnSelected(bt2);
+        lookUnSelected(bt3);
+        lookUnSelected(bt4);
+        lookUnSelected(bt5);
+    }
+
+    private void lookSelected(Button parsedButton)
+    {
+        parsedButton.setTextColor(ContextCompat.getColor(getContext(), R.color.tech_Red));
+        parsedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+    }
+    private void lookUnSelected(Button parsedButton){
+        parsedButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        parsedButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.tech_Red));
+    }
 
     @Nullable
     @Override
@@ -84,45 +103,60 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
 
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("General Events");
-
+        Button allBtn = view.findViewById(R.id.All_button);
+        Button partyBtn = view.findViewById(R.id.Party_button);
+        Button foodBtn =  view.findViewById(R.id.Food_button);
+        Button greekBtn=  view.findViewById(R.id.Greek_button);
+        Button tutorBtn =  view.findViewById(R.id.Tutor_button);
         view = Swiping(view);
         view = genSearch(view);
 
 
-        view.findViewById(R.id.All_button)
-                .setOnClickListener(new View.OnClickListener() {
+
+        allBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         AllFilterTapped();
-                    }
-                });
-        view.findViewById(R.id.Party_button)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        PartyFilter(v);
-                    }
-                });
-        view.findViewById(R.id.Food_button)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        FoodFilter(v);
+                        unSelectAllFilters(allBtn,partyBtn,foodBtn,greekBtn,tutorBtn);
+                        lookSelected(allBtn);
                     }
                 });
 
-        view.findViewById(R.id.Greek_button)
-                .setOnClickListener(new View.OnClickListener() {
+        partyBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PartyFilter(v);
+                        unSelectAllFilters(allBtn,partyBtn,foodBtn,greekBtn,tutorBtn);
+                        lookSelected(partyBtn);
+                    }
+                });
+
+        foodBtn.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        FoodFilter(v);
+                        unSelectAllFilters(allBtn,partyBtn,foodBtn,greekBtn,tutorBtn);
+                        lookSelected(foodBtn);
+                    }
+                });
+
+
+        greekBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         GreekFilter(v);
+                        unSelectAllFilters(allBtn,partyBtn,foodBtn,greekBtn,tutorBtn);
+                        lookSelected(greekBtn);
                     }
                 });
-        view.findViewById(R.id.Tutor_button)
-                .setOnClickListener(new View.OnClickListener() {
+
+        tutorBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         TutorFilter(v);
+                        unSelectAllFilters(allBtn,partyBtn,foodBtn,greekBtn,tutorBtn);
+                        lookSelected(tutorBtn);
                     }
                 });
        /* view.findViewById(R.id.Club_button)
@@ -329,7 +363,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     public void TutorFilter(View view) {
-        FilterList("Tutor");
+        FilterList("Tutoring");
     }
 
     public void ClubFilter(View view) {
