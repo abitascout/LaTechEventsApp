@@ -422,7 +422,7 @@ public class create_events extends Fragment implements TagListener{
         bundle.putString("startTime", startTime);
         bundle.putString("sAllTime", startTime24.toString());
         CharSequence base = "NO END";
-        if(endTimeButton != base){
+        if(endTime24 != null){
             bundle.putString("eAllTime", endTime24.toString());
             bundle.putString("endTime", endTime);
         }

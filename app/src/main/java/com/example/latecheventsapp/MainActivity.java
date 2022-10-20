@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -25,13 +27,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     Toolbar toolbar;
+    private FirebaseAuth fAuth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        fAuth = FirebaseAuth.getInstance();
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("General Events");
         setSupportActionBar(toolbar);
@@ -43,6 +46,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Set username, email
+        FirebaseUser fbUser = fAuth.getCurrentUser();
+        if(fbUser != null){
+            String email = fbUser.getEmail();
+            String[] splitEmail = email.split("@");
+
+            TextView txtUsername = (TextView) navigationView.getHeaderView(0).findViewById(R.id.username);
+            txtUsername.setText(splitEmail[0]);
+
+            TextView txtEmail = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email);
+            txtEmail.setText(email);
+        }
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener((toggle));
