@@ -23,7 +23,7 @@
             android:iconifiedByDefault="false"
             android:queryHint="Search Events"
             app:layout_anchor="@+id/swiper"
-            android:background="@color/white"
+            android:background="@color/tech_Red"
             app:layout_anchorGravity="top|center" />
                 <LinearLayout
                     android:layout_width="match_parent"

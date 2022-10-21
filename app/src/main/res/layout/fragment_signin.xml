@@ -25,6 +25,7 @@
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
         android:textColorHint="#757575"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,6 +44,7 @@
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
         android:textColorHint="#757575"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"

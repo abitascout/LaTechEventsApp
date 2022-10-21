@@ -87,26 +87,34 @@ public class moreInfoFragment extends Fragment {
                 Timestamp start_temp = tempevent.getStart();
                 Date start_day = start_temp.toDate();
                 Date start_date =start_temp.toDate();
-                Date end_date = tempevent.getEnd().toDate();
                 String day = spfDate.format(start_day);
                 String start = spf.format(start_date);
-                String end = spf.format(end_date);
                 date =day;
                 startTime = start;
-                endTime = end;
                 tags = tempevent.getTag();
                 clubs = tempevent.getClub_Name();
-
-
                 subjectTV.setText(subject);
                 locationTV.setText(location);
                 descriptionTV.setText(description);
                 startTimeTV.setText(date);
-                String tim = String.format(" %1$s - %2$s",startTime,endTime);
-                endTimeTV.setText(tim);
-
                 tagsTV.setText(tags);
                 clubsTV.setText(clubs);
+                if(tempevent.getEnd() != null)
+                {
+                    Date end_date = tempevent.getEnd().toDate();
+                    String end = spf.format(end_date);
+                    endTime = end;
+                    String tim = String.format("%1$s - %2$s",startTime,endTime);
+                    endTimeTV.setText(tim);
+                }
+                else
+                {
+                    String timm = String.format("%1$s",startTime);
+                    endTimeTV.setText(timm);
+                }
+
+
+
             }
         });
 
