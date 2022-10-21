@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".moreInfoFragment">
+    tools:context=".moreInfoFragment"
+    android:background="@color/tech_blue"
+    android:id="@+id/constraintLayout1">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
         android:layout_width="383dp"
         android:layout_height="619dp"
         android:layout_marginTop="75dp"
@@ -33,7 +35,7 @@
             app:layout_constraintVertical_bias="0.109" />
 
         <TextView
-            android:id="@+id/textViewTimeMoreInfo"
+            android:id="@+id/textViewEndMoreInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
@@ -61,7 +63,7 @@
             app:layout_constraintVertical_bias="0.027" />
 
         <TextView
-            android:id="@+id/textViewDateMoreInfo"
+            android:id="@+id/textViewStartMoreInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
@@ -129,7 +131,23 @@
                         android:textSize="20sp" />
                 </LinearLayout>
             </ScrollView>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonGen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/tech_Red"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout1"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout1"
+        tools:ignore="SpeakableTextPresentCheck"
+        tools:src="@tools:sample/backgrounds/scenic"
+        android:rotation="180"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

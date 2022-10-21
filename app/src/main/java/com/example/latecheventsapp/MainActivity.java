@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Toolbar toolbar;
 
 
     @Override
@@ -31,8 +32,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("General Events");
         setSupportActionBar(toolbar);
+
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new general_events()).commit();
 
@@ -53,17 +57,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_create_events:
+                toolbar.setTitle("Create Event");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new create_events()).commit();
                 break;
             case R.id.nav_general_events:
+                toolbar.setTitle("General Events");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new general_events()).commit();
                 break;
-            case R.id.nav_myevents:
+           /* case R.id.nav_myevents:
+                toolbar.setTitle("My Events");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyEvents()).commit();
                 break;
             case R.id.nav_preferences:
+                toolbar.setTitle("Prefrences");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new preferences()).commit();
-                break;
+                break; */
             case R.id.logout:
                 Intent i = new Intent(MainActivity.this, Login.class);
                 FirebaseAuth.getInstance().getCurrentUser();

@@ -23,7 +23,7 @@
             android:iconifiedByDefault="false"
             android:queryHint="Search Events"
             app:layout_anchor="@+id/swiper"
-            android:background="@color/white"
+            android:background="@color/tech_Red"
             app:layout_anchorGravity="top|center" />
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="match_parent"
-                            android:text="Part"
+                            android:text="Party"
                             android:id="@+id/Party_button"
                             android:backgroundTint="@color/tech_Red"
                             android:onClick="PartyFilter"
@@ -81,7 +81,7 @@
                             android:backgroundTint="@color/tech_Red"
                             android:onClick="TutorFilter"
                             />
-                        <Button
+                       <!-- <Button
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="match_parent"
@@ -89,7 +89,7 @@
                             android:id="@+id/Club_button"
                             android:backgroundTint="@color/tech_Red"
                             android:onClick="ClubFilter"
-                            />
+                            />-->
                 </LinearLayout>
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swiper"

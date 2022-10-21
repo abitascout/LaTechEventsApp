@@ -6,17 +6,30 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.latecheventsapp.data.Igen;
+import com.example.latecheventsapp.data.model.Event;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class reviewFragment extends Fragment {
+import java.util.Date;
+
+
+public class reviewFragment extends Fragment implements Igen {
 
     String subject;
     String location;
@@ -26,6 +39,8 @@ public class reviewFragment extends Fragment {
     String endTime;
     String tags;
     String clubs;
+    String eAllTime;
+    String sAllTime;
 
     TextView subjectTV;
     TextView locationTV;
@@ -41,6 +56,14 @@ public class reviewFragment extends Fragment {
 
     Bundle rbundle = new Bundle();
 
+    Timestamp stimestamp;
+
+    Timestamp etimestamp;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference eventRef = db.collection("Events");
+
+
     public reviewFragment() {
         // Required empty public constructor
     }
@@ -55,7 +78,6 @@ public class reviewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -66,7 +88,7 @@ public class reviewFragment extends Fragment {
 
         // Change Toolbar title.
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("More Information");
+        toolbar.setTitle("Review");
 
 
         editButton = view.findViewById(R.id.buttonEdit);
@@ -93,10 +115,20 @@ public class reviewFragment extends Fragment {
             public void onClick(View view) {
                 //TODO: SEND EVENT TO DATABASE
 
+                try {
+                     stimestamp = new Timestamp(new Date(sAllTime));
+                } catch(Exception e) { //this generic but you can control another types of exception
+                    // look the origin of excption
+                }
+
+                try {
+                    etimestamp = new Timestamp(new Date(eAllTime));
+                } catch(Exception e) { //this generic but you can control another types of exception
+                    // look the origin of excption
+                }
+                createEvent(subject, stimestamp, description, etimestamp, location, clubs, tags);
             }
         });
-
-
         return view;
     }
 
@@ -105,13 +137,13 @@ public class reviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //Get textViews
-        subjectTV = view.findViewById(R.id.textViewSubjectMoreInfo);
-        locationTV = view.findViewById(R.id.textViewLocationMoreInfo);
-        descriptionTV = view.findViewById(R.id.textViewDescriptionMoreInfo);
-        dateTV = view.findViewById(R.id.textViewDateMoreInfo);
-        startTimeTV = view.findViewById(R.id.textViewTimeMoreInfo);
-        tagsTV = view.findViewById(R.id.textViewTagsMoreInfo);
-        clubsTV = view.findViewById(R.id.textViewClubsMoreInfo);
+        subjectTV = view.findViewById(R.id.textViewSubjectReview);
+        locationTV = view.findViewById(R.id.textViewLocationReview);
+        descriptionTV = view.findViewById(R.id.textViewDescriptionReview);
+        dateTV = view.findViewById(R.id.textViewDateReview);
+        startTimeTV = view.findViewById(R.id.textViewTimeReview);
+        tagsTV = view.findViewById(R.id.textViewTagsReview);
+        clubsTV = view.findViewById(R.id.textViewClubsReview);
 
         // Get info
         Bundle bundle = this.getArguments();
@@ -126,6 +158,8 @@ public class reviewFragment extends Fragment {
             endTime = bundle.getString("endTime", "");
             tags = bundle.getString("tags", "");
             clubs = bundle.getString("clubs", "");
+            eAllTime = bundle.getString("eAllTime", "");
+            sAllTime = bundle.getString("sAllTime", "");
 
             stripTagsAndClubs();
 
@@ -134,7 +168,12 @@ public class reviewFragment extends Fragment {
             locationTV.setText(location);
             descriptionTV.setText(description);
             dateTV.setText(date);
-            startTimeTV.setText(startTime + " - " + endTime);
+            if(endTime != ""){
+                startTimeTV.setText(startTime + " - " + endTime);
+            }
+            else{
+                startTimeTV.setText(startTime);
+            }
             tagsTV.setText(tags);
             clubsTV.setText(clubs);
         }
@@ -174,5 +213,32 @@ public class reviewFragment extends Fragment {
         else{
             clubs = "No Clubs";
         }
+    }
+
+    @Override
+    public void createEvent(String title, Timestamp Start, String desc, Timestamp End, String Location, String Club_Name, String Tag) {
+        Event event = new Event();
+        event.setEvent_Name(title);
+        event.setEvent_Desc(desc);
+        event.setClub_Name(Club_Name);
+        event.setStart(Start);
+        event.setLocation(Location);
+        event.setEnd(End);
+        event.setTag(Tag);
+
+        eventRef.add(event).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new general_events());
+                fragmentTransaction.commit();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "You do not have permission.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
