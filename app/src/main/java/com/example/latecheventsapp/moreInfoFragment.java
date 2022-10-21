@@ -91,14 +91,18 @@ public class moreInfoFragment extends Fragment {
                 String start = spf.format(start_date);
                 date =day;
                 startTime = start;
-                tags = tempevent.getTag();
-                clubs = tempevent.getClub_Name();
+                tags = "No Tags";
+                clubs = "No Clubs";
                 subjectTV.setText(subject);
                 locationTV.setText(location);
                 descriptionTV.setText(description);
                 startTimeTV.setText(date);
                 tagsTV.setText(tags);
                 clubsTV.setText(clubs);
+                if(tempevent.getTag() != null)
+                    tags = tempevent.getTag();
+                if(tempevent.getClub_Name() != null)
+                    clubs = tempevent.getClub_Name();
                 if(tempevent.getEnd() != null)
                 {
                     Date end_date = tempevent.getEnd().toDate();

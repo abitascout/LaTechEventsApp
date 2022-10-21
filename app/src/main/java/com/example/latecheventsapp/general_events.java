@@ -74,6 +74,8 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     private void unSelectAllFilters(Button bt1, Button bt2, Button bt3, Button bt4, Button bt5){
@@ -103,6 +105,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
 
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("General Events");
+
         Button allBtn = view.findViewById(R.id.All_button);
         Button partyBtn = view.findViewById(R.id.Party_button);
         Button foodBtn =  view.findViewById(R.id.Food_button);
