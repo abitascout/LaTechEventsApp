@@ -146,7 +146,7 @@ public class create_events extends Fragment implements TagListener{
                 c.setTimeZone(TimeZone.getDefault());
 
                 SimpleDateFormat aformat = new SimpleDateFormat("h:mm:a");
-                startTime24 = c.getTime();
+
 
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
                 startTime = format.format(c.getTime());
@@ -154,6 +154,7 @@ public class create_events extends Fragment implements TagListener{
 
                 sHour = hour;
                 sMin = min;
+                startTime24 = c.getTime();
             }
         };
         int style = AlertDialog.THEME_HOLO_LIGHT;
@@ -173,7 +174,7 @@ public class create_events extends Fragment implements TagListener{
 
                 c.setTimeZone(TimeZone.getDefault());
 
-                endTime24 = c.getTime();
+
 
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
                 endTime = format.format(c.getTime());
@@ -181,6 +182,8 @@ public class create_events extends Fragment implements TagListener{
 
                 eHour = hour;
                 eMin = min;
+
+                endTime24 = c.getTime();
             }
         };
 
