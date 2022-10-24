@@ -1,40 +1,44 @@
 package com.example.latecheventsapp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
+import com.example.latecheventsapp.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 public class SignUp extends AppCompatActivity {
     private EditText EmailTxt, PasswordTxt1, PasswordTxt2;
     private Button SignUpBtn, BackBtn;
     private FirebaseAuth fAuth;
-    private FirebaseFirestore fstore;
     private ProgressBar LoadingPB;
+    private String pr;
+
 
 
     @Override
@@ -50,11 +54,15 @@ public class SignUp extends AppCompatActivity {
         LoadingPB = findViewById(R.id.loading);
 
         fAuth = FirebaseAuth.getInstance();
-        fstore = FirebaseFirestore.getInstance();
+
+
+        pr = "B";
 
         SignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LoadingPB.setVisibility(View.VISIBLE);
+
                 String E = EmailTxt.getText().toString();
                 String P1 = PasswordTxt1.getText().toString();
                 String P2 = PasswordTxt2.getText().toString();
@@ -62,32 +70,25 @@ public class SignUp extends AppCompatActivity {
                 if (TextUtils.isEmpty(E) && TextUtils.isEmpty(P1) && TextUtils.isEmpty(P2)) {
                     Toast.makeText(SignUp.this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
                 }
-                LoadingPB.setVisibility(View.VISIBLE);
+
+                if (P1 != P2) {
+                    Toast.makeText(SignUp.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                }
+
                 fAuth.createUserWithEmailAndPassword(E,P2).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             FirebaseUser user = fAuth.getCurrentUser();
-                            Toast.makeText(SignUp.this, "User Created.", Toast.LENGTH_SHORT).show();
-                            DocumentReference df = fstore.collection("users").document(user.getUid());
-                            Map<String,Object> userInfo = new HashMap<>();
-                            userInfo.put("Email",EmailTxt.getText().toString());
-                            userInfo.put("Password",PasswordTxt2.getText().toString());
-                            userInfo.put("privilege","B");
-                            df.set(userInfo);
-
+                            LoadingPB.setVisibility(View.GONE);
+                            Toast.makeText(SignUp.this, "Sending verification email, check spam", Toast.LENGTH_SHORT).show();
                             user.sendEmailVerification();
-
                             Intent i = new Intent(SignUp.this, Login.class);
                             startActivity(i);
 
                         }
-                        else {
-                            Toast.makeText(SignUp.this, "Error ! "+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                        }
                     }
                 });
-
             }
         });
         BackBtn.setOnClickListener(new View.OnClickListener() {
@@ -98,4 +99,36 @@ public class SignUp extends AppCompatActivity {
             }
         });
     }
+
+    public static byte[] getSHA(String input) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        return md.digest(input.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String toHexString(byte[] hash) {
+        BigInteger number = new BigInteger(1,hash);
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+        while (hexString.length()<64) {
+            hexString.insert(0,"0");
+        }
+        return hexString.toString();
+    }
+
+   // private void createUser(String Email, String Privilges) {
+     //   LoadingPB.setVisibility(View.VISIBLE);
+       // User user = new User();
+        //user.setEmail(Email);
+        //user.setprivilege(Privilges);
+        //userRef.add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+          //  @Override
+          //  public void onSuccess(DocumentReference documentReference) {
+           //     FirebaseUser user = fAuth.getCurrentUser();
+           //     Toast.makeText(SignUp.this, "Sending verification email, check spam", Toast.LENGTH_SHORT).show();
+           //     user.sendEmailVerification();
+           //     LoadingPB.setVisibility(View.GONE);
+           //     Intent i = new Intent(SignUp.this, Login.class);
+           //     startActivity(i);
+        //    }
+    //    });
+  //  }
 }

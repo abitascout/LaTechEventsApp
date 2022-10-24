@@ -43,7 +43,7 @@ public class Login extends AppCompatActivity {
 
 
 
-    boolean valid = true;
+
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,13 +66,14 @@ public class Login extends AppCompatActivity {
                 if (TextUtils.isEmpty(E) && TextUtils.isEmpty(P)) {
                     Toast.makeText(Login.this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
                 }
+
                 LoadingPB.setVisibility(View.VISIBLE);
                 fAuth.signInWithEmailAndPassword(E,P).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Toast.makeText(Login.this, "checking to see if email is verified", Toast.LENGTH_SHORT).show();
                             checkEmailVerification();
-
                         }
                         else {
                             Toast.makeText(Login.this, "Error !", Toast.LENGTH_SHORT).show();
@@ -97,7 +98,14 @@ public class Login extends AppCompatActivity {
     private void checkEmailVerification() {
         FirebaseUser user = fAuth.getInstance().getCurrentUser();
         if (user.isEmailVerified()) {
-            checkIfAdmin(user.getUid());
+            Toast.makeText(Login.this, "Checking to see if you are admin", Toast.LENGTH_SHORT).show();
+            LoadingPB.setVisibility(View.GONE);
+            Intent i = new Intent(Login.this, MainActivity.class);
+            startActivity(i);
+        }
+        else {
+            Toast.makeText(Login.this, "You dumb bitch", Toast.LENGTH_SHORT).show();
+            LoadingPB.setVisibility(View.GONE);
         }
     }
 
