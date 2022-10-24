@@ -74,6 +74,8 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     private void unSelectAllFilters(Button bt1, Button bt2, Button bt3, Button bt4, Button bt5){
@@ -103,6 +105,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
 
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("General Events");
+
         Button allBtn = view.findViewById(R.id.All_button);
         Button partyBtn = view.findViewById(R.id.Party_button);
         Button foodBtn =  view.findViewById(R.id.Food_button);
@@ -193,12 +196,13 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                             Event temp = snap.toObject(Event.class);
                             Date date = new Date();
                             Date eventDate = temp.getStart().toDate();
-                            if(eventDate.compareTo(date) >= 0){
+
                                 switch (dc.getType()) {
                                     case ADDED:
                                         boolean tempswitch = checking(temp);
                                         if (!tempswitch)
-                                            eventArrayList.add(temp);
+                                            if(eventDate.compareTo(date) >= 0)
+                                                eventArrayList.add(temp);
                                         break;
                                     case MODIFIED:
                                         eventArrayList.remove(oldIndex);
@@ -210,7 +214,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                                             eventArrayList.remove(tempEvent);
 
 
-                                }
+
                             }
                             eventArrayList.sort(Comparator.comparing(e -> e.getStart()));
 
@@ -218,8 +222,8 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                     }
                 });
 
-                adapter.notifyDataSetChanged();
-                recyclerView.setAdapter(adapter);
+                GenAdapter refreshAdapter = new GenAdapter(getContext(), eventArrayList, general_events.this::onEventClick);
+                recyclerView.setAdapter(refreshAdapter);
                 swipeRefreshLayout.setRefreshing(false);
 
             }

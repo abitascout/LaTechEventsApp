@@ -2,14 +2,10 @@ package com.example.latecheventsapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,8 +16,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
@@ -47,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         // Set username, email
         FirebaseUser fbUser = fAuth.getCurrentUser();
         if(fbUser != null){
@@ -60,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             txtEmail.setText(email);
         }
 
+
+
+        navigationView.setCheckedItem(R.id.nav_general_events);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener((toggle));
