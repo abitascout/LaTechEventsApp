@@ -127,10 +127,13 @@ public class reviewFragment extends Fragment implements Igen {
                 try {
                     etimestamp = new Timestamp(new Date(eAllTime));
                 } catch(Exception e) { //this generic but you can control another types of exception
-                    // look the origin of excption
+
                 }
 
                 createEvent(subject, stimestamp, description, etimestamp, location, clubs, tags);
+
+
+                //createEvent(subject, stimestamp, description, stimestamp, location, clubs, tags);
 
             }
         });
