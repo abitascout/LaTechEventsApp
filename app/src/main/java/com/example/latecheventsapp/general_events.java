@@ -111,7 +111,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         Button foodBtn =  view.findViewById(R.id.Food_button);
         Button greekBtn=  view.findViewById(R.id.Greek_button);
         Button tutorBtn =  view.findViewById(R.id.Tutor_button);
-        view = Swiping(view);
+
         view = genSearch(view);
 
 
@@ -171,6 +171,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                 });*/
 
         view = create_handler(view);
+        view = Swiping(view);
 
         return view;
     }
@@ -184,7 +185,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onRefresh() {
 
-                eventRef.addSnapshotListener((Activity) getContext(), new EventListener<QuerySnapshot>() {
+                eventRef.addSnapshotListener((Activity) requireContext(), new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
@@ -222,7 +223,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                     }
                 });
 
-                GenAdapter refreshAdapter = new GenAdapter(getContext(), eventArrayList, general_events.this::onEventClick);
+                GenAdapter refreshAdapter = new GenAdapter(getContext(), eventArrayList, general_events.this);
                 recyclerView.setAdapter(refreshAdapter);
                 swipeRefreshLayout.setRefreshing(false);
 

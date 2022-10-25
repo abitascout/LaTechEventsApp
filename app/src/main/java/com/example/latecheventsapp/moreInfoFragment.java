@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,7 +15,6 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.latecheventsapp.data.model.Event;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -135,7 +135,7 @@ public class moreInfoFragment extends Fragment {
 
 
 
-         FloatingActionButton back = view.findViewById(R.id.buttonGen);
+         Button back = view.findViewById(R.id.buttonGen);
 
         //Get text ref
         subjectTV = view.findViewById(R.id.textViewSubjectMoreInfo);
