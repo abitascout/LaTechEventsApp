@@ -116,16 +116,19 @@ public class reviewFragment extends Fragment implements Igen {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: SEND EVENT TO DATABASE
 
                 try {
-                     stimestamp = new Timestamp(new Date(sAllTime));
+                    String tempDateString = String.format("%s %s", date,startTime);
+                    Date temp = new Date(tempDateString);
+                    stimestamp = new Timestamp(temp);
                 } catch(Exception e) { //this generic but you can control another types of exception
                     // look the origin of exception
                 }
 
                 try {
-                    etimestamp = new Timestamp(new Date(eAllTime));
+                    String tempDateString2 = String.format("%s %s", date,endTime);
+                    Date temp2 = new Date(tempDateString2);
+                    etimestamp = new Timestamp(temp2);
                 } catch(Exception e) { //this generic but you can control another types of exception
 
                 }

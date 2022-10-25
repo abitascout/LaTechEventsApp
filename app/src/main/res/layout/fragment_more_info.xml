@@ -150,5 +150,5 @@
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout1"
         tools:ignore="SpeakableTextPresentCheck"
         tools:src="@tools:sample/backgrounds/scenic"
-        android:rotation="180"/>
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

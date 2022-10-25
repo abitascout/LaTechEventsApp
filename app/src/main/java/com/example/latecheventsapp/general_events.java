@@ -231,11 +231,13 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         });
         return view;
     }
-
+    // finds it in the list
     private Event eventCheck(Event event, ArrayList<Event> eventArrayList) {
         for (int i = 0; i < eventArrayList.size(); i++) {
             String name = eventArrayList.get(i).getEvent_Name();
-            if (name.equals(event.getEvent_Name())) {
+            Date temp = eventArrayList.get(i).getStart().toDate();
+            Date eventDate = event.getStart().toDate();
+            if (name.equals(event.getEvent_Name()) && (temp.compareTo(eventDate) == 0) && event.getLocation().equals(eventArrayList.get(i).getLocation())) {
                 return eventArrayList.get(i);
             }
         }
@@ -247,7 +249,9 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     private boolean checking(Event event) {
         for (int i = 0; i < eventArrayList.size(); i++) {
             String name = eventArrayList.get(i).getEvent_Name();
-            if (name.equals(event.getEvent_Name())) {
+            Date temp = eventArrayList.get(i).getStart().toDate();
+            Date eventDate = event.getStart().toDate();
+            if (name.equals(event.getEvent_Name()) && (temp.compareTo(eventDate) == 0) && event.getLocation().equals(eventArrayList.get(i).getLocation())) {
                 return true;
             }
         }
