@@ -414,9 +414,9 @@ public class create_events extends Fragment implements TagListener{
 
 
     private void saveInformation(){
-        bundle.putString("subject", subjectEditText.getText().toString());
-        bundle.putString("location", locationEditText.getText().toString());
-        bundle.putString("description", descriptionEditText.getText().toString());
+        bundle.putString("subject", subjectEditText.getText().toString().trim().replace("\n", " "));
+        bundle.putString("location", locationEditText.getText().toString().trim().replace("\n", " "));
+        bundle.putString("description", descriptionEditText.getText().toString().trim());
 
         bundle.putString("date", dateButton.getText().toString());
 
