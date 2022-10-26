@@ -82,7 +82,7 @@
         android:layout_above="@+id/username"
         android:layout_gravity="center"
         android:layout_marginStart="32dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/sign_up_page_nav_button"
         app:layout_constraintHorizontal_bias="0.3"

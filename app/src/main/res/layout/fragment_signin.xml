@@ -102,7 +102,7 @@
         android:layout_height="54dp"
         android:layout_gravity="center"
         android:layout_marginStart="32dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/back"
         app:layout_constraintHorizontal_bias="0.312"

@@ -25,13 +25,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference users = db.collection("users");
+    CollectionReference users = db.collection("users");
     Toolbar toolbar;
 
 
@@ -104,15 +105,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void createUser(String E, String P) {
-        User user = new User();
-        user.setEmail(E);
-        user.setprivilege(P);
-        users.add(user).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
+        Query UQ = users.whereEqualTo("Email", E);
+        if (UQ == null) {
+            User user = new User();
+            user.setEmail(E);
+            user.setprivilege(P);
+            users.add(user).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentReference> task) {
 
-            }
-        });
+                }
+            });
+        }
     }
+
+
 
 }
