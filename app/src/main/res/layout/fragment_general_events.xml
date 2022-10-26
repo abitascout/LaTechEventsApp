@@ -10,7 +10,8 @@
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".general_events"
-    android:id="@+id/general">
+    android:id="@+id/general"
+    >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,8 +23,9 @@
             android:layout_height="wrap_content"
             android:iconifiedByDefault="false"
             android:queryHint="Search Events"
+
             app:layout_anchor="@+id/swiper"
-            android:background="@color/tech_Red"
+            android:background="@color/white"
             app:layout_anchorGravity="top|center" />
                 <LinearLayout
                     android:layout_width="match_parent"
