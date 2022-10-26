@@ -3,6 +3,7 @@ package com.example.latecheventsapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,14 +72,17 @@ public class SignUp extends AppCompatActivity {
                     Toast.makeText(SignUp.this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
                 }
 
-                if (P1 != P2) {
-                    Toast.makeText(SignUp.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                String pass = null;
+                try {
+                    pass = toHexString(getSHA(P2));
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
                 }
 
-                fAuth.createUserWithEmailAndPassword(E,P2).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fAuth.createUserWithEmailAndPassword(E, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             FirebaseUser user = fAuth.getCurrentUser();
                             LoadingPB.setVisibility(View.GONE);
                             Toast.makeText(SignUp.this, "Sending verification email, check spam", Toast.LENGTH_SHORT).show();

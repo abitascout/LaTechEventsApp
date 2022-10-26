@@ -59,10 +59,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String email = user.getEmail();
-        String pr = "B";
 
-        createUser(email,pr);
+
+
     }
 
     @Override
@@ -104,20 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void createUser(String E, String P) {
-        Query UQ = users.whereEqualTo("Email", E);
-        if (UQ == null) {
-            User user = new User();
-            user.setEmail(E);
-            user.setprivilege(P);
-            users.add(user).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentReference> task) {
 
-                }
-            });
-        }
-    }
 
 
 

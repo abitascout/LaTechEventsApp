@@ -30,6 +30,10 @@ import com.google.firebase.firestore.DocumentReference;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,6 +69,12 @@ public class Login extends AppCompatActivity {
                 String P = PasswordTxt.getText().toString();
                 if (TextUtils.isEmpty(E) && TextUtils.isEmpty(P)) {
                     Toast.makeText(Login.this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
+                }
+                String pass = null;
+                try {
+                    pass = toHexString(getSHA(P));
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
                 }
 
                 LoadingPB.setVisibility(View.VISIBLE);
@@ -128,6 +138,19 @@ public class Login extends AppCompatActivity {
             }
         });
 
+    }
+    public static byte[] getSHA(String input) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        return md.digest(input.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String toHexString(byte[] hash) {
+        BigInteger number = new BigInteger(1,hash);
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+        while (hexString.length()<64) {
+            hexString.insert(0,"0");
+        }
+        return hexString.toString();
     }
 
 }
