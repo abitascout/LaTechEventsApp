@@ -14,16 +14,21 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-       // if (user != null) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
             // User is signed in
             // Start home activity
-        startActivity(new Intent(SplashScreen.this, MainActivity.class));
-       // } else {
+            if (user.isEmailVerified()) {
+                startActivity(new Intent(SplashScreen.this, MainActivity.class));
+            }
+            else {
+                startActivity(new Intent(SplashScreen.this, Login.class));
+            }
+        } else {
             // No user is signed in
             // start login activity
-           // startActivity(new Intent(SplashScreen.this, Login.class));
-        //}
+           startActivity(new Intent(SplashScreen.this, Login.class));
+        }
 
         // close splash activity
         finish();

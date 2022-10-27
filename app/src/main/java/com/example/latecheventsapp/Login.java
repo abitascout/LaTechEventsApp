@@ -30,6 +30,10 @@ import com.google.firebase.firestore.DocumentReference;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +47,7 @@ public class Login extends AppCompatActivity {
 
 
 
-    boolean valid = true;
+
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,13 +70,20 @@ public class Login extends AppCompatActivity {
                 if (TextUtils.isEmpty(E) && TextUtils.isEmpty(P)) {
                     Toast.makeText(Login.this, "Please enter Email and Password", Toast.LENGTH_SHORT).show();
                 }
+                String pass = null;
+                try {
+                    pass = toHexString(getSHA(P));
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+
                 LoadingPB.setVisibility(View.VISIBLE);
                 fAuth.signInWithEmailAndPassword(E,P).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Toast.makeText(Login.this, "checking to see if email is verified", Toast.LENGTH_SHORT).show();
                             checkEmailVerification();
-
                         }
                         else {
                             Toast.makeText(Login.this, "Error !", Toast.LENGTH_SHORT).show();
@@ -97,7 +108,14 @@ public class Login extends AppCompatActivity {
     private void checkEmailVerification() {
         FirebaseUser user = fAuth.getInstance().getCurrentUser();
         if (user.isEmailVerified()) {
-            checkIfAdmin(user.getUid());
+            Toast.makeText(Login.this, "Checking to see if you are admin", Toast.LENGTH_SHORT).show();
+            LoadingPB.setVisibility(View.GONE);
+            Intent i = new Intent(Login.this, MainActivity.class);
+            startActivity(i);
+        }
+        else {
+            Toast.makeText(Login.this, "You dumb bitch", Toast.LENGTH_SHORT).show();
+            LoadingPB.setVisibility(View.GONE);
         }
     }
 
@@ -120,6 +138,19 @@ public class Login extends AppCompatActivity {
             }
         });
 
+    }
+    public static byte[] getSHA(String input) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        return md.digest(input.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String toHexString(byte[] hash) {
+        BigInteger number = new BigInteger(1,hash);
+        StringBuilder hexString = new StringBuilder(number.toString(16));
+        while (hexString.length()<64) {
+            hexString.insert(0,"0");
+        }
+        return hexString.toString();
     }
 
 }

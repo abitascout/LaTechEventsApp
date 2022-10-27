@@ -2,12 +2,29 @@ package com.example.latecheventsapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.latecheventsapp.data.model.Event;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +32,13 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class MyEvents extends Fragment {
+
+    DatabaseReference dr;
+    private RecyclerView eventRV;
+    private ArrayList<Event> eventArrayList;
+    private GenAdapter ga;
+    private FirebaseFirestore fstore;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +85,23 @@ public class MyEvents extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        fstore = FirebaseFirestore.getInstance();
+        eventArrayList = new ArrayList<>();
+        eventRV.setHasFixedSize(true);
+
+        ga = new GenAdapter(eventArrayList, this);
+
+        eventRV.setAdapter(ga);
+
+
+
         return inflater.inflate(R.layout.fragment_my_events, container, false);
+
+
+
+
     }
+
+
 }

@@ -30,6 +30,9 @@ public class GenAdapter extends RecyclerView.Adapter<GenAdapter.MyViewHolder> {
         this.genEventListener = genEventListener;
     }
 
+    public GenAdapter(ArrayList<Event> eventArrayList, MyEvents myEvents) {
+    }
+
     @NonNull
     @Override
     public GenAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
