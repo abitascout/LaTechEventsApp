@@ -39,7 +39,7 @@
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
-            android:theme="@style/Theme.LatechEventsApp.NoActionBar"></activity>
+            android:theme="@style/Theme.LatechEventsApp.NoActionBar" />
     </application>
 
 </manifest>

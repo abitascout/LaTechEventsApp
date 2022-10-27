@@ -12,25 +12,48 @@
     tools:context=".general_events"
     android:id="@+id/general"
     >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/genLinear">
-        <SearchView
-            android:id="@+id/search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            android:queryHint="Search Events"
 
-            app:layout_anchor="@+id/swiper"
-            android:background="@color/tech_Red"
-            app:layout_anchorGravity="top|center" />
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+
+                        <Button
+                            android:id="@+id/filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="showFilterTapped"
+                            android:text="filter"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+                </androidx.appcompat.widget.Toolbar>
+
+                <SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/tech_Red"
+                    android:iconifiedByDefault="false"
+
+                    android:queryHint="Search Events"
+                    app:layout_anchor="@+id/swiper"
+                    app:layout_anchorGravity="top|center" />
+
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/filtertab1">
 
 
                         <Button
@@ -42,6 +65,7 @@
                             android:textColor="@color/white"
                             android:backgroundTint="@color/tech_Red"
                             android:onClick="AllFilterTapped"
+
                             />
                         <Button
                             android:layout_width="0dp"
@@ -67,7 +91,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/filtertab2">
                         <Button
                             android:layout_width="0dp"
                             android:layout_weight="1"
