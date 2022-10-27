@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -65,6 +66,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     private SwipeRefreshLayout swipeRefreshLayout;
     private String currnetSearch = "";
     private SearchView searchView;
+    private boolean filterHidden = true;
 
     public static general_events newInstance() {
         general_events fragment = new general_events();
@@ -111,8 +113,19 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         Button foodBtn =  view.findViewById(R.id.Food_button);
         Button greekBtn=  view.findViewById(R.id.Greek_button);
         Button tutorBtn =  view.findViewById(R.id.Tutor_button);
-
+        Button filter = view.findViewById(R.id.filter);
+        LinearLayout filterLine1 = view.findViewById(R.id.filtertab1);
+        LinearLayout filterLine2 = view.findViewById(R.id.filtertab2);
         view = genSearch(view);
+        hideFilter(view,filterLine1,filterLine2,filter);
+
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FilteredTapped(v,filterLine1,filterLine2,filter);
+                lookSelected(allBtn);
+            }
+        });
 
 
 
@@ -393,8 +406,6 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
 
-    //Todo: work on refreshing the page next
-
     @Override
     public void onRefresh() {
 
@@ -421,4 +432,33 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
 
     }
 
+    public void showFilterTapped(View view) {
+    }
+
+
+    private void hideFilter(View v,LinearLayout f1, LinearLayout f2, Button fil){
+        f1.setVisibility(v.GONE);
+        f2.setVisibility(v.GONE);
+        fil.setText("Filter");
+
+    }
+
+    private void showFilter(View v,LinearLayout f1, LinearLayout f2, Button fil){
+        f1.setVisibility(v.VISIBLE);
+        f2.setVisibility(v.VISIBLE);
+        fil.setText("Hide");
+    }
+
+    public void FilteredTapped(View v,LinearLayout f1, LinearLayout f2, Button b){
+        if(filterHidden){
+            filterHidden = false;
+            showFilter(v,f1,f2,b);
+            lookSelected(b);
+        }
+        else{
+            filterHidden = true;
+            hideFilter(v,f1,f2,b);
+            lookUnSelected(b);
+        }
+    }
 }

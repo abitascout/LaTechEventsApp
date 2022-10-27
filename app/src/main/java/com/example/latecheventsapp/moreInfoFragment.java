@@ -114,7 +114,7 @@ public class moreInfoFragment extends Fragment {
                     clubs = "No Clubs";
                     clubsTV.setText(clubs);
                 }
-                if(tempevent.getEnd() != null)
+                if(tempevent.getEnd().compareTo(tempevent.getStart()) > 0)
                 {
                     Date end_date = tempevent.getEnd().toDate();
                     String end = spf.format(end_date);
