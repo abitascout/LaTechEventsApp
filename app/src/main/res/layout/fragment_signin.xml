@@ -114,7 +114,7 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="277dp"
-        android:layout_height="60dp"
+        android:layout_height="69dp"
         android:text="TEA Sign Up"
         android:textColor="@color/white"
         android:textSize="50sp"
