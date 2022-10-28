@@ -78,7 +78,7 @@ public class Login extends AppCompatActivity {
                 }
 
                 LoadingPB.setVisibility(View.VISIBLE);
-                fAuth.signInWithEmailAndPassword(E,P).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fAuth.signInWithEmailAndPassword(E,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -114,7 +114,7 @@ public class Login extends AppCompatActivity {
             startActivity(i);
         }
         else {
-            Toast.makeText(Login.this, "You dumb bitch", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Login.this, "Email isn't verified", Toast.LENGTH_SHORT).show();
             LoadingPB.setVisibility(View.GONE);
         }
     }

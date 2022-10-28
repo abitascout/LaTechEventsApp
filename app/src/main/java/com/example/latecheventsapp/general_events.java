@@ -123,7 +123,18 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onClick(View v) {
                 FilteredTapped(v,filterLine1,filterLine2,filter);
-                lookSelected(allBtn);
+                if(filterHidden == false) {
+                    unSelectAllFilters(allBtn, partyBtn, foodBtn, greekBtn, tutorBtn);
+                    lookSelected(allBtn);
+                    AllFilterTapped();
+                }
+                else
+                {
+                    lookUnSelected(allBtn);
+                    AllFilterTapped();
+
+                }
+
             }
         });
 
