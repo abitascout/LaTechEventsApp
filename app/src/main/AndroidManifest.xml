@@ -7,9 +7,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/latech_logo"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/latech_logo"
+        android:icon="@mipmap/tea_logo"
+        android:label="TEA"
+        android:roundIcon="@mipmap/tea_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.LatechEventsApp"
         tools:targetApi="31">

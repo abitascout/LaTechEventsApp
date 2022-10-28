@@ -138,8 +138,6 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
             }
         });
 
-
-
         allBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
