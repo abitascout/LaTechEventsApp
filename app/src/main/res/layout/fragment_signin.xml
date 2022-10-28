@@ -13,7 +13,7 @@
     tools:context=".ui.login.LoginFragment">
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/navUser"
         android:layout_width="327dp"
         android:layout_height="50dp"
         android:layout_marginStart="24dp"
@@ -47,7 +47,7 @@
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/navUser"
         android:autofillHints="" />
 
 
@@ -70,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.527"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/navUser" />
 
     <Button
         android:id="@+id/sign_up_page_nav_button"
