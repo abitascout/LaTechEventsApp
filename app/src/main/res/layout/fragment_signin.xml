@@ -128,8 +128,10 @@
         android:layout_width="144dp"
         android:layout_height="120dp"
         android:src="@drawable/no_background_tea"
-        tools:layout_editor_absoluteX="114dp"
-        tools:layout_editor_absoluteY="89dp" />
+        app:layout_constraintBottom_toTopOf="@+id/navUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
