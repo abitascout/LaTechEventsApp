@@ -36,6 +36,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -337,7 +338,8 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                 currnetSearch = s.stripLeading();
                 filteredEvents.clear();
                 for (Event event : eventArrayList) {
-                    if (event.getEvent_Name().toLowerCase().contains(currnetSearch.toLowerCase())) {
+                    String placehoder = timeConverter(event.getStart().toDate()).toLowerCase();
+                    if (event.getEvent_Name().toLowerCase().contains(currnetSearch.toLowerCase()) || event.getLocation().toLowerCase().contains(currnetSearch.toLowerCase()) || placehoder.contains(currnetSearch.toLowerCase())) {
                         if (selectedFilter.equals("all"))
                             filteredEvents.add(event);
                         else {
@@ -346,16 +348,24 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                         }
 
                     }
+
+
+
                 }
                 GenAdapter searchAdapter = new GenAdapter(getContext(), filteredEvents, general_events.this::onEventClick);
                 recyclerView.setAdapter(searchAdapter);
-                return false;
+                return true;
             }
         });
         return view;
 
     }
-
+    // changes the date from a timestamp.toDate() from military time to standard time.
+    public String timeConverter(Date d){
+        SimpleDateFormat spf = new SimpleDateFormat(" EEE, d MMM hh:mm aaa");
+        String time = spf.format(d);
+        return  time;
+    }
     private void FilterList(String status) {
         selectedFilter = status;
         Fevents.clear();
