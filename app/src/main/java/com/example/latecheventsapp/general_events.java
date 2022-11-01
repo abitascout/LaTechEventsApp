@@ -339,7 +339,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                 filteredEvents.clear();
                 for (Event event : eventArrayList) {
                     String placehoder = timeConverter(event.getStart().toDate()).toLowerCase();
-                    if (event.getEvent_Name().toLowerCase().contains(currnetSearch.toLowerCase()) || event.getLocation().toLowerCase().contains(currnetSearch.toLowerCase()) || placehoder.contains(currnetSearch.toLowerCase())) {
+                    if (event.getEvent_Name().toLowerCase().contains(currnetSearch.toLowerCase()) || event.getLocation().toLowerCase().contains(currnetSearch.toLowerCase()) || placehoder.contains(currnetSearch.toLowerCase()) || event.getClub_Name().toLowerCase().contains(currnetSearch.toLowerCase())) {
                         if (selectedFilter.equals("all"))
                             filteredEvents.add(event);
                         else {
