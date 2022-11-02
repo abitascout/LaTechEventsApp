@@ -285,13 +285,13 @@ public class create_events extends Fragment implements TagListener{
 
             try {
                 startTime24 = new SimpleDateFormat("HH:mm:a").parse(startTime);
-                Toast.makeText(getContext(), "ST: " + startTime24.toString(), Toast.LENGTH_SHORT).show();
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             try {
                 endTime24 = new SimpleDateFormat("h:mm:a").parse(endTime);
-                Toast.makeText(getContext(), endTime24.toString(), Toast.LENGTH_SHORT).show();
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
