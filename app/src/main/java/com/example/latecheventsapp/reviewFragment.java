@@ -1,13 +1,8 @@
 package com.example.latecheventsapp;
 
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,12 +10,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.latecheventsapp.data.Igen;
 import com.example.latecheventsapp.data.model.Event;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -60,6 +59,8 @@ public class reviewFragment extends Fragment implements Igen {
 
     Timestamp etimestamp;
 
+    Toolbar toolbar;
+    MenuItem menuItem;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference eventRef = db.collection("Events");
 
@@ -87,8 +88,10 @@ public class reviewFragment extends Fragment implements Igen {
         View view = inflater.inflate(R.layout.fragment_review, container, false);
 
         // Change Toolbar title.
-        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("Review");
+
+
 
 
         editButton = view.findViewById(R.id.buttonEdit);
@@ -107,26 +110,37 @@ public class reviewFragment extends Fragment implements Igen {
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, rFragment);
                 fragmentTransaction.commit();
+                NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+                navigationView.setCheckedItem(R.id.nav_create_events);
+                toolbar.setTitle("Create Events");
             }
         });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: SEND EVENT TO DATABASE
 
                 try {
-                     stimestamp = new Timestamp(new Date(sAllTime));
+                    String tempDateString = String.format("%s %s", date,startTime);
+                    Date temp = new Date(tempDateString);
+                    stimestamp = new Timestamp(temp);
                 } catch(Exception e) { //this generic but you can control another types of exception
-                    // look the origin of excption
+                    // look the origin of exception
                 }
 
                 try {
-                    etimestamp = new Timestamp(new Date(eAllTime));
+                    String tempDateString2 = String.format("%s %s", date,endTime);
+                    Date temp2 = new Date(tempDateString2);
+                    etimestamp = new Timestamp(temp2);
                 } catch(Exception e) { //this generic but you can control another types of exception
-                    // look the origin of excption
+
                 }
+
                 createEvent(subject, stimestamp, description, etimestamp, location, clubs, tags);
+
+
+                //createEvent(subject, stimestamp, description, stimestamp, location, clubs, tags);
+
             }
         });
         return view;
@@ -229,10 +243,13 @@ public class reviewFragment extends Fragment implements Igen {
         eventRef.add(event).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
+
                 FragmentTransaction fragmentTransaction = getActivity()
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, new general_events());
                 fragmentTransaction.commit();
+                NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+                navigationView.setCheckedItem(R.id.nav_general_events);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

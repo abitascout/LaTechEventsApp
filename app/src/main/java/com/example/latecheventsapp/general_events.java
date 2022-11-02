@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -65,6 +67,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     private SwipeRefreshLayout swipeRefreshLayout;
     private String currnetSearch = "";
     private SearchView searchView;
+    private boolean filterHidden = true;
 
     public static general_events newInstance() {
         general_events fragment = new general_events();
@@ -74,6 +77,8 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     private void unSelectAllFilters(Button bt1, Button bt2, Button bt3, Button bt4, Button bt5){
@@ -103,15 +108,36 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
 
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("General Events");
+
         Button allBtn = view.findViewById(R.id.All_button);
         Button partyBtn = view.findViewById(R.id.Party_button);
         Button foodBtn =  view.findViewById(R.id.Food_button);
         Button greekBtn=  view.findViewById(R.id.Greek_button);
         Button tutorBtn =  view.findViewById(R.id.Tutor_button);
-        view = Swiping(view);
+        Button filter = view.findViewById(R.id.filter);
+        LinearLayout filterLine1 = view.findViewById(R.id.filtertab1);
+        LinearLayout filterLine2 = view.findViewById(R.id.filtertab2);
         view = genSearch(view);
+        hideFilter(view,filterLine1,filterLine2,filter);
 
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FilteredTapped(v,filterLine1,filterLine2,filter);
+                if(filterHidden == false) {
+                    unSelectAllFilters(allBtn, partyBtn, foodBtn, greekBtn, tutorBtn);
+                    lookSelected(allBtn);
+                    AllFilterTapped();
+                }
+                else
+                {
+                    lookUnSelected(allBtn);
+                    AllFilterTapped();
 
+                }
+
+            }
+        });
 
         allBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -168,6 +194,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                 });*/
 
         view = create_handler(view);
+        view = Swiping(view);
 
         return view;
     }
@@ -181,7 +208,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onRefresh() {
 
-                eventRef.addSnapshotListener((Activity) getContext(), new EventListener<QuerySnapshot>() {
+                eventRef.addSnapshotListener((Activity) requireContext(), new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
@@ -219,7 +246,7 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                     }
                 });
 
-                GenAdapter refreshAdapter = new GenAdapter(getContext(), eventArrayList, general_events.this::onEventClick);
+                GenAdapter refreshAdapter = new GenAdapter(getContext(), eventArrayList, general_events.this);
                 recyclerView.setAdapter(refreshAdapter);
                 swipeRefreshLayout.setRefreshing(false);
 
@@ -228,11 +255,13 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         });
         return view;
     }
-
+    // finds it in the list
     private Event eventCheck(Event event, ArrayList<Event> eventArrayList) {
         for (int i = 0; i < eventArrayList.size(); i++) {
             String name = eventArrayList.get(i).getEvent_Name();
-            if (name.equals(event.getEvent_Name())) {
+            Date temp = eventArrayList.get(i).getStart().toDate();
+            Date eventDate = event.getStart().toDate();
+            if (name.equals(event.getEvent_Name()) && (temp.compareTo(eventDate) == 0) && event.getLocation().equals(eventArrayList.get(i).getLocation())) {
                 return eventArrayList.get(i);
             }
         }
@@ -244,7 +273,9 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     private boolean checking(Event event) {
         for (int i = 0; i < eventArrayList.size(); i++) {
             String name = eventArrayList.get(i).getEvent_Name();
-            if (name.equals(event.getEvent_Name())) {
+            Date temp = eventArrayList.get(i).getStart().toDate();
+            Date eventDate = event.getStart().toDate();
+            if (name.equals(event.getEvent_Name()) && (temp.compareTo(eventDate) == 0) && event.getLocation().equals(eventArrayList.get(i).getLocation())) {
                 return true;
             }
         }
@@ -306,8 +337,16 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
             public boolean onQueryTextChange(String s) {
                 currnetSearch = s.stripLeading();
                 filteredEvents.clear();
-                for (Event event : eventArrayList) {
-                    if (event.getEvent_Name().toLowerCase().contains(currnetSearch.toLowerCase())) {
+                ArrayList<Event> temp = new ArrayList<Event>();
+                if(Fevents.isEmpty()) {
+                   temp = eventArrayList;
+                }
+                else{
+                    temp = Fevents;
+                }
+                for (Event event : temp) {
+                    String placehoder = timeConverter(event.getStart().toDate()).toLowerCase();
+                    if (event.getEvent_Name().toLowerCase().contains(currnetSearch.toLowerCase()) || event.getLocation().toLowerCase().contains(currnetSearch.toLowerCase()) || placehoder.contains(currnetSearch.toLowerCase()) || event.getClub_Name().toLowerCase().contains(currnetSearch.toLowerCase())) {
                         if (selectedFilter.equals("all"))
                             filteredEvents.add(event);
                         else {
@@ -316,16 +355,24 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
                         }
 
                     }
+
+
+
                 }
                 GenAdapter searchAdapter = new GenAdapter(getContext(), filteredEvents, general_events.this::onEventClick);
                 recyclerView.setAdapter(searchAdapter);
-                return false;
+                return true;
             }
         });
         return view;
 
     }
-
+    // changes the date from a timestamp.toDate() from military time to standard time.
+    public String timeConverter(Date d){
+        SimpleDateFormat spf = new SimpleDateFormat(" EEE, d MMM hh:mm aaa");
+        String time = spf.format(d);
+        return  time;
+    }
     private void FilterList(String status) {
         selectedFilter = status;
         Fevents.clear();
@@ -385,8 +432,6 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
 
-    //Todo: work on refreshing the page next
-
     @Override
     public void onRefresh() {
 
@@ -398,7 +443,9 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         Log.d(TAG, "onEventClick: clicked ");
         Bundle bundle = new Bundle();
         Event tempevent;
-        if(!filteredEvents.isEmpty())
+        if(!filteredEvents.isEmpty() && Fevents.isEmpty())
+            tempevent = filteredEvents.get(position);
+        else if(!filteredEvents.isEmpty() && !Fevents.isEmpty() && filteredEvents.size() <= Fevents.size())
             tempevent = filteredEvents.get(position);
         else if(Fevents.isEmpty())
             tempevent = eventArrayList.get(position);
@@ -413,4 +460,33 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
 
     }
 
+    public void showFilterTapped(View view) {
+    }
+
+
+    private void hideFilter(View v,LinearLayout f1, LinearLayout f2, Button fil){
+        f1.setVisibility(v.GONE);
+        f2.setVisibility(v.GONE);
+        fil.setText("Filter");
+
+    }
+
+    private void showFilter(View v,LinearLayout f1, LinearLayout f2, Button fil){
+        f1.setVisibility(v.VISIBLE);
+        f2.setVisibility(v.VISIBLE);
+        fil.setText("Hide");
+    }
+
+    public void FilteredTapped(View v,LinearLayout f1, LinearLayout f2, Button b){
+        if(filterHidden){
+            filterHidden = false;
+            showFilter(v,f1,f2,b);
+            lookSelected(b);
+        }
+        else{
+            filterHidden = true;
+            hideFilter(v,f1,f2,b);
+            lookUnSelected(b);
+        }
+    }
 }

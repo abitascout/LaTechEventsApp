@@ -10,25 +10,50 @@
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".general_events"
-    android:id="@+id/general">
+    android:id="@+id/general"
+    >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/genLinear">
-        <SearchView
-            android:id="@+id/search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            android:queryHint="Search Events"
-            app:layout_anchor="@+id/swiper"
-            android:background="@color/tech_Red"
-            app:layout_anchorGravity="top|center" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+
+                        <Button
+                            android:id="@+id/filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:backgroundTint="@color/tech_Red"
+                            android:onClick="showFilterTapped"
+                            android:text="filter"
+                            android:textColor="@color/white"
+                            android:textSize="10sp" />
+                </androidx.appcompat.widget.Toolbar>
+
+                <SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/tech_Red"
+                    android:iconifiedByDefault="false"
+
+                    android:queryHint="Search Events"
+                    app:layout_anchor="@+id/swiper"
+                    app:layout_anchorGravity="top|center" />
+
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/filtertab1">
 
 
                         <Button
@@ -37,14 +62,17 @@
                             android:layout_height="match_parent"
                             android:text="All"
                             android:id="@+id/All_button"
+                            android:textColor="@color/white"
                             android:backgroundTint="@color/tech_Red"
                             android:onClick="AllFilterTapped"
+
                             />
                         <Button
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:text="Party"
+                            android:textColor="@color/white"
                             android:id="@+id/Party_button"
                             android:backgroundTint="@color/tech_Red"
                             android:onClick="PartyFilter"
@@ -54,6 +82,7 @@
                             android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:text="Food"
+                            android:textColor="@color/white"
                             android:id="@+id/Food_button"
                             android:backgroundTint="@color/tech_Red"
                             android:onClick="FoodFilter"
@@ -62,12 +91,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/filtertab2">
                         <Button
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:text="Greek"
+                            android:textColor="@color/white"
                             android:id="@+id/Greek_button"
                             android:backgroundTint="@color/tech_Red"
                             android:onClick="GreekFilter"
@@ -77,6 +108,7 @@
                             android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:text="Tutor"
+                            android:textColor="@color/white"
                             android:id="@+id/Tutor_button"
                             android:backgroundTint="@color/tech_Red"
                             android:onClick="TutorFilter"

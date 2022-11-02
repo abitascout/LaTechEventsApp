@@ -49,9 +49,18 @@ public class GenAdapter extends RecyclerView.Adapter<GenAdapter.MyViewHolder> {
         SimpleDateFormat spf = new SimpleDateFormat(" EEE, d MMM hh:mm aaa");
         Timestamp start_temp = event.getStart();
         Date start_date =start_temp.toDate();
-        Date end_date = event.getEnd().toDate();
+        Date end_date;
+        String end;
+        try{
+            end_date = event.getEnd().toDate();
+            end = spf.format(end_date);
+        } catch (Exception e) {
+            end_date = null;
+            end = null;
+        }
+
         String start = spf.format(start_date);
-        String end = spf.format(end_date);
+
         holder.eventViewStart.setText(start);
     }
 

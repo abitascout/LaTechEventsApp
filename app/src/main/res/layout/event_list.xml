@@ -16,40 +16,46 @@
         android:layout_height="match_parent"
         android:padding="10dp"
         android:paddingRight="10dp">
+
+
         <TextView
             android:id="@+id/Event_Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Event_Name"
-            android:textColor="@color/white"
             android:layout_alignParentStart="true"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/event_start_date"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:ellipsize="end"
-        />
+            android:maxLines="1"
+            android:text="Event_Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/event_start_date"
-            android:layout_width="140dp"
-            android:layout_height="68dp"
+            android:layout_width="141dp"
+            android:layout_height="75dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
             android:maxLines="2"
             android:padding="4dp"
             android:text="September 26, 1998"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/white" />
 
-
         <TextView
             android:id="@+id/Event_Location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/Event_Name"
-            android:layout_marginTop="15dp"
             android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/event_start_date"
             android:background="@color/tech_Red"
             android:ellipsize="end"
             android:maxLines="1"

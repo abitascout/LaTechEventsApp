@@ -5,13 +5,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +18,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,8 +30,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Login extends AppCompatActivity {
     private EditText EmailTxt, PasswordTxt;
@@ -53,7 +47,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_login);
 
-        EmailTxt = findViewById(R.id.username);
+        EmailTxt = findViewById(R.id.navUser);
         PasswordTxt = findViewById(R.id.password);
         LoginBtn = findViewById(R.id.loginbutton);
         SignUpBtn = findViewById(R.id.sign_up_page_nav_button);
@@ -78,7 +72,7 @@ public class Login extends AppCompatActivity {
                 }
 
                 LoadingPB.setVisibility(View.VISIBLE);
-                fAuth.signInWithEmailAndPassword(E,P).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fAuth.signInWithEmailAndPassword(E,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -114,7 +108,7 @@ public class Login extends AppCompatActivity {
             startActivity(i);
         }
         else {
-            Toast.makeText(Login.this, "You dumb bitch", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Login.this, "Email isn't verified", Toast.LENGTH_SHORT).show();
             LoadingPB.setVisibility(View.GONE);
         }
     }

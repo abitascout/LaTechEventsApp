@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,7 +15,6 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.latecheventsapp.data.model.Event;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -91,15 +91,30 @@ public class moreInfoFragment extends Fragment {
                 String start = spf.format(start_date);
                 date =day;
                 startTime = start;
-                tags = tempevent.getTag();
-                clubs = tempevent.getClub_Name();
+
                 subjectTV.setText(subject);
                 locationTV.setText(location);
                 descriptionTV.setText(description);
                 startTimeTV.setText(date);
-                tagsTV.setText(tags);
-                clubsTV.setText(clubs);
-                if(tempevent.getEnd() != null)
+
+
+                if(tempevent.getTag() != null) {
+                    tags = tempevent.getTag();
+                    tagsTV.setText(tags);
+                }
+                else {
+                    tags = "No Tags";
+                    tagsTV.setText(tags);
+                }
+                if(tempevent.getClub_Name() != null) {
+                    clubs = tempevent.getClub_Name();
+                    clubsTV.setText(clubs);
+                }
+                else {
+                    clubs = "No Clubs";
+                    clubsTV.setText(clubs);
+                }
+                if(tempevent.getEnd().compareTo(tempevent.getStart()) > 0)
                 {
                     Date end_date = tempevent.getEnd().toDate();
                     String end = spf.format(end_date);
@@ -120,7 +135,7 @@ public class moreInfoFragment extends Fragment {
 
 
 
-         FloatingActionButton back = view.findViewById(R.id.buttonGen);
+         Button back = view.findViewById(R.id.buttonGen);
 
         //Get text ref
         subjectTV = view.findViewById(R.id.textViewSubjectMoreInfo);

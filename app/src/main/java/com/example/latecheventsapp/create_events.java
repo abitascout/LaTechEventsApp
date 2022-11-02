@@ -26,9 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.latecheventsapp.data.TagAdapter;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -146,7 +144,7 @@ public class create_events extends Fragment implements TagListener{
                 c.setTimeZone(TimeZone.getDefault());
 
                 SimpleDateFormat aformat = new SimpleDateFormat("h:mm:a");
-                startTime24 = c.getTime();
+
 
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
                 startTime = format.format(c.getTime());
@@ -154,6 +152,7 @@ public class create_events extends Fragment implements TagListener{
 
                 sHour = hour;
                 sMin = min;
+                startTime24 = c.getTime();
             }
         };
         int style = AlertDialog.THEME_HOLO_LIGHT;
@@ -173,7 +172,7 @@ public class create_events extends Fragment implements TagListener{
 
                 c.setTimeZone(TimeZone.getDefault());
 
-                endTime24 = c.getTime();
+
 
                 SimpleDateFormat format = new SimpleDateFormat("h:mm:a");
                 endTime = format.format(c.getTime());
@@ -181,6 +180,8 @@ public class create_events extends Fragment implements TagListener{
 
                 eHour = hour;
                 eMin = min;
+
+                endTime24 = c.getTime();
             }
         };
 
@@ -269,7 +270,7 @@ public class create_events extends Fragment implements TagListener{
         Bundle rbundle = this.getArguments();
 
         if(rbundle != null){
-            Toast.makeText(getContext(), "Please reselect Tags & Clubs", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please reselect Tags, Clubs & Times", Toast.LENGTH_SHORT).show();
             subjectEditText.setText(rbundle.getString("subject", ""));
             locationEditText.setText(rbundle.getString("location", ""));
             descriptionEditText.setText(rbundle.getString("description", ""));
@@ -284,13 +285,13 @@ public class create_events extends Fragment implements TagListener{
 
             try {
                 startTime24 = new SimpleDateFormat("HH:mm:a").parse(startTime);
-                Toast.makeText(getContext(), "ST: " + startTime24.toString(), Toast.LENGTH_SHORT).show();
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             try {
                 endTime24 = new SimpleDateFormat("h:mm:a").parse(endTime);
-                Toast.makeText(getContext(), endTime24.toString(), Toast.LENGTH_SHORT).show();
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -413,16 +414,16 @@ public class create_events extends Fragment implements TagListener{
 
 
     private void saveInformation(){
-        bundle.putString("subject", subjectEditText.getText().toString());
-        bundle.putString("location", locationEditText.getText().toString());
-        bundle.putString("description", descriptionEditText.getText().toString());
+        bundle.putString("subject", subjectEditText.getText().toString().trim().replace("\n", " "));
+        bundle.putString("location", locationEditText.getText().toString().trim().replace("\n", " "));
+        bundle.putString("description", descriptionEditText.getText().toString().trim());
 
         bundle.putString("date", dateButton.getText().toString());
 
         bundle.putString("startTime", startTime);
         bundle.putString("sAllTime", startTime24.toString());
         CharSequence base = "NO END";
-        if(endTimeButton != base){
+        if(endTime24 != null){
             bundle.putString("eAllTime", endTime24.toString());
             bundle.putString("endTime", endTime);
         }
