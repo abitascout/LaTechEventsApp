@@ -337,7 +337,14 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
             public boolean onQueryTextChange(String s) {
                 currnetSearch = s.stripLeading();
                 filteredEvents.clear();
-                for (Event event : eventArrayList) {
+                ArrayList<Event> temp = new ArrayList<Event>();
+                if(Fevents.isEmpty()) {
+                   temp = eventArrayList;
+                }
+                else{
+                    temp = Fevents;
+                }
+                for (Event event : temp) {
                     String placehoder = timeConverter(event.getStart().toDate()).toLowerCase();
                     if (event.getEvent_Name().toLowerCase().contains(currnetSearch.toLowerCase()) || event.getLocation().toLowerCase().contains(currnetSearch.toLowerCase()) || placehoder.contains(currnetSearch.toLowerCase()) || event.getClub_Name().toLowerCase().contains(currnetSearch.toLowerCase())) {
                         if (selectedFilter.equals("all"))
@@ -436,7 +443,9 @@ public class general_events extends Fragment implements SwipeRefreshLayout.OnRef
         Log.d(TAG, "onEventClick: clicked ");
         Bundle bundle = new Bundle();
         Event tempevent;
-        if(!filteredEvents.isEmpty())
+        if(!filteredEvents.isEmpty() && Fevents.isEmpty())
+            tempevent = filteredEvents.get(position);
+        else if(!filteredEvents.isEmpty() && !Fevents.isEmpty() && filteredEvents.size() <= Fevents.size())
             tempevent = filteredEvents.get(position);
         else if(Fevents.isEmpty())
             tempevent = eventArrayList.get(position);

@@ -110,6 +110,9 @@ public class reviewFragment extends Fragment implements Igen {
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, rFragment);
                 fragmentTransaction.commit();
+                NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+                navigationView.setCheckedItem(R.id.nav_create_events);
+                toolbar.setTitle("Create Events");
             }
         });
 
